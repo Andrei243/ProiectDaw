@@ -1,16 +1,15 @@
-﻿using System;
-using Microsoft.EntityFramework;
-using Microsoft.Extensions.Configuration;
-using Domain;
+﻿using Domain;
 using DataAccess.Configurations;
 using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
+
 
 namespace DataAccess
 {
     public partial class SocializRContext : IdentityDbContext<Users>
     {
         public SocializRContext()
+            :base("Server=(LocalDB)\\MSSQLLocalDB;Database=SocializR;Trusted_Connection=true;Connection Timeout=3600")
         {
         }
 
@@ -30,33 +29,33 @@ namespace DataAccess
 
 
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
+//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+//        {
             
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=(LocalDB)\\MSSQLLocalDB;Database=SocializR;Trusted_Connection=true;Connection Timeout=3600");
+//            if (!optionsBuilder.IsConfigured)
+//            {
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+//                optionsBuilder.UseSqlServer("Server=(LocalDB)\\MSSQLLocalDB;Database=SocializR;Trusted_Connection=true;Connection Timeout=3600");
 
-            }
-        }
+//            }
+//        }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
-            modelBuilder.ApplyConfiguration(new AlbumConfiguration());
-            modelBuilder.ApplyConfiguration(new CommentConfiguration());
-            modelBuilder.ApplyConfiguration(new CountyConfiguration());
-            modelBuilder.ApplyConfiguration(new ErrorLogCustomConfiguration());
-            modelBuilder.ApplyConfiguration(new FriendshipConfiguration());
-            modelBuilder.ApplyConfiguration(new InterestConfiguration());
-            modelBuilder.ApplyConfiguration(new InterestsUsersConfiguration());
-            modelBuilder.ApplyConfiguration(new LocalityConfiguration());
-            modelBuilder.ApplyConfiguration(new PhotoConfiguration());
-            modelBuilder.ApplyConfiguration(new PostConfiguration());
-            modelBuilder.ApplyConfiguration(new ReactionConfiguration());
-            modelBuilder.ApplyConfiguration(new RoleConfiguration());
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            //modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
+            AlbumConfiguration.Configure(modelBuilder.Entity<Album>());
+            CommentConfiguration.Configure(modelBuilder.Entity<Comment>());
+            CountyConfiguration.Configure(modelBuilder.Entity<County>());
+            ErrorLogCustomConfiguration.Configure(modelBuilder.Entity<ErrorLogCustom>());
+            FriendshipConfiguration.Configure(modelBuilder.Entity<Friendship>());
+            InterestConfiguration.Configure(modelBuilder.Entity<Interest>());
+            InterestsUsersConfiguration.Configure(modelBuilder.Entity<InterestsUsers>());
+            LocalityConfiguration.Configure(modelBuilder.Entity<Locality>());
+            PhotoConfiguration.Configure(modelBuilder.Entity<Photo>());
+            PostConfiguration.Configure(modelBuilder.Entity<Post>());
+            ReactionConfiguration.Configure(modelBuilder.Entity<Reaction>());
+            RoleConfiguration.Configure(modelBuilder.Entity<Role>());
+            UserConfiguration.Configure(modelBuilder.Entity<Users>());
 
         }
     }
