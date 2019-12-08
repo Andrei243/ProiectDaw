@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Proiect_DAW.Models;
+using Proiect_DAW.Models.GeneralModels;
 
 namespace Proiect_DAW.Controllers
 {//TODO 
@@ -17,15 +18,22 @@ namespace Proiect_DAW.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private readonly Services.User.UserAccountService userAccountService;
+        private readonly Services.County.CountyService countyService;
 
         public AccountController()
         {
+            countyService = new Services.County.CountyService(new DataAccess.SocializRUnitOfWork(new DataAccess.SocializRContext()));
+            userAccountService = new Services.User.UserAccountService(new DataAccess.SocializRUnitOfWork(new DataAccess.SocializRContext()));
+
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            countyService = new Services.County.CountyService(new DataAccess.SocializRUnitOfWork(new DataAccess.SocializRContext()));
+            userAccountService = new Services.User.UserAccountService(new DataAccess.SocializRUnitOfWork(new DataAccess.SocializRContext()));
         }
 
         public ApplicationSignInManager SignInManager
@@ -57,7 +65,7 @@ namespace Proiect_DAW.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
+            var model = new LoginModel();
             return View();
         }
 
@@ -66,7 +74,7 @@ namespace Proiect_DAW.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(LoginModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -75,7 +83,7 @@ namespace Proiect_DAW.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, true, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -83,7 +91,7 @@ namespace Proiect_DAW.Controllers
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = true });
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
@@ -139,6 +147,14 @@ namespace Proiect_DAW.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            var model = new RegisterModel()
+            {
+                Counties = countyService.GetAll().Select(e =>
+                new SelectListItem() { Text = e.Name, Value = e.Id.ToString() }
+
+                ).OrderBy(e => e.Text).ToList()
+            };
+
             return View();
         }
 
@@ -147,25 +163,22 @@ namespace Proiect_DAW.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public ActionResult Register(RegisterModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                var user = new Domain.Users()
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    UserManager.AddToRole(user.Id, "public");
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-                    return RedirectToAction("Index", "Home");
-                }
-                AddErrors(result);
+                    BirthDay = model.BirthDay,
+                    Name = model.Name,
+                    Surname = model.Surname,
+                    LocalityId = model.LocalityId,
+                    SexualIdentity = model.SexualIdentity,
+                    Email = model.Email,
+                    Password = model.Password
+                };
+                userAccountService.Register(user);
+                return RedirectToAction("Index", "Feed");
             }
 
             // If we got this far, something failed, redisplay form

@@ -1,0 +1,41 @@
+﻿@{
+    Layout = "~/Views/GeneralLayout.cshtml";
+    ViewData["Title"] = "Interests";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <p>Name</p>
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="interestBody">
+       
+    </tbody>
+</table>
+
+<script id="interest-template" type="text/x-handlebars-template">
+    <tr>
+        <td>{{name}}</td>
+        <td>
+            <a href="/Interests/Edit/{{id}}">Edit</a>
+            
+        </td>
+        <td>
+            <a class="needConfirmation" href="/Interests/Delete/{{id}}">Delete</a>
+        </td>
+
+    </tr>
+
+</script>
+
+<script src="~/js/Interests.js"></script>

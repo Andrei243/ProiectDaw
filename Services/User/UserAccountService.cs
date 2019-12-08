@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DataAccess;
+﻿using DataAccess;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using Domain;
+using System.Data.Entity;
 
 namespace Services.User
 {
@@ -20,7 +17,7 @@ namespace Services.User
 
             return unitOfWork.Users.Query.AsNoTracking().Include(e=>e.Role).AsNoTracking()
                 .Include(e=>e.Locality).AsNoTracking()
-                .Include(e=>e.Locality).ThenInclude(e=>e.County).AsNoTracking()
+                .Include("Locality.County").AsNoTracking()
                 .FirstOrDefault(e => e.Email == email);
         }
 

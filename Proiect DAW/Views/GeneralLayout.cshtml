@@ -1,0 +1,58 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+
+}
+@{
+    Services.CurrentUser currentUser = ViewBag.CurrentUser;
+}
+<div class="container">
+    <div class="sidebar">
+        <div class="myProfile">
+            @if (currentUser.IsAuthenticated)
+            {<div>
+
+                    <div class="divImagineProfil">
+                        <p>@currentUser.Name @currentUser.Surname</p>
+                        @if (currentUser.ProfilePhoto.HasValue)
+                        {<a href=@Url.Action("Index", "Profile")>
+                                <img src="@Url.Action("Download", "Photos", new { id = currentUser.ProfilePhoto })" height="100em" />
+                            </a>
+                        }
+                        else
+                        {<a href=@Url.Action("Index", "Profile")>
+                                <img src="~/images/DefaultProfile.png" height="100em" />
+                            </a>
+                        }
+
+                    </div>
+                    <div id="linkuriProfil" class="list-group">
+                        <a href="@Url.Action("Edit","Profile")" class="list-group-item list-group-item-action">Edit Profile</a>
+                        <a href="@Url.Action("Albums","Profile")" class="list-group-item list-group-item-action">Edit albums</a>
+                        <a href="@Url.Action("FriendList","Profile")" class="list-group-item list-group-item-action">View Friends</a>
+                        <a href="@Url.Action("FriendRequests","Profile")" class="list-group-item list-group-item-action">View Friend Requests</a>
+                    </div>
+                    @if (currentUser.IsAdmin)
+                    {
+                        <div class="dropdown" style="display:inline-block">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                                Admin
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li> @Html.ActionLink("Interests", "Index", "Interests")</li>
+                                <li> @Html.ActionLink("Counties", "Index", "Counties")</li>
+                                <li> @Html.ActionLink("Localities", "Index", "Localities")</li>
+                                <li>@Html.ActionLink("Users", "Index", "Users")</li>
+                            </ul>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="right-content">
+        @RenderBody()
+    </div>
+</div>
+

@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Friendship Requests";
+    Layout = "~/Views/GeneralLayout.cshtml";
+}
+
+<h1>FriendRequests</h1>
+
+
+<div id="friendRequestBody">
+
+</div>
+
+<script id="friend-template" type="text/x-handlebars-template">
+    <div class="friend clearfix">
+        <a href="/Profile/Profile?userId={{id}}">
+            {{#if profilePhoto}}
+            <img src="/Photos/Download/{{profilePhoto}}" />
+            {{else}}
+            <img src="/images/DefaultProfile.png" />
+            {{/if}}
+            <p>{{name}}</p>
+        </a>
+
+        
+
+
+        <div class="friendshipButtons float-right ">
+            <a class="btn btn-primary" href="/Profile/Accept/{{id}}">Accept</a>
+            <a class="btn btn-danger" href="/Profile/Refuse/{{id}}">Refuse</a>
+        </div>
+
+    </div>
+
+</script>
+<script src="~/js/FriendRequest.js"></script>

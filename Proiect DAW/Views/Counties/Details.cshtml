@@ -1,0 +1,35 @@
+﻿@model Proiect_DAW.Models.AdminModels.DetailsCountyModel
+
+@{
+    Layout = "~/Views/GeneralLayout.cshtml";
+    ViewData["Title"] = Model.Name + " County";
+
+
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>County</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Localities)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (string oras in Model.Localities)
+            {
+                <p>@oras</p>
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

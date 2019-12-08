@@ -1,0 +1,84 @@
+﻿@model Proiect_DAW.Models.ProfileModels.AlbumViewerModel
+@{
+    Services.CurrentUser currentUser = ViewBag.CurrentUser;
+}
+@{
+    Layout = "~/Views/GeneralLayout.cshtml";
+    ViewData["Title"] = Model.Name + "Album";
+
+}
+
+@if (Model.HasThisAlbum)
+{
+    <form action="/Profile/AlbumChangeName" method="post" onsubmit="return checkForm(this);">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input name="submit" type="submit" value="Save" class="btn btn-primary needConfirmation" />
+        </div>
+        <script src="~/js/onlyOnce.js"></script>
+
+    </form>
+}
+else
+{
+    <h1>@Model.Name</h1>
+}
+<div id="imageBody">
+
+</div>
+@if (Model.HasThisAlbum)
+{
+    <partial name="PartialAddPhoto" model="Model.PhotoModel" />
+}
+
+@if (Model.HasThisAlbum)
+{
+    <script id="image-template" type="text/x-handlebars-template">
+
+        <div class="imagine">
+
+            <div class="bodyImagine">
+                <img src="/Photos/Download/{{id}}" />
+                <p>{{description}}</p>
+            </div>
+            <div class="photoActions">
+                <a id="makeProfile{{id}}" class="needConfirmation btn btn-primary btn-sm" href="/Profile/MakeProfilePhoto?photoId={{id}}">Make this your profile picture</a>
+                <a id="removePhoto{{id}}" class="needConfirmation btn btn-danger btn-sm" href="/Profile/RemovePhoto?photoId={{id}}&albumId={{albumId}}">Delete this photo</a>
+                <input type="text" class="description" />
+                <button class="btn btn-primary btn-sm" id="changeDescription{{id}}" data-photoid="{{id}}">Save</button>
+            </div>
+
+        </div>
+
+    </script>
+}
+else
+{
+    <script id="image-template" type="text/x-handlebars-template">
+
+        <div class="imagine">
+            <div class="bodyImagine">
+                <img src="/Photos/Download/{{id}}" height="40" />
+                <p>{{description}}</p>
+            </div>
+            @if (currentUser.IsAdmin)
+            {
+                <div class="photoActions">
+                    <a id="removePhoto{{id}}" class="needConfirmation btn btn-danger btn-sm" href="/Profile/RemovePhoto?photoId={{id}}&albumId={{albumId}}">Delete this photo</a>
+                    <input type="text" class="description" />
+                    <button class="btn btn-primary btn-sm" id="changeDescription{{id}}" data-photoid="{{id}}">Save</button>
+                </div>
+            }
+
+        </div>
+
+    </script>
+}
+<button id="imageGetter" data-album="@Model.Id" hidden="hidden">Load more images</button>
+<script src="~/js/Image.js"></script>

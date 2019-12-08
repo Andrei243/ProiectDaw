@@ -1,0 +1,35 @@
+﻿@model Proiect_DAW.Models.AdminModels.AddLocalityModel
+
+@{
+    Layout = "~/Views/GeneralLayout.cshtml";
+    ViewData["Title"] = "Locality Create";
+}
+
+<h1>Create</h1>
+
+<h4>Locality</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" onsubmit="return checkForm(this);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CountyId" class="control-label">County</label>
+                <select asp-for="CountyId" class="form-control" asp-items="Model.CountyIds">
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input name="submit" type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-primary btn-sm" >Back to List</a>
+</div>

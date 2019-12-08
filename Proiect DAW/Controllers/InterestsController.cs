@@ -16,7 +16,7 @@ namespace Proiect_DAW.Controllers
 
         private readonly Services.Interest.InterestService interestService;
         public InterestsController():
-            base(mapper)
+            base()
         {
            interestService = new InterestService(new SocializRUnitOfWork(new SocializRContext()));
         }
@@ -25,7 +25,10 @@ namespace Proiect_DAW.Controllers
         public ActionResult Index()
         {
 
-            var interese = interestService.GetAll().Select(e =>mapper.Map<InterestDomainModel>(e));
+            var interese = interestService.GetAll().Select(e =>new InterestDomainModel() { 
+            Id=e.Id,
+            Name=e.Name
+            });
 
             return View(interese);
         }
@@ -62,8 +65,12 @@ namespace Proiect_DAW.Controllers
             {
                 return NotFoundView();
             }
-           
-            var model = mapper.Map<InterestDomainModel>(interest);
+
+            var model = new InterestDomainModel()
+            {
+                Id = interest.Id,
+                Name = interest.Name
+            };
             return View(model);
         }
 
@@ -96,7 +103,9 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
        public JsonResult GetInterests(int toSkip)
         {
-            var interests = interestService.GetInterests(toSkip, PageSize).Select(e => mapper.Map<InterestJsonModel>(e)).ToList();
+            var interests = interestService.GetInterests(toSkip, PageSize).Select(e => 
+            new InterestJsonModel() { Id=e.Id,Name=e.Name}
+            ).ToList();
             return Json(interests);
         }
 

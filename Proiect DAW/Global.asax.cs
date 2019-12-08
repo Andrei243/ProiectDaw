@@ -1,3 +1,4 @@
+using DataAccess;
 using Proiect_DAW.Models;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace Proiect_DAW
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            Database.SetInitializer<ApplicationDbContext>(new DropCreateDatabaseIfModelChanges<ApplicationDbContext>());
+            Database.SetInitializer<SocializRContext>(new DropCreateDatabaseIfModelChanges<SocializRContext>());
         }
     }
 }

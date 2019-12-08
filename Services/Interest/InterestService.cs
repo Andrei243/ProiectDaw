@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Domain;
+﻿using System.Collections.Generic;
 using DataAccess;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
+using System.Data.Entity;
 
 namespace Services.Interest
 {

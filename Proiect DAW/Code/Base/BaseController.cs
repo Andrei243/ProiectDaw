@@ -13,14 +13,17 @@ namespace Proiect_DAW.Code.Base
 {
     public class BaseController : Controller
     {
-        protected readonly IMapper mapper;
         protected readonly CurrentUser currentUser;
-        public BaseController( IMapper mapper)
+        public BaseController( )
         {
-            this.mapper = mapper;
             var context = this.HttpContext;
+            if(context == null)
+            {
+                currentUser= currentUser = new CurrentUser(isAuthenticated: false);
+                return;
+            }
             var mail = ((ClaimsIdentity)context.User).Claims.FirstOrDefault(C => C.Type == ClaimTypes.Email)?.Value ?? string.Empty;
-            var userService = new UserAccountService(new DataAccess.SocializRUnitOfWork(new DataAccess.SocializRContext())); //serviceProvider.GetService<Services.User.UserAccountService>();
+            var userService = new UserAccountService(new DataAccess.SocializRUnitOfWork(new DataAccess.SocializRContext())); 
             var user = userService.Get(mail);
             if (user != null)
                 currentUser= new CurrentUser(isAuthenticated: true)

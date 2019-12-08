@@ -1,0 +1,48 @@
+﻿
+@{
+    Layout = "~/Views/GeneralLayout.cshtml";
+    ViewData["Title"] = "Counties";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="countyBody">
+        
+    </tbody>
+</table>
+
+<script id="county-template" type="text/x-handlebars-template">
+        <tr>
+            <td>
+                {{name}}
+            </td>
+            <td>
+                <a href="/Counties/Edit/{{id}}" >Edit</a> 
+                
+            </td>
+            <td>
+                <a href="/Counties/Details/{{id}}">Details</a>
+            </td>
+            <td>
+                <a class="needConfirmation" data-id="{{id}}" href="#" onclick="return false">Delete</a>
+            </td>
+
+
+        </tr>
+
+</script>
+
+<script src="~/js/County.js"></script>

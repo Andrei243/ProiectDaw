@@ -1,10 +1,7 @@
 ﻿using DataAccess;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using Domain;
+using System.Data.Entity;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace Services.County
 {
@@ -15,8 +12,7 @@ namespace Services.County
 
         public List<Domain.County> GetAll()
         {
-            return unitOfWork.Counties.Query
-                .AsNoTracking().Include(e=>e.Locality)
+            return unitOfWork.Counties.Query.Include(e=>e.Locality)
                 .AsNoTracking().ToList();
         }
 
@@ -27,8 +23,7 @@ namespace Services.County
         }
         public Domain.County GetCountyById(int? id)
         {
-            return unitOfWork.Counties.Query
-                .AsNoTracking().FirstOrDefault(e => e.Id == id);
+            return unitOfWork.Counties.Query.FirstOrDefault(e => e.Id == id);
         }
 
         public bool Add(string name)

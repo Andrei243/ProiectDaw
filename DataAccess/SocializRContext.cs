@@ -9,8 +9,9 @@ namespace DataAccess
     public partial class SocializRContext : IdentityDbContext<Users>
     {
         public SocializRContext()
-            :base("Server=(LocalDB)\\MSSQLLocalDB;Database=SocializR;Trusted_Connection=true;Connection Timeout=3600")
+            :base("Server=localhost;Database=SocializR;Trusted_Connection=true")
         {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<SocializRContext, SocializRConfiguration>());
         }
 
 
@@ -27,6 +28,10 @@ namespace DataAccess
         public virtual DbSet<Reaction> Reaction { get; set; }
         public virtual DbSet<Role> Role { get; set; }
 
+        public static SocializRContext Create()
+        {
+            return new SocializRContext();
+        }
 
 
 //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

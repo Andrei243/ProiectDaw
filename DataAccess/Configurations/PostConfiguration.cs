@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using Domain;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Domain;
 using System.Data.Entity.ModelConfiguration;
 
 namespace DataAccess.Configurations
@@ -12,8 +7,8 @@ namespace DataAccess.Configurations
     {
         public static void Configure(EntityTypeConfiguration<Post> builder)
         {
-                builder.HasIndex(e => e.AddingMoment)
-                    .HasName("Post_AddingMoment");
+                //builder.HasIndex(e => e.AddingMoment)
+                  //  .HasName("Post_AddingMoment");
 
                 builder.Property(e => e.AddingMoment).HasColumnType("datetime");
 

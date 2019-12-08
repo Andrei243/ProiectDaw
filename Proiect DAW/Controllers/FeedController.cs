@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using Proiect_DAW.Models;
-using AutoMapper;
-using Services;
 using Proiect_DAW.Code.Base;
 using System.IO;
 using Proiect_DAW.Models.FeedModels;
@@ -23,10 +19,9 @@ namespace Proiect_DAW.Controllers
     {
         private readonly Services.Post.PostService postService;
         private readonly Services.Comment.CommentService commentService;
-        private readonly CurrentUser currentUser;
         private readonly Services.Photo.PhotoService photoService;
         private readonly Services.Reaction.ReactionService reactionService;
-        public FeedController() : base(mapper)
+        public FeedController() : base()
         {
             postService = new PostService(currentUser, new SocializRUnitOfWork(new SocializRContext()));
             commentService = new CommentService(currentUser, new SocializRUnitOfWork(new SocializRContext()));
@@ -60,6 +55,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult Index()
         {
+            ViewBag.CurrentUser = currentUser;
             var postModelAdd = new PostAddModel();
             return View(postModelAdd);
         }
@@ -72,12 +68,19 @@ namespace Proiect_DAW.Controllers
             if (postService.CanSeePost(postId))
             {
                 var comments = commentService.GetComments(toSkip, PageSize, postId).Select(e =>
-                {
-                    var comment = mapper.Map<CommentJsonModel>(e);
-                    comment.IsMine = (currentUser.Id == comment.UserId);
-                    comment.IsAdmin = currentUser.IsAdmin;
-                    return comment;
-                }).ToList();
+                
+                   new CommentJsonModel()
+                    {
+                        Id = e.Id,
+                        IsAdmin = currentUser.IsAdmin,
+                        ProfilePhoto = e.User.PhotoId,
+                        Text = e.Content,
+                        UserId = e.UserId,
+                        UserName = e.User.Name + " " + e.User.Surname,
+                        IsMine = currentUser.Id == e.UserId
+                        
+                    }
+                ).ToList();
                 return Json(comments);
             }
             return Json(new List<int>());
@@ -90,26 +93,43 @@ namespace Proiect_DAW.Controllers
             if (currentUser.IsAuthenticated)
             {
                 var posts = postService.GetNewsfeed(toSkip, PageSize).Select(e =>
-                {
-                    var post = mapper.Map<PostJsonModel>(e);
-                    post.Liked = e.Reaction.Select(f => f.UserId).Contains(currentUser.Id);
-                    post.IsMine = e.UserId == currentUser.Id;
-                    post.IsAdmin = currentUser.IsAdmin;
-                    return post;
+                
+                    
+                    new PostJsonModel()
+                    {
+                        Id = e.Id,
+                        IsAdmin = currentUser.IsAdmin,
+                        IsMine = e.UserId == currentUser.Id,
+                        Liked = e.Reaction.Select(f => f.UserId).Contains(currentUser.Id),
+                        NoReactions = e.Reaction.Count,
+                        PhotoId = new List<int>() { e.Photo.Id },
+                        ProfilePhoto = e.User.PhotoId,
+                        Text = e.Text,
+                        UserId = e.UserId,
+                        UserName = e.User.Name + " " + e.User.Surname
+                    }
 
-                }).ToList();
+                ).ToList();
                 return Json(posts);
             }
             else
             {
                 var posts = postService.GetPublicNewsfeed(toSkip, PageSize).Select(e =>
+                
+                new PostJsonModel()
                 {
-                    var post = mapper.Map<PostJsonModel>(e);
-                    post.Liked = e.Reaction.Select(f => f.UserId).Contains(currentUser.Id);
-                    post.IsMine = false;
-                    return post;
-
-                }).ToList();
+                    Id = e.Id,
+                    IsAdmin = currentUser.IsAdmin,
+                    IsMine = false,
+                    Liked = e.Reaction.Select(f => f.UserId).Contains(currentUser.Id),
+                    NoReactions = e.Reaction.Count,
+                    PhotoId = new List<int>() { e.Photo.Id },
+                    ProfilePhoto = e.User.PhotoId,
+                    Text = e.Text,
+                    UserId = e.UserId,
+                    UserName = e.User.Name + " " + e.User.Surname
+                }
+                ).ToList();
                 return Json(posts);
             }
         }
@@ -118,12 +138,21 @@ namespace Proiect_DAW.Controllers
         {
 
                 var posts = postService.GetPersonPost(toSkip, PageSize,userId).Select(e =>
+                new PostJsonModel()
                 {
-                    var post = mapper.Map<PostJsonModel>(e);
-                    post.Liked = e.Reaction.Select(f => f.UserId).Contains(currentUser.Id);
-                    post.IsMine = e.UserId == currentUser.Id;
-                    return post;
-                }).ToList();
+                    Id = e.Id,
+                    IsAdmin = currentUser.IsAdmin,
+                    IsMine = false,
+                    Liked = e.Reaction.Select(f => f.UserId).Contains(currentUser.Id),
+                    NoReactions = e.Reaction.Count,
+                    PhotoId = new List<int>() { e.Photo.Id },
+                    ProfilePhoto = e.User.PhotoId,
+                    Text = e.Text,
+                    UserId = e.UserId,
+                    UserName = e.User.Name + " " + e.User.Surname
+                }
+
+                ).ToList();
                 return Json(posts);
             
         }
@@ -133,8 +162,12 @@ namespace Proiect_DAW.Controllers
         {
             if (ModelState.IsValid)
             {
-                
-                var newPost = mapper.Map<Post>(post);
+                var newPost = new Post()
+                {
+                    Text = post.Text,
+                    Confidentiality = post.Visibility
+
+                };
                 postService.AddPost(newPost);
 
                 if (post.Binar != null)
@@ -183,10 +216,5 @@ namespace Proiect_DAW.Controllers
             return View();
         }
 
-        
-        //public ActionResult Error()
-        //{
-        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        //}
     }
 }

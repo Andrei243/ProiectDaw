@@ -1,0 +1,42 @@
+﻿@model Proiect_DAW.Models.ProfileModels.AlbumsViewModel
+@{
+    ViewData["Title"] = "Albums";
+    Layout = "~/Views/GeneralLayout.cshtml";
+}
+
+<h1>My Albums</h1>
+<div>
+    @foreach (var album in Model.Album)
+    {
+    <div class="albumProfilPreview albumEdit">
+
+        <div class="poze" data-id="@album.Id">
+            <a href="/Profile/Album?albumId=@album.Id">
+                @if (album.CoverPhoto == -1)
+                {
+                    <img src="~/images/genericAlbumCoverPhoto.jpg" class="albumPreview" />
+                }
+                else
+                {
+                    <img src="@Url.Action("Download", "Photos", new { id = album.CoverPhoto })" class="albumPreview" />
+                }
+            </a>
+        </div>
+        <h5 class="albumName">@album.Name</h5>
+        <h6 class="albumCounter">
+            @album.Count
+            @if (album.Count != 1)
+            {
+                <span>Photos</span>
+            }
+            else
+            {
+                <span>Photo</span>
+            }
+        </h6>
+        <a href="/Profile/RemoveAlbum?albumId=@album.Id" class="btn btn-danger btn-sm needConfirmation">Delete this album</a>
+    </div>
+        
+    }
+    <partial name="PartialAddAlbum" model="Model.AddAlbumModel" />
+</div>

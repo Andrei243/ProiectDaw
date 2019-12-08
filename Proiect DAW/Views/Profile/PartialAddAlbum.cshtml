@@ -1,0 +1,21 @@
+﻿@model Proiect_DAW.Models.ProfileModels.AddAlbumModel
+@{
+    Services.CurrentUser currentUser = ViewBag.CurrentUser;
+}
+
+@if (currentUser.IsAuthenticated)
+{
+    <form enctype="multipart/form-data" method="post" asp-controller="Profile" asp-action="AddAlbum" onsubmit="return checkForm(this);">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="Name" class="control-label">Name</label>
+            <input type="text" asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <input name="submit" type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+}

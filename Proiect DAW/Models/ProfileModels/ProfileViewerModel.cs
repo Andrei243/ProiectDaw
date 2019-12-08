@@ -12,7 +12,7 @@ namespace Proiect_DAW.Models.ProfileModels
         public bool CanSendRequest { get; set; }
         public bool CanSee { get; set; }
         public bool IsRequested { get; set; }
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }

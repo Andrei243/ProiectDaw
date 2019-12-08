@@ -11,14 +11,14 @@ using DataAccess;
 
 namespace Proiect_DAW.Controllers
 {
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     public class LocalitiesController : BaseController
     {
         private readonly Services.Locality.LocalityService localityService;
         private readonly Services.County.CountyService countyService;
-       
-        public LocalitiesController():
-            base(mapper)
+
+        public LocalitiesController() :
+            base()
         {
             localityService = new LocalityService(new SocializRUnitOfWork(new SocializRContext()));
             countyService = new CountyService(new SocializRUnitOfWork(new SocializRContext()));
@@ -27,7 +27,13 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var localities = localityService.GetAll().Select(e =>mapper.Map<LocalityDomainModel>(e));
+            var localities = localityService.GetAll().Select(e => new LocalityDomainModel()
+            {
+                County = new CountyDomainModel() { Id = e.County.Id, Name = e.County.Name },
+                CountyId = e.CountyId,
+                Id = e.Id,
+                Name = e.Name
+            });
             return View(localities);
         }
 
@@ -36,12 +42,18 @@ namespace Proiect_DAW.Controllers
         {
             var model = new AddLocalityModel()
             {
-                CountyIds = countyService.GetAll().Select(e => mapper.Map<SelectListItem>(e)).ToList()
+                CountyIds = countyService.GetAll().Select(e =>
+                new SelectListItem()
+                {
+                    Value = e.Id.ToString(),
+                    Text = e.Name
+                }
+                ).ToList()
             };
             return View(model);
         }
 
-        
+
         [HttpPost]
         public ActionResult Create(AddLocalityModel model)
         {
@@ -52,10 +64,14 @@ namespace Proiect_DAW.Controllers
             if (ModelState.IsValid)
             {
                 localityService.AddLocality(model.Name, model.CountyId);
-                return RedirectToAction("Index","Localities");
+                return RedirectToAction("Index", "Localities");
             }
 
-            model.CountyIds = countyService.GetAll().Select(e => mapper.Map<SelectListItem>(e)).ToList();
+            model.CountyIds = countyService.GetAll().Select(e => new SelectListItem()
+            {
+                Value = e.Id.ToString(),
+                Text = e.Name
+            }).ToList();
 
             return View(model);
         }
@@ -73,12 +89,23 @@ namespace Proiect_DAW.Controllers
             {
                 return NotFoundView();
             }
-            
-            var model = mapper.Map<EditLocalityModel>(locality);
-            model.CountyIds = countyService.GetAll().Select(e => 
-            { var item = mapper.Map<SelectListItem>(e);
+
+            var model = new EditLocalityModel()
+            {
+                CountyId = locality.CountyId,
+                Id = locality.Id,
+                Name = locality.Name
+            };
+            model.CountyIds = countyService.GetAll().Select(e =>
+            {
+                var item = new SelectListItem()
+                {
+                    Value = e.Id.ToString(),
+                    Text = e.Name
+                };
                 item.Selected = e.Id == locality.Id;
-                return item; })
+                return item;
+            })
                 .ToList();
             return View(model);
         }
@@ -86,16 +113,22 @@ namespace Proiect_DAW.Controllers
         [HttpPost]
         public ActionResult Edit(EditLocalityModel model)
         {
-            
+
             if (ModelState.IsValid)
             {
                 localityService.EditLocality(model.Id, model.Name, model.CountyId);
                 return RedirectToAction(nameof(Index));
             }
-            model.CountyIds = countyService.GetAll().Select(e => {
-                var item = mapper.Map<SelectListItem>(e);
+            model.CountyIds = countyService.GetAll().Select(e =>
+            {
+                var item = new SelectListItem()
+                {
+                    Value = e.Id.ToString(),
+                    Text = e.Name
+                };
                 item.Selected = e.Id == model.Id;
-                return item; })
+                return item;
+            })
                 .ToList();
             return View(model);
         }
@@ -116,9 +149,16 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public JsonResult GetLocalities(int toSkip)
         {
-            var result= localityService
+            var result = localityService
                 .GetLocalities(toSkip, PageSize)
-                .Select(e => mapper.Map<LocalityJsonModel>(e))
+                .Select(e => 
+                new LocalityJsonModel() { 
+                County=e.County.Name,
+                Id=e.Id,
+                Name=e.Name
+                }
+
+                )
                 .ToList();
             return Json(result);
         }

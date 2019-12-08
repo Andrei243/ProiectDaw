@@ -1,0 +1,86 @@
+﻿@model Proiect_DAW.Models.ProfileModels.EditUserModel
+
+@{
+    ViewData["Title"] = "Edit Profile";
+    Layout = "~/Views/GeneralLayout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>@Model.Name  @Model.Surname</h4>
+<hr />
+<div class="container">
+
+    <form asp-action="Edit" onsubmit="return checkForm(this);">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Surname" class="control-label"></label>
+                    <input asp-for="Surname" class="form-control" />
+                    <span asp-validation-for="Surname" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="BirthDay" class="control-label">Birth Day</label>
+                    <input type="date" asp-for="BirthDay" class="form-control" />
+                    <span asp-validation-for="BirthDay" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Visibility" class="control-label">Visibility</label>
+                    <select asp-for="Visibility" class="form-control">
+                        <option value="public">Public</option>
+                        <option value="friends">Friends Only</option>
+                        <option value="private">Private</option>
+                    </select>
+                    <span asp-validation-for="Visibility" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label">County</label>
+                    <select id="CountyId" class="form-control" asp-items="Model.Counties"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LocalityId" class="control-label">Locality</label>
+                    <select id="LocalityId" asp-for="LocalityId" class="form-control"></select>
+                    <span asp-validation-for="LocalityId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SexualIdentity" class="control-label">Sexuality</label>
+                    <select asp-for="SexualIdentity" class="form-control">
+                        <option value="feminin">Feminin</option>
+                        <option value="masculin">Masculin</option>
+                        <option value="nespecificat">Nespecificat</option>
+                    </select>
+                    <span asp-validation-for="SexualIdentity" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Interests" class="control-label">Interests</label>
+
+                    <select asp-for="Interests" id="interestSelect" multiple="multiple">
+                    </select>
+                    <span asp-validation-for="Interests" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <input id="submit" name="submit" type="submit" value="Save" class="btn btn-primary needConfirmation" />
+        </div>
+    </form>
+</div>
+
+
+
+<div>
+    <a asp-action="Index" class="btn btn-primary btn-sm">Back to Profile</a>
+</div>
+
+<script src="~/js/Localities.js"></script>
+<script src="~/js/InterestSelect.js"></script>

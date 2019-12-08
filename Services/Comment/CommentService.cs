@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using DataAccess;
-using Domain;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
+using System.Data.Entity;
 
 namespace Services.Comment
 {

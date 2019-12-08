@@ -1,0 +1,73 @@
+﻿
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/GeneralLayout.cshtml";
+}
+
+<h1>Index</h1>
+
+@*<input class="form-control" type="text" id="selectUsers" placeholder="Search users by name" />*@
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Full Name
+            </th>
+            <th>
+                Profile Photo
+            </th>
+         
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="userBody">
+
+
+    </tbody>
+</table>
+
+<script id="user-template" type="text/x-handlebars-template">
+    <tr>
+        <td>
+            <p>{{name}}</p>
+        </td>
+        <td>
+            {{#if profilePhoto}}
+            <img src="/Photos/Download/{{profilePhoto}}" height="40" />
+            {{else}}
+            <img src="/images/DefaultProfile.png" height="40">
+            {{/if}}
+        </td>
+        <td>
+            <a href="/Users/Edit?userId={{id}}">Edit</a>
+            
+        </td>
+        <td>
+            <a href="/Users/Details?userId={{id}}">Details</a>
+        </td>
+        <td>
+            <a class="needConfirmation" href="/Users/Delete?userId={{id}}">Delete</a>
+        </td>
+        <td>
+            {{#if isBanned}}
+            <a class="needConfirmation" href="/Users/Unban?userId={{id}}">Unban</a>
+            {{else}}
+            <a class="needConfirmation" href="/Users/Ban?userId={{id}}">Ban</a>
+            {{/if}}
+        </td>
+        <td>
+            {{#if isAdmin}}
+            <a class="needConfirmation" href="/Users/MakeAdmin?userId={{id}}">Make admin</a>
+            {{else}}
+            <a class="needConfirmation" href="/Users/RevokeAdmin?userId={{id}}">Revoke admin</a>
+            {{/if}}
+        </td>
+    </tr>
+
+</script>
+<script src="~/js/User.js"></script>

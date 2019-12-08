@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using Domain;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Domain;
 using System.Data.Entity.ModelConfiguration;
 
 namespace DataAccess.Configurations
@@ -12,11 +7,11 @@ namespace DataAccess.Configurations
     {
         public static void Configure(EntityTypeConfiguration<Users> builder)
         {
-                builder.HasIndex(e => e.Email)
-                    .HasName("User_Email");
+                //builder.HasIndex(e => e.Email)
+                  //  .HasName("User_Email");
 
-                builder.HasIndex(e => new { e.Name, e.Surname })
-                    .HasName("User_Search");
+                //builder.HasIndex(e => new { e.Name, e.Surname })
+                  //  .HasName("User_Search");
 
                 builder.Property(e => e.BirthDay).HasColumnType("date");
 

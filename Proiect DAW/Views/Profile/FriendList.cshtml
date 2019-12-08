@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Friend List";
+    Layout = "~/Views/GeneralLayout.cshtml";
+}
+
+<h1>FriendList</h1>
+
+
+
+<div id="friendBody">
+
+</div>
+
+
+<script id="friend-template" type="text/x-handlebars-template">
+    <div class="friendDiv">
+        <a href="/Profile/Profile?userId={{id}}">
+            {{#if profilePhoto}}
+            <img src="/Photos/Download/{{profilePhoto}}"  />
+            {{else}}
+            <img src="/images/DefaultProfile.png"  />
+            {{/if}}
+            <p>{{name}}</p>
+
+
+        </a>
+    </div>
+</script>
+<script src="~/js/Friends.js"></script>

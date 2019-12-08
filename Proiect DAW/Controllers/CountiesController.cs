@@ -2,7 +2,6 @@
 using Proiect_DAW.Models.DomainModels;
 using Proiect_DAW.Models.AdminModels;
 using Proiect_DAW.Code.Base;
-using AutoMapper;
 using Proiect_DAW.Models.JsonModels;
 using System.Web.Mvc;
 using Proiect_DAW.AdminModels;
@@ -22,7 +21,7 @@ namespace Proiect_DAW.Controllers
         
 
         public CountiesController ():
-            base(mapper)
+            base()
         {
             countyService = new CountyService(new SocializRUnitOfWork(new SocializRContext()));
             localityService = new LocalityService(new SocializRUnitOfWork(new SocializRContext()));
@@ -31,7 +30,8 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var counties = countyService.GetAll().Select(e => mapper.Map<CountyDomainModel>(e));
+            //var counties = countyService.GetAll().Select(e => mapper.Map<CountyDomainModel>(e));
+            var counties = countyService.GetAll().Select(e => new CountyDomainModel() { Id = e.Id, Localities = null, Name = e.Name });
             return View(counties);
         }
 
@@ -48,8 +48,13 @@ namespace Proiect_DAW.Controllers
             {
                 return NotFoundView();
             }
-           
-            var model = mapper.Map<DetailsCountyModel>(county);
+
+            //var model = mapper.Map<DetailsCountyModel>(county);
+            var model = new DetailsCountyModel()
+            {
+                Localities = county.Locality.Select(e => e.Name).ToList(),
+                Name = county.Name
+            };
             model.Localities = localityService.GetAll(county.Id).Select(e => e.Name).ToList();
             return View(model);
         }
@@ -82,8 +87,13 @@ namespace Proiect_DAW.Controllers
             }
 
             var county = countyService.GetCountyById(id);
-            
-            var model = mapper.Map<EditCountyModel>(county);
+
+            //var model = mapper.Map<EditCountyModel>(county);
+            var model = new EditCountyModel()
+            {
+                Id = county.Id,
+                Name = county.Name
+            };
             if (county == null)
             {
                 return NotFoundView();
@@ -123,7 +133,10 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public JsonResult GetCounties(int toSkip)
         {
-            var counties = countyService.GetCounties(toSkip, PageSize).Select(e => mapper.Map<CountyJsonModel>(e)).ToList();
+            var counties = countyService.GetCounties(toSkip, PageSize).Select(e => 
+            /*mapper.Map<CountyJsonModel>(e)*/
+            new CountyJsonModel() { Id=e.Id,Name=e.Name}
+                ).ToList();
 
             return Json(counties);
 

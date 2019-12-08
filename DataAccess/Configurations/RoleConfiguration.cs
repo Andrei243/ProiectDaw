@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using Domain;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Domain;
 using System.Data.Entity.ModelConfiguration;
 
 namespace DataAccess.Configurations

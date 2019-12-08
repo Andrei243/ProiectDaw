@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Data.Entity;
 using System.Linq;
 using DataAccess;
-using Microsoft.EntityFrameworkCore;
-using Domain;
 
 namespace Services.Post
 {

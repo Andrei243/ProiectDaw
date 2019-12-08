@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using Domain;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Domain;
 using System.Data.Entity.ModelConfiguration;
 
 namespace DataAccess.Configurations
@@ -13,8 +8,8 @@ namespace DataAccess.Configurations
         public static void Configure(EntityTypeConfiguration<Comment> builder)
         {
             
-                builder.HasIndex(e => new { e.PostId, e.AddingMoment })
-                    .HasName("Comment_AddingMoment");
+                //builder.HasIndex(e => new { e.PostId, e.AddingMoment })
+                  //  .HasName("Comment_AddingMoment");
 
                 builder.Property(e => e.AddingMoment).HasColumnType("datetime");
 

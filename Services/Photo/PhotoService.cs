@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using DataAccess;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
+using System.Data.Entity;
 
 namespace Services.Photo
 {
@@ -25,8 +23,7 @@ namespace Services.Photo
 
             var photo = unitOfWork.Photos.Query
                 .Include(e=>e.Post)
-                .Include(e=>e.Album)
-                .ThenInclude(e=>e.User)
+                .Include("Album.Users")
                 .FirstOrDefault(e => e.Id == photoId);
             if (photo == null)
             {

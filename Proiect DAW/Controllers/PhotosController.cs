@@ -12,7 +12,7 @@ namespace Proiect_DAW.Controllers
         private readonly Services.Photo.PhotoService photoService;
 
         public PhotosController():
-            base(imapper)
+            base()
         {
             photoService = new PhotoService(new SocializRUnitOfWork(new SocializRContext()), currentUser);
         }

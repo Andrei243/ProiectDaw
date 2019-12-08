@@ -1,41 +1,70 @@
-﻿@model Proiect_DAW.Models.RegisterViewModel
+﻿@model Proiect_DAW.Models.GeneralModels.RegisterModel
+
 @{
-    ViewBag.Title = "Register";
+    ViewData["Title"] = "Register";
 }
 
-<h2>@ViewBag.Title.</h2>
 
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    @Html.AntiForgeryToken()
-    <h4>Create a new account.</h4>
-    <hr />
-    @Html.ValidationSummary("", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
-        </div>
-    </div>
-}
+    <div class="container-fluid text-center">
+        <h2>Register</h2>
+        <div class="row">
+            <partial name="Shared" />
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 text-left">
+                <div>
+                    <form asp-action="Register" onsubmit="return checkForm(this);">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Name" class="control-label">Nume</label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Surname" class="control-label">Prenume</label>
+                            <input asp-for="Surname" class="form-control" />
+                            <span asp-validation-for="Surname" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Email" class="control-label">Email</label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Password" class="control-label">Password</label>
+                            <input type="password" asp-for="Password" class="form-control" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="BirthDay" class="control-label">Birth Day</label>
+                            <input type="date" asp-for="BirthDay" class="form-control" />
+                            <span asp-validation-for="BirthDay" class="text-danger"></span>
+
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CountyId" class="control-label">County</label>
+                            <select asp-for="CountyId" asp-items="Model.Counties" class="form-control"></select>
+                            <span asp-validation-for="CountyId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="LocalityId" class="control-label">Locality</label>
+                            <select asp-for="LocalityId" asp-items="Model.Localities" class="form-control"></select>
+                            <span asp-validation-for="LocalityId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="SexualIdentity" class="control-label">Sexuality</label>
+                            <select asp-for="SexualIdentity" class="form-control">
+                                <option value="feminin">Feminin</option>
+                                <option value="masculin">Masculin</option>
+                                <option value="nespecificat">Nespecificat</option>
+                            </select>
+                            <span asp-validation-for="SexualIdentity" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input name="submit" type="submit" value="Save" class="btn btn-default needConfirmation" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="~/js/Localities.js"></script>
