@@ -1,6 +1,4 @@
 ﻿using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using AutoMapper;
 using Proiect_DAW.Models.DomainModels;
 using Proiect_DAW.Models.JsonModels;
 using System.Web.Mvc;

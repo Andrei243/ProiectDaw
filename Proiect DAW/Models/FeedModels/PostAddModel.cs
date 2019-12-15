@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Proiect_DAW.Models.FeedModels
 {
     public class PostAddModel : IValidatableObject
     {
         public string Text { get; set; }
-        public Microsoft.AspNetCore.Http.IFormFile Binar { get; set; }
+        public HttpPostedFileBase Binar { get; set; }
         public string Visibility { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

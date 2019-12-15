@@ -10,6 +10,6 @@ namespace Domain
         public string UserId { get; set; }
 
         public virtual Interest Interest { get; set; }
-        public virtual Users User { get; set; }
+        public virtual User User { get; set; }
     }
 }

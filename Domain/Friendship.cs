@@ -11,7 +11,7 @@ namespace Domain
         public bool? Accepted { get; set; }
         public DateTime CreatedOn { get; set; }
 
-        public virtual Users IdReceiverNavigation { get; set; }
-        public virtual Users IdSenderNavigation { get; set; }
+        public virtual User IdReceiverNavigation { get; set; }
+        public virtual User IdSenderNavigation { get; set; }
     }
 }

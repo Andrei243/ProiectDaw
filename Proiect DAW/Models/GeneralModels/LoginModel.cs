@@ -10,7 +10,7 @@ namespace Proiect_DAW.Models.GeneralModels
 
         [Required]
         public string Password { get; set; }
-        public bool AreCredentialsInvalid { get; set; }
-        public bool IsBanned { get; set; }
+        public bool? AreCredentialsInvalid { get; set; }
+        public bool? IsBanned { get; set; }
     }
 }

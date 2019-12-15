@@ -1,6 +1,5 @@
 ﻿using DataAccess;
 using System.Collections.Generic;
-using Domain;
 using System.Linq;
 using System.Data.Entity;
 
@@ -34,11 +33,11 @@ namespace Services.User
         }
 
 
-        public Users GetCurrentUser()
+        public Domain.User GetCurrentUser()
         {
             return GetUserById(currentUser.Id);
         }
-        public Users GetUserById(string id)
+        public Domain.User GetUserById(string id)
         {
             return unitOfWork
                 .Users
@@ -54,19 +53,19 @@ namespace Services.User
         }
 
 
-        public IQueryable<Users> GetUsersByName(string name)
+        public IQueryable<Domain.User> GetUsersByName(string name)
         {
             return unitOfWork
                 .Users
                 .Query
-                .AsNoTracking()
+                //.AsNoTracking()
                 .Where(e => (e.Name + e.Surname).Contains(name));
         }
 
 
-        public void Update(Users user)
+        public void Update(Domain.User user)
         {
-            Users oldUser = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == user.Id);
+            Domain.User oldUser = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == user.Id);
             oldUser.LocalityId = user.LocalityId ?? oldUser.LocalityId;
             oldUser.Confidentiality = user.Confidentiality ?? oldUser.Confidentiality;
             oldUser.BirthDay = user.BirthDay;
@@ -128,7 +127,7 @@ namespace Services.User
             return unitOfWork.SaveChanges() != 0;
         }
 
-        public List<Users> GetUsers(int toSkip, int toTake)
+        public List<Domain.User> GetUsers(int toSkip, int toTake)
         {
             return unitOfWork.Users.Query
                 .Where(e => e.Id != currentUser.Id)

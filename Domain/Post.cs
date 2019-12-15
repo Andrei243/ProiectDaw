@@ -20,7 +20,7 @@ namespace Domain
         public DateTime AddingMoment { get; set; }
         public string Text { get; set; }
 
-        public virtual Users User { get; set; }
+        public virtual User User { get; set; }
         public virtual ICollection<Comment> Comment { get; set; }
         public virtual Photo Photo { get; set; }
         public virtual ICollection<Reaction> Reaction { get; set; }

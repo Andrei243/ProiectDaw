@@ -5,7 +5,7 @@ namespace DataAccess.Configurations
 {
     internal static class UserConfiguration
     {
-        public static void Configure(EntityTypeConfiguration<Users> builder)
+        public static void Configure(EntityTypeConfiguration<User> builder)
         {
                 //builder.HasIndex(e => e.Email)
                   //  .HasName("User_Email");
@@ -25,10 +25,10 @@ namespace DataAccess.Configurations
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
-                builder.Property(e => e.Password)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                //builder.Property(e => e.Password)
+                //    .IsRequired()
+                //    .HasMaxLength(100)
+                //    .IsUnicode(false);
 
                 builder.Property(e => e.SexualIdentity)
                     .IsRequired()
@@ -46,7 +46,7 @@ namespace DataAccess.Configurations
                     .IsUnicode(false);
 
             builder.HasOptional(e => e.Photo)
-                .WithOptionalPrincipal(u => u.Users);
+                .WithOptionalPrincipal(u => u.User);
                     //.HasForeignKey<Users>(e => e.PhotoId)
                     //.IsRequired(false)
                     //.HasConstraintName("USER_PROFILE_PHOTO_FK");

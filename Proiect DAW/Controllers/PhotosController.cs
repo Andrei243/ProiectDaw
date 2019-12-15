@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Proiect_DAW.Code.Base;
-using AutoMapper;
+﻿using Proiect_DAW.Code.Base;
 using System.Web.Mvc;
 using Services.Photo;
 using DataAccess;

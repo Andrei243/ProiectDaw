@@ -181,7 +181,7 @@ namespace Proiect_DAW.Controllers
 
                     using (var memoryStream = new MemoryStream())
                     {
-                        post.Binar.CopyTo(memoryStream);
+                        post.Binar.InputStream.CopyTo(memoryStream);
                         photo.Binary = memoryStream.ToArray();
                     }
                     photoService.AddPhoto(photo);

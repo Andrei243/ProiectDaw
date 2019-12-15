@@ -15,9 +15,10 @@ namespace Domain
         public int? PostId { get; set; }
         public int? Position { get; set; }
         public string Description { get; set; }
+        public string UserId { get; set; }
 
         public virtual Album Album { get; set; }
         public virtual Post Post { get; set; }
-        public virtual Users Users { get; set; }
+        public virtual User User { get; set; }
     }
 }

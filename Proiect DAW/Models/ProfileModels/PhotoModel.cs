@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Proiect_DAW.Models.ProfileModels
 {
     public class PhotoModel : IValidatableObject
     {
         [Required]
-        public Microsoft.AspNetCore.Http.IFormFile Binar { get; set; }
+        public HttpPostedFileBase Binar { get; set; }
         public int? AlbumId { get; set; }
         public int? PostId { get; set; }
         public int? Position { get; set; }

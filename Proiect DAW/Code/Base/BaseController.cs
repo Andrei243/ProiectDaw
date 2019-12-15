@@ -4,8 +4,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
 using Services;
 using Services.User;
 
@@ -40,7 +38,7 @@ namespace Proiect_DAW.Code.Base
                     Surname = user.Surname,
                     Vizibility = user.Confidentiality,
                     Locality = user.Locality,
-                    Password = user.Password
+                    //Password = user.Password
 
 
                 };

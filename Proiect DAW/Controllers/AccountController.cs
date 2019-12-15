@@ -5,16 +5,18 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Domain;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Proiect_DAW.Code.Base;
 using Proiect_DAW.Models;
 using Proiect_DAW.Models.GeneralModels;
 
 namespace Proiect_DAW.Controllers
 {//TODO 
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -65,6 +67,8 @@ namespace Proiect_DAW.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            ViewBag.CurrentUser = currentUser;
+
             var model = new LoginModel();
             return View();
         }
@@ -76,6 +80,8 @@ namespace Proiect_DAW.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginModel model, string returnUrl)
         {
+            ViewBag.CurrentUser = currentUser;
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -104,6 +110,8 @@ namespace Proiect_DAW.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
+            ViewBag.CurrentUser = currentUser;
+
             // Require that the user has already logged in via username/password or external login
             if (!await SignInManager.HasBeenVerifiedAsync())
             {
@@ -119,6 +127,8 @@ namespace Proiect_DAW.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
         {
+            ViewBag.CurrentUser = currentUser;
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -154,7 +164,7 @@ namespace Proiect_DAW.Controllers
 
                 ).OrderBy(e => e.Text).ToList()
             };
-
+            ViewBag.CurrentUser = currentUser;
             return View();
         }
 
@@ -165,9 +175,11 @@ namespace Proiect_DAW.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(RegisterModel model)
         {
+            ViewBag.CurrentUser = currentUser;
+
             if (ModelState.IsValid)
             {
-                var user = new Domain.Users()
+                var user = new User()
                 {
                     BirthDay = model.BirthDay,
                     Name = model.Name,
@@ -175,7 +187,7 @@ namespace Proiect_DAW.Controllers
                     LocalityId = model.LocalityId,
                     SexualIdentity = model.SexualIdentity,
                     Email = model.Email,
-                    Password = model.Password
+                    //Password = model.Password
                 };
                 userAccountService.Register(user);
                 return RedirectToAction("Index", "Feed");
@@ -190,6 +202,8 @@ namespace Proiect_DAW.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
+            ViewBag.CurrentUser = currentUser;
+
             if (userId == null || code == null)
             {
                 return View("Error");
@@ -203,6 +217,8 @@ namespace Proiect_DAW.Controllers
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
+            ViewBag.CurrentUser = currentUser;
+
             return View();
         }
 
@@ -213,6 +229,8 @@ namespace Proiect_DAW.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
+            ViewBag.CurrentUser = currentUser;
+
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
@@ -239,6 +257,8 @@ namespace Proiect_DAW.Controllers
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
         {
+            ViewBag.CurrentUser = currentUser;
+
             return View();
         }
 
@@ -247,6 +267,8 @@ namespace Proiect_DAW.Controllers
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
+            ViewBag.CurrentUser = currentUser;
+
             return code == null ? View("Error") : View();
         }
 
@@ -257,6 +279,8 @@ namespace Proiect_DAW.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
+            ViewBag.CurrentUser = currentUser;
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -281,6 +305,8 @@ namespace Proiect_DAW.Controllers
         [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
         {
+            ViewBag.CurrentUser = currentUser;
+
             return View();
         }
 
@@ -300,6 +326,8 @@ namespace Proiect_DAW.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
+            ViewBag.CurrentUser = currentUser;
+
             var userId = await SignInManager.GetVerifiedUserIdAsync();
             if (userId == null)
             {
@@ -317,6 +345,8 @@ namespace Proiect_DAW.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SendCode(SendCodeViewModel model)
         {
+            ViewBag.CurrentUser = currentUser;
+
             if (!ModelState.IsValid)
             {
                 return View();
@@ -335,6 +365,8 @@ namespace Proiect_DAW.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
+            ViewBag.CurrentUser = currentUser;
+
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
             if (loginInfo == null)
             {
@@ -367,6 +399,8 @@ namespace Proiect_DAW.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
         {
+            ViewBag.CurrentUser = currentUser;
+
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Manage");
@@ -380,7 +414,7 @@ namespace Proiect_DAW.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new Domain.User { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -405,6 +439,8 @@ namespace Proiect_DAW.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            ViewBag.CurrentUser = currentUser;
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -413,6 +449,8 @@ namespace Proiect_DAW.Controllers
         [AllowAnonymous]
         public ActionResult ExternalLoginFailure()
         {
+            ViewBag.CurrentUser = currentUser;
+
             return View();
         }
 

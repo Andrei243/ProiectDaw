@@ -13,6 +13,6 @@ namespace Domain
         public DateTime AddingMoment { get; set; }
 
         public virtual Post Post { get; set; }
-        public virtual Users User { get; set; }
+        public virtual User User { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace Services.User
             base(unitOfWork)
         { }
 
-        public Users Get(string email)
+        public Domain.User Get(string email)
         {
 
             return unitOfWork.Users.Query.AsNoTracking().Include(e=>e.Role).AsNoTracking()
@@ -21,13 +21,13 @@ namespace Services.User
                 .FirstOrDefault(e => e.Email == email);
         }
 
-        public Users Login(string email, string password)
+        public Domain.User Login(string email, string password)
         {
             return unitOfWork.Users.Query.Include(e=>e.Role)
-                .FirstOrDefault(e => e.Email == email && e.Password == password);
+                .FirstOrDefault(e => e.Email == email /*&& e.Password == password*/);
         }
 
-        public bool Register(Users user)
+        public bool Register(Domain.User user)
         {
             user.Confidentiality = Confidentiality.FriendsOnly;
             user.RoleId = IDROLPUBLIC;

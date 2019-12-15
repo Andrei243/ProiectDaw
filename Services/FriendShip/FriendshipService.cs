@@ -127,7 +127,7 @@ namespace Services.FriendShip
             return isSent;
         }
 
-        public List<Users> GetFriends(int toSkip,int howMany)
+        public List<Domain.User> GetFriends(int toSkip,int howMany)
         {
             return unitOfWork.Friendships.Query
                 .Where(e => e.IdSender == currentUser.Id && (e.Accepted ?? false))
@@ -136,7 +136,7 @@ namespace Services.FriendShip
                 .ToList();
         }
 
-        public List<Users> GetRequesters(int toSkip,int howMany)
+        public List<Domain.User> GetRequesters(int toSkip,int howMany)
         {
             return unitOfWork.Friendships.Query
                 .Where(e => e.IdReceiver == currentUser.Id && !e.Accepted.HasValue)

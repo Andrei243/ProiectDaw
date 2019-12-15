@@ -2,7 +2,6 @@
 using Proiect_DAW.Models.DomainModels;
 using Proiect_DAW.Models.AdminModels;
 using Proiect_DAW.Code.Base;
-using AutoMapper;
 using Proiect_DAW.Models.JsonModels;
 using System.Web.Mvc;
 using Services.Locality;

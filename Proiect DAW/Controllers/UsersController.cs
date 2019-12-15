@@ -189,7 +189,7 @@ namespace Proiect_DAW.Controllers
                 interestsUsersService.ChangeInterests(user.Id, raspunsuri.Select(e => int.Parse(e)).ToList());
 
 
-                var updateUser = new Domain.Users()
+                var updateUser = new Domain.User()
                 {
                     BirthDay = user.BirthDay,
                     LocalityId = user.LocalityId,

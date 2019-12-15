@@ -12,14 +12,14 @@ namespace DataAccess.Configurations
 
             builder.HasRequired(d => d.IdReceiverNavigation)
                 .WithMany(p => p.FriendshipIdReceiverNavigation)
-                .HasForeignKey(d => d.IdReceiver)
-                .WillCascadeOnDelete();
+                .HasForeignKey(d => d.IdReceiver);
+                //.WillCascadeOnDelete();
             //.HasConstraintName("FRIENDSHIP_USER_RECEIVER_FK");
 
             builder.HasRequired(d => d.IdSenderNavigation)
                 .WithMany(p => p.FriendshipIdSenderNavigation)
-                .HasForeignKey(d => d.IdSender)
-                .WillCascadeOnDelete();
+                .HasForeignKey(d => d.IdSender);
+                //.WillCascadeOnDelete();
                    // .HasConstraintName("FRIENDSHIP_USER_SENDER_FK");
         }
     }

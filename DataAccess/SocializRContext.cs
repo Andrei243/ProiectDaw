@@ -2,16 +2,15 @@
 using DataAccess.Configurations;
 using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
-
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace DataAccess
 {
-    public partial class SocializRContext : IdentityDbContext<Users>
+    public partial class SocializRContext : IdentityDbContext<User>
     {
         public SocializRContext()
-            :base("Server=localhost;Database=SocializR;Trusted_Connection=true")
+            :base("SocializR")
         {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<SocializRContext, SocializRConfiguration>());
         }
 
 
@@ -34,20 +33,11 @@ namespace DataAccess
         }
 
 
-//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//        {
-            
-//            if (!optionsBuilder.IsConfigured)
-//            {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-//                optionsBuilder.UseSqlServer("Server=(LocalDB)\\MSSQLLocalDB;Database=SocializR;Trusted_Connection=true;Connection Timeout=3600");
-
-//            }
-//        }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             //modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             AlbumConfiguration.Configure(modelBuilder.Entity<Album>());
             CommentConfiguration.Configure(modelBuilder.Entity<Comment>());
             CountyConfiguration.Configure(modelBuilder.Entity<County>());
@@ -60,8 +50,9 @@ namespace DataAccess
             PostConfiguration.Configure(modelBuilder.Entity<Post>());
             ReactionConfiguration.Configure(modelBuilder.Entity<Reaction>());
             RoleConfiguration.Configure(modelBuilder.Entity<Role>());
-            UserConfiguration.Configure(modelBuilder.Entity<Users>());
-
+            UserConfiguration.Configure(modelBuilder.Entity<User>());
+            IdentityUserLoginConfiguration.Configure(modelBuilder.Entity<IdentityUserLogin>());
+            IdentityUserRoleConfiguration.Configure(modelBuilder.Entity<IdentityUserRole>());
         }
     }
 }

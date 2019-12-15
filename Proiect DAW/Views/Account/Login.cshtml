@@ -11,31 +11,37 @@
                 <small>Or <a href="@Url.Action("Register","Account")">Register</a> if you don't have an account</small>
 
                 <div>
-                    <form asp-action="Login" onsubmit="return checkForm(this);">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         <div class="form-group">
-                            <label asp-for="Email" class="control-label">Email</label>
-                            <input asp-for="Email" class="form-control" />
-                            <span asp-validation-for="Email" class="text-danger"></span>
+                            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label asp-for="Password" class="control-label">Password</label>
-                            <input type="password" asp-for="Password" class="form-control" />
-                            <span asp-validation-for="Password" class="text-danger"></span>
+                            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            </div>
                         </div>
-
-                        @if (Model.AreCredentialsInvalid)
-                        {
-                            <span class="text-danger">Email or password is incorrect</span>
-                        }
-                        @if (Model.IsBanned)
-                        {
-                            <span class="text-danger">This account is banned</span>
-                        }
+                        
                         <div class="form-group">
-                            <input name="submit" type="submit" value="Login" class="btn btn-default" />
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Log in" class="btn btn-default" />
+                            </div>
                         </div>
-                    </form>
+                        
+                        @* Enable this once you have account confirmation enabled for password reset functionality
+            <p>
+                @Html.ActionLink("Forgot your password?", "ForgotPassword")
+            </p>*@
+                    }
                 </div>
             </div>
         </div>

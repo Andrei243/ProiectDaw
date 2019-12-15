@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Services;
-using AutoMapper;
 using System.IO;
 using Proiect_DAW.Models.ProfileModels;
 using Proiect_DAW.Models.DomainModels;
@@ -280,7 +279,7 @@ namespace Proiect_DAW.Controllers
                 };
                 using (var memoryStream = new MemoryStream())
                 {
-                    model.Binar.CopyTo(memoryStream);
+                    model.Binar.InputStream.CopyTo(memoryStream);
                     photo.Binary = memoryStream.ToArray();
                     
                 }
@@ -362,7 +361,7 @@ namespace Proiect_DAW.Controllers
                 interestsUsersService.ChangeInterests(currentUser.Id, raspunsuri.Select(e => int.Parse(e)).ToList());
 
 
-                var updateUser = new Domain.Users()
+                var updateUser = new Domain.User()
                 {
                     BirthDay = user.BirthDay,
                     LocalityId = user.LocalityId,

@@ -25,8 +25,9 @@ namespace DataAccess.Configurations
             builder.HasRequired(d => d.User)
                 .WithMany(p => p.Comment)
                 .HasForeignKey(d => d.UserId)
+                ;
                 //.HasConstraintName("COMMENT_USER_FK")
-                .WillCascadeOnDelete();
+                //.WillCascadeOnDelete();
           
         }
     }

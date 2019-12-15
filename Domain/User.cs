@@ -4,12 +4,15 @@ using System.ComponentModel.DataAnnotations;
 using Common;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Security.Claims;
+using Microsoft.AspNet.Identity;
+using System.Threading.Tasks;
 
 namespace Domain
 {
-    public partial class Users : IdentityUser,IEntity
+    public partial class User : IdentityUser,IEntity
     {
-        public Users()
+        public User()
         {
             Album = new HashSet<Album>();
             Comment = new HashSet<Comment>();
@@ -20,11 +23,11 @@ namespace Domain
             Reaction = new HashSet<Reaction>();
         }
         [Required]
+        public override string Id { get; set; }
+        [Required]
         public string Name { get; set; }
         [Required]
         public string Surname { get; set; }
-        [Required]
-        public string Password { get; set; }
         public int RoleId { get; set; }
         [Required]
         public DateTime BirthDay { get; set; }
@@ -37,7 +40,20 @@ namespace Domain
         public int? PhotoId { get; set; }
         public bool IsBanned { get; set; }
 
-        
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager)
+        {
+            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
+            var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
+            // Add custom user claims here
+            var claims = new List<Claim>();
+            claims.Add(new Claim(ClaimTypes.Name, Name));
+            claims.Add(new Claim(ClaimTypes.Email, Email));
+            claims.Add(new Claim(ClaimTypes.Role, Role.Name));
+
+            userIdentity.AddClaims(claims);
+            return userIdentity;
+        }
+
         public virtual Photo Photo { get; set; }
         public virtual Locality Locality { get; set; }
         public virtual Role Role { get; set; }
