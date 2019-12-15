@@ -2,11 +2,14 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
+using Microsoft.Owin.FileSystems;
+using Microsoft.Owin.StaticFiles;
 using Owin;
 using Proiect_DAW.Models;
 using System;
+using System.IO;
 
-[assembly: OwinStartupAttribute(typeof(Proiect_DAW.Startup))]
+[assembly: OwinStartup(typeof(Proiect_DAW.Startup))]
 namespace Proiect_DAW
 {
     public partial class Startup
@@ -14,6 +17,18 @@ namespace Proiect_DAW
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+            string root = AppDomain.CurrentDomain.BaseDirectory;
+            var physicalFileSystem = new PhysicalFileSystem(Path.Combine(root, "wwwroot"));
+            var options = new FileServerOptions
+            {
+                RequestPath = PathString.Empty,
+                EnableDefaultFiles = true,
+                FileSystem = physicalFileSystem
+
+            };
+            options.StaticFileOptions.FileSystem = physicalFileSystem;
+            options.StaticFileOptions.ServeUnknownFileTypes = false;
+            app.UseFileServer(options);
             createAdminUserAndApplicationRoles();
         }
 
@@ -38,26 +53,21 @@ namespace Proiect_DAW
                 user.BirthDay = new DateTime(1111, 11, 11);
                 user.SexualIdentity = "Nespecificat";
                 user.Confidentiality = "public";
+                user.RoleId = 1;
                 user.LocalityId = 1;
-                IdentityResult adminCreated = null;
-                try
-                {
-                    adminCreated = UserManager.Create(user, "admin");
-                }
-                catch(Exception e)
-                {
-                    int x = 0;
-                }
+                
+                var adminCreated = UserManager.Create(user, "administrator");
+              
                 if (adminCreated.Succeeded)
                 {
                     UserManager.AddToRole(user.Id, "admin");
                 }
             }
             
-            if (!roleManager.RoleExists("Public"))
+            if (!roleManager.RoleExists("public"))
             {
                 var role = new IdentityRole();
-                role.Name = "User";
+                role.Name = "public";
                 roleManager.Create(role);
             }
         }

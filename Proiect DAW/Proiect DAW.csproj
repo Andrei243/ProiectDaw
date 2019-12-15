@@ -60,6 +60,18 @@
     <Reference Include="Microsoft.Net.Http.Headers, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Net.Http.Headers.2.2.0\lib\netstandard2.0\Microsoft.Net.Http.Headers.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Owin, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.FileSystems, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.FileSystems.4.1.0\lib\net45\Microsoft.Owin.FileSystems.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.StaticFiles, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.StaticFiles.4.1.0\lib\net45\Microsoft.Owin.StaticFiles.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
@@ -154,12 +166,6 @@
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin">
-      <HintPath>..\packages\Microsoft.Owin.4.0.0\lib\net451\Microsoft.Owin.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Host.SystemWeb">
-      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.0.0\lib\net451\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Owin.Security">
       <HintPath>..\packages\Microsoft.Owin.Security.4.0.0\lib\net451\Microsoft.Owin.Security.dll</HintPath>
     </Reference>
@@ -251,12 +257,169 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\css\lg-fb-comment-box.css" />
+    <Content Include="Content\css\lg-transitions.css" />
+    <Content Include="Content\css\lightgallery.css" />
+    <Content Include="Content\css\site.css" />
+    <Content Include="Content\favicon.ico" />
+    <Content Include="Content\images\close.png" />
+    <Content Include="Content\images\DefaultProfile.png" />
+    <Content Include="Content\images\genericAlbumCoverPhoto.jpg" />
+    <Content Include="Content\images\Liked.png" />
+    <Content Include="Content\images\LikedOriginal.png" />
+    <Content Include="Content\images\loading.gif" />
+    <Content Include="Content\images\loadingGif.gif" />
+    <Content Include="Content\images\login-register-background.jpg" />
+    <Content Include="Content\images\logo.png" />
+    <Content Include="Content\images\next.png" />
+    <Content Include="Content\images\notLiked.png" />
+    <Content Include="Content\images\notLikedOriginal.png" />
+    <Content Include="Content\images\prev.png" />
+    <Content Include="Content\images\Titlu.png" />
+    <Content Include="Content\js\Carousel.js" />
+    <Content Include="Content\js\County.js" />
+    <Content Include="Content\js\feed.js" />
+    <Content Include="Content\js\FriendRequest.js" />
+    <Content Include="Content\js\Friends.js" />
+    <Content Include="Content\js\Image.js" />
+    <Content Include="Content\js\ImagineLogin.js" />
+    <Content Include="Content\js\Interests.js" />
+    <Content Include="Content\js\InterestSelect.js" />
+    <Content Include="Content\js\InterestSelectAdmin.js" />
+    <Content Include="Content\js\Layout.js" />
+    <Content Include="Content\js\Localities.js" />
+    <Content Include="Content\js\LocalityIndex.js" />
+    <Content Include="Content\js\onlyOnce.js" />
+    <Content Include="Content\js\Profile.js" />
+    <Content Include="Content\js\RedirectToFeed.js" />
+    <Content Include="Content\js\site.js" />
+    <Content Include="Content\js\User.js" />
+    <Content Include="Content\lib\bootstrap\dist\css\bootstrap-grid.css" />
+    <Content Include="Content\lib\bootstrap\dist\css\bootstrap-grid.min.css" />
+    <Content Include="Content\lib\bootstrap\dist\css\bootstrap-reboot.css" />
+    <Content Include="Content\lib\bootstrap\dist\css\bootstrap-reboot.min.css" />
+    <Content Include="Content\lib\bootstrap\dist\css\bootstrap.css" />
+    <Content Include="Content\lib\bootstrap\dist\css\bootstrap.min.css" />
+    <Content Include="Content\lib\bootstrap\dist\js\bootstrap.bundle.js" />
+    <Content Include="Content\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
+    <Content Include="Content\lib\bootstrap\dist\js\bootstrap.js" />
+    <Content Include="Content\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <Content Include="Content\lib\handlebars.js\handlebars.amd.js" />
+    <Content Include="Content\lib\handlebars.js\handlebars.amd.min.js" />
+    <Content Include="Content\lib\handlebars.js\handlebars.js" />
+    <Content Include="Content\lib\handlebars.js\handlebars.min.js" />
+    <Content Include="Content\lib\handlebars.js\handlebars.runtime.amd.js" />
+    <Content Include="Content\lib\handlebars.js\handlebars.runtime.amd.min.js" />
+    <Content Include="Content\lib\handlebars.js\handlebars.runtime.js" />
+    <Content Include="Content\lib\handlebars.js\handlebars.runtime.min.js" />
+    <Content Include="Content\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <Content Include="Content\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Content\lib\jquery-validation-unobtrusive\LICENSE.txt" />
+    <Content Include="Content\lib\jquery-validation\dist\additional-methods.js" />
+    <Content Include="Content\lib\jquery-validation\dist\additional-methods.min.js" />
+    <Content Include="Content\lib\jquery-validation\dist\jquery.validate.js" />
+    <Content Include="Content\lib\jquery-validation\dist\jquery.validate.min.js" />
+    <Content Include="Content\lib\jquery\dist\jquery.js" />
+    <Content Include="Content\lib\jquery\dist\jquery.min.js" />
+    <Content Include="Content\lib\jquery\LICENSE.txt" />
+    <Content Include="Content\lib\lightbox2\css\lightbox.css" />
+    <Content Include="Content\lib\lightbox2\css\lightbox.min.css" />
+    <Content Include="Content\lib\lightbox2\js\lightbox-plus-jquery.js" />
+    <Content Include="Content\lib\lightbox2\js\lightbox-plus-jquery.min.js" />
+    <Content Include="Content\lib\lightbox2\js\lightbox.js" />
+    <Content Include="Content\lib\lightbox2\js\lightbox.min.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
+    <Content Include="Content\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
+    <Content Include="Content\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
+    <Content Include="Content\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\lib\bootstrap\dist\css\bootstrap.css.map" />
+    <Content Include="Content\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <Content Include="Content\lib\bootstrap\dist\js\bootstrap.bundle.js.map" />
+    <Content Include="Content\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map" />
+    <Content Include="Content\lib\bootstrap\dist\js\bootstrap.js.map" />
+    <Content Include="Content\lib\bootstrap\dist\js\bootstrap.min.js.map" />
+    <Content Include="Content\lib\bootstrap\LICENSE" />
+    <Content Include="Content\lib\jquery-validation\LICENSE.md" />
+    <Content Include="Content\lib\jquery\dist\jquery.min.map" />
+    <Content Include="Content\lib\lightbox2\js\lightbox-plus-jquery.min.map" />
+    <Content Include="Content\lib\lightbox2\js\lightbox.min.map" />
+    <Content Include="wwwroot\css\lg-fb-comment-box.css" />
+    <Content Include="wwwroot\css\lg-transitions.css" />
+    <Content Include="wwwroot\css\lightgallery.css" />
+    <Content Include="wwwroot\css\site.css" />
+    <Content Include="wwwroot\favicon.ico" />
+    <Content Include="wwwroot\images\close.png" />
+    <Content Include="wwwroot\images\DefaultProfile.png" />
+    <Content Include="wwwroot\images\genericAlbumCoverPhoto.jpg" />
+    <Content Include="wwwroot\images\Liked.png" />
+    <Content Include="wwwroot\images\LikedOriginal.png" />
+    <Content Include="wwwroot\images\loading.gif" />
+    <Content Include="wwwroot\images\loadingGif.gif" />
+    <Content Include="wwwroot\images\login-register-background.jpg" />
+    <Content Include="wwwroot\images\logo.png" />
+    <Content Include="wwwroot\images\next.png" />
+    <Content Include="wwwroot\images\notLiked.png" />
+    <Content Include="wwwroot\images\notLikedOriginal.png" />
+    <Content Include="wwwroot\images\prev.png" />
+    <Content Include="wwwroot\images\Titlu.png" />
+    <Content Include="wwwroot\js\Carousel.js" />
+    <Content Include="wwwroot\js\County.js" />
+    <Content Include="wwwroot\js\feed.js" />
+    <Content Include="wwwroot\js\FriendRequest.js" />
+    <Content Include="wwwroot\js\Friends.js" />
+    <Content Include="wwwroot\js\Image.js" />
+    <Content Include="wwwroot\js\ImagineLogin.js" />
+    <Content Include="wwwroot\js\Interests.js" />
+    <Content Include="wwwroot\js\InterestSelect.js" />
+    <Content Include="wwwroot\js\InterestSelectAdmin.js" />
+    <Content Include="wwwroot\js\Layout.js" />
+    <Content Include="wwwroot\js\Localities.js" />
+    <Content Include="wwwroot\js\LocalityIndex.js" />
+    <Content Include="wwwroot\js\onlyOnce.js" />
+    <Content Include="wwwroot\js\Profile.js" />
+    <Content Include="wwwroot\js\RedirectToFeed.js" />
+    <Content Include="wwwroot\js\site.js" />
+    <Content Include="wwwroot\js\User.js" />
+    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css" />
+    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css" />
+    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css" />
+    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css" />
+    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css" />
+    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css" />
+    <Content Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js" />
+    <Content Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
+    <Content Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <Content Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <Content Include="wwwroot\lib\handlebars.js\handlebars.amd.js" />
+    <Content Include="wwwroot\lib\handlebars.js\handlebars.amd.min.js" />
+    <Content Include="wwwroot\lib\handlebars.js\handlebars.js" />
+    <Content Include="wwwroot\lib\handlebars.js\handlebars.min.js" />
+    <Content Include="wwwroot\lib\handlebars.js\handlebars.runtime.amd.js" />
+    <Content Include="wwwroot\lib\handlebars.js\handlebars.runtime.amd.min.js" />
+    <Content Include="wwwroot\lib\handlebars.js\handlebars.runtime.js" />
+    <Content Include="wwwroot\lib\handlebars.js\handlebars.runtime.min.js" />
+    <Content Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <Content Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+    <Content Include="wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt" />
+    <Content Include="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+    <Content Include="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+    <Content Include="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+    <Content Include="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
+    <Content Include="wwwroot\lib\jquery\dist\jquery.js" />
+    <Content Include="wwwroot\lib\jquery\dist\jquery.min.js" />
+    <Content Include="wwwroot\lib\jquery\LICENSE.txt" />
+    <Content Include="wwwroot\lib\lightbox2\css\lightbox.css" />
+    <Content Include="wwwroot\lib\lightbox2\css\lightbox.min.css" />
+    <Content Include="wwwroot\lib\lightbox2\js\lightbox-plus-jquery.js" />
+    <Content Include="wwwroot\lib\lightbox2\js\lightbox-plus-jquery.min.js" />
+    <Content Include="wwwroot\lib\lightbox2\js\lightbox.js" />
+    <Content Include="wwwroot\lib\lightbox2\js\lightbox.min.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -309,7 +472,7 @@
     <Content Include="Views\Feed\Index.cshtml" />
     <Content Include="Views\Feed\PartialPostAdd.cshtml" />
     <Content Include="Views\Feed\Privacy.cshtml" />
-    <Content Include="Views\Account\Shared.cshtml" />
+    <Content Include="Views\Shared\Shared.cshtml" />
     <Content Include="Views\Interests\Create.cshtml" />
     <Content Include="Views\Interests\Edit.cshtml" />
     <Content Include="Views\Interests\Index.cshtml" />
@@ -336,6 +499,21 @@
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\_ViewImports.cshtml" />
+    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
+    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
+    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
+    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map" />
+    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+    <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <Content Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map" />
+    <Content Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map" />
+    <Content Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js.map" />
+    <Content Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map" />
+    <Content Include="wwwroot\lib\bootstrap\LICENSE" />
+    <Content Include="wwwroot\lib\jquery-validation\LICENSE.md" />
+    <Content Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+    <Content Include="wwwroot\lib\lightbox2\js\lightbox-plus-jquery.min.map" />
+    <Content Include="wwwroot\lib\lightbox2\js\lightbox.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

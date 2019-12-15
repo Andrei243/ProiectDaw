@@ -130,7 +130,7 @@ namespace Proiect_DAW.Controllers
                     UserName = e.User.Name + " " + e.User.Surname
                 }
                 ).ToList();
-                return Json(posts);
+                return Json(posts,JsonRequestBehavior.AllowGet);
             }
         }
         [HttpGet]

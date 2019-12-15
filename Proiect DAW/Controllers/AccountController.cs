@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -157,15 +158,19 @@ namespace Proiect_DAW.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            var model = new RegisterModel()
-            {
-                Counties = countyService.GetAll().Select(e =>
-                new SelectListItem() { Text = e.Name, Value = e.Id.ToString() }
-
-                ).OrderBy(e => e.Text).ToList()
-            };
+            ViewBag.Counties = GetCounties().OrderBy(e => e.Text).ToList();
+            var model = new RegisterModel() { CountyId = int.Parse(ViewBag.Counties[0].Value) };
             ViewBag.CurrentUser = currentUser;
             return View();
+        }
+
+        [HttpGet]
+        public List<SelectListItem> GetCounties()
+        {
+            return countyService.GetAll().Select(c =>new SelectListItem() { 
+            Text=c.Name,
+            Value=c.Id.ToString()
+            }).ToList();
         }
 
         //
@@ -195,6 +200,17 @@ namespace Proiect_DAW.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        [HttpGet]
+        public JsonResult GetLocalities(int CountyId)
+        {
+            return Json(countyService.GetLocalities(CountyId).Select(e => 
+            new SelectListItem() {
+            Text=e.Name,
+            Value=e.Id.ToString()
+            }
+            ).ToList(),JsonRequestBehavior.AllowGet);
         }
 
         //
