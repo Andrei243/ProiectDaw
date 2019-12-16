@@ -361,7 +361,7 @@ namespace Proiect_DAW.Controllers
                 interestsUsersService.ChangeInterests(currentUser.Id, raspunsuri.Select(e => int.Parse(e)).ToList());
 
 
-                var updateUser = new Domain.User()
+                var updateUser = new Domain.ApplicationUser()
                 {
                     BirthDay = user.BirthDay,
                     LocalityId = user.LocalityId,

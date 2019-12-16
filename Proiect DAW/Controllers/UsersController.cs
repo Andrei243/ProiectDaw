@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using Domain;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Proiect_DAW.Code.Base;
 using Proiect_DAW.Models.DomainModels;
 using Proiect_DAW.Models.GeneralModels;
@@ -189,7 +190,7 @@ namespace Proiect_DAW.Controllers
                 interestsUsersService.ChangeInterests(user.Id, raspunsuri.Select(e => int.Parse(e)).ToList());
 
 
-                var updateUser = new Domain.User()
+                var updateUser = new Domain.ApplicationUser()
                 {
                     BirthDay = user.BirthDay,
                     LocalityId = user.LocalityId,

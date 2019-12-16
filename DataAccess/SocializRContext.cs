@@ -6,7 +6,7 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace DataAccess
 {
-    public partial class SocializRContext : IdentityDbContext<User>
+    public partial class SocializRContext : IdentityDbContext<ApplicationUser>
     {
         public SocializRContext()
             :base("SocializR")
@@ -50,7 +50,7 @@ namespace DataAccess
             PostConfiguration.Configure(modelBuilder.Entity<Post>());
             ReactionConfiguration.Configure(modelBuilder.Entity<Reaction>());
             RoleConfiguration.Configure(modelBuilder.Entity<Role>());
-            UserConfiguration.Configure(modelBuilder.Entity<User>());
+            UserConfiguration.Configure(modelBuilder.Entity<ApplicationUser>());
             IdentityUserLoginConfiguration.Configure(modelBuilder.Entity<IdentityUserLogin>());
             IdentityUserRoleConfiguration.Configure(modelBuilder.Entity<IdentityUserRole>());
         }

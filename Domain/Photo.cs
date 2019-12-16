@@ -19,6 +19,6 @@ namespace Domain
 
         public virtual Album Album { get; set; }
         public virtual Post Post { get; set; }
-        public virtual User User { get; set; }
+        public virtual ApplicationUser User { get; set; }
     }
 }

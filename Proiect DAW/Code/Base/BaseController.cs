@@ -12,7 +12,7 @@ namespace Proiect_DAW.Code.Base
     public class BaseController : Controller
     {
         protected readonly CurrentUser currentUser;
-        public BaseController( )
+        public BaseController()
         {
             var context = this.HttpContext;
             if(context == null)

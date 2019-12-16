@@ -8,7 +8,7 @@ namespace Domain
     {
         public Locality()
         {
-            Users = new HashSet<User>();
+            Users = new HashSet<ApplicationUser>();
         }
 
         public int Id { get; set; }
@@ -16,6 +16,6 @@ namespace Domain
         public string Name { get; set; }
 
         public virtual County County { get; set; }
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<ApplicationUser> Users { get; set; }
     }
 }

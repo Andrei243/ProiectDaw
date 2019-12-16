@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.SqlServer.Utilities;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -15,7 +16,7 @@ using Proiect_DAW.Models;
 using Proiect_DAW.Models.GeneralModels;
 
 namespace Proiect_DAW.Controllers
-{//TODO 
+{
     [Authorize]
     public class AccountController : BaseController
     {
@@ -90,6 +91,7 @@ namespace Proiect_DAW.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
+            //  verificarea cu email-ul intoarce un user null
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, true, shouldLockout: false);
             switch (result)
             {
@@ -184,7 +186,7 @@ namespace Proiect_DAW.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = new User()
+                var user = new ApplicationUser()
                 {
                     BirthDay = model.BirthDay,
                     Name = model.Name,
@@ -203,14 +205,14 @@ namespace Proiect_DAW.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetLocalities(int CountyId)
+        public List<SelectListItem> GetLocalities(int CountyId)
         {
-            return Json(countyService.GetLocalities(CountyId).Select(e => 
+            return countyService.GetLocalities(CountyId).Select(e => 
             new SelectListItem() {
             Text=e.Name,
             Value=e.Id.ToString()
             }
-            ).ToList(),JsonRequestBehavior.AllowGet);
+            ).ToList();
         }
 
         //
@@ -430,7 +432,7 @@ namespace Proiect_DAW.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new Domain.User { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

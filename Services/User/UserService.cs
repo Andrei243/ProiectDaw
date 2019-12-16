@@ -33,11 +33,11 @@ namespace Services.User
         }
 
 
-        public Domain.User GetCurrentUser()
+        public Domain.ApplicationUser GetCurrentUser()
         {
             return GetUserById(currentUser.Id);
         }
-        public Domain.User GetUserById(string id)
+        public Domain.ApplicationUser GetUserById(string id)
         {
             return unitOfWork
                 .Users
@@ -53,7 +53,7 @@ namespace Services.User
         }
 
 
-        public IQueryable<Domain.User> GetUsersByName(string name)
+        public IQueryable<Domain.ApplicationUser> GetUsersByName(string name)
         {
             return unitOfWork
                 .Users
@@ -63,9 +63,9 @@ namespace Services.User
         }
 
 
-        public void Update(Domain.User user)
+        public void Update(Domain.ApplicationUser user)
         {
-            Domain.User oldUser = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == user.Id);
+            Domain.ApplicationUser oldUser = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == user.Id);
             oldUser.LocalityId = user.LocalityId ?? oldUser.LocalityId;
             oldUser.Confidentiality = user.Confidentiality ?? oldUser.Confidentiality;
             oldUser.BirthDay = user.BirthDay;
@@ -127,7 +127,7 @@ namespace Services.User
             return unitOfWork.SaveChanges() != 0;
         }
 
-        public List<Domain.User> GetUsers(int toSkip, int toTake)
+        public List<Domain.ApplicationUser> GetUsers(int toSkip, int toTake)
         {
             return unitOfWork.Users.Query
                 .Where(e => e.Id != currentUser.Id)

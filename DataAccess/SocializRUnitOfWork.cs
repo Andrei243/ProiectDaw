@@ -18,8 +18,8 @@ namespace DataAccess
         private IRepository<Post> posts;
         public IRepository<Post> Posts => posts ?? (posts = new BaseRepository<Post>(DbContext));
 
-        private IRepository<User> users;
-        public IRepository<User> Users => users ?? (users = new BaseRepository<User>(DbContext));
+        private IRepository<ApplicationUser> users;
+        public IRepository<ApplicationUser> Users => users ?? (users = new BaseRepository<ApplicationUser>(DbContext));
 
         private IRepository<Album> albums;
         public IRepository<Album> Albums => albums ?? (albums = new BaseRepository<Album>(DbContext));

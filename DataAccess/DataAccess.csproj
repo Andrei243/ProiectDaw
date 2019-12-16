@@ -79,6 +79,10 @@
     <Compile Include="Migrations\201912151501182_Delete password.Designer.cs">
       <DependentUpon>201912151501182_Delete password.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201912161607199_ApplicationUser.cs" />
+    <Compile Include="Migrations\201912161607199_ApplicationUser.Designer.cs">
+      <DependentUpon>201912161607199_ApplicationUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SocializRContext.cs" />
@@ -104,6 +108,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201912151501182_Delete password.resx">
       <DependentUpon>201912151501182_Delete password.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912161607199_ApplicationUser.resx">
+      <DependentUpon>201912161607199_ApplicationUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

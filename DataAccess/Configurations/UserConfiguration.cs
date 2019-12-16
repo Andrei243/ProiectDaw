@@ -5,7 +5,7 @@ namespace DataAccess.Configurations
 {
     internal static class UserConfiguration
     {
-        public static void Configure(EntityTypeConfiguration<User> builder)
+        public static void Configure(EntityTypeConfiguration<ApplicationUser> builder)
         {
                 //builder.HasIndex(e => e.Email)
                   //  .HasName("User_Email");

@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Common;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data.Entity;
 using System.Security.Claims;
-using Microsoft.AspNet.Identity;
 using System.Threading.Tasks;
+using Common;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Domain
 {
-    public partial class User : IdentityUser,IEntity
+    // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
+    public class ApplicationUser : IdentityUser, IEntity
     {
-        public User()
+        public ApplicationUser()
         {
             Album = new HashSet<Album>();
             Comment = new HashSet<Comment>();
@@ -39,8 +41,18 @@ namespace Domain
         public string Confidentiality { get; set; }
         public int? PhotoId { get; set; }
         public bool IsBanned { get; set; }
+        public virtual Photo Photo { get; set; }
+        public virtual Locality Locality { get; set; }
+        public virtual Role Role { get; set; }
+        public virtual ICollection<Album> Album { get; set; }
+        public virtual ICollection<Comment> Comment { get; set; }
+        public virtual ICollection<Friendship> FriendshipIdReceiverNavigation { get; set; }
+        public virtual ICollection<Friendship> FriendshipIdSenderNavigation { get; set; }
+        public virtual ICollection<InterestsUsers> InterestsUsers { get; set; }
+        public virtual ICollection<Post> Post { get; set; }
+        public virtual ICollection<Reaction> Reaction { get; set; }
 
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager)
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
@@ -53,16 +65,6 @@ namespace Domain
             userIdentity.AddClaims(claims);
             return userIdentity;
         }
-
-        public virtual Photo Photo { get; set; }
-        public virtual Locality Locality { get; set; }
-        public virtual Role Role { get; set; }
-        public virtual ICollection<Album> Album { get; set; }
-        public virtual ICollection<Comment> Comment { get; set; }
-        public virtual ICollection<Friendship> FriendshipIdReceiverNavigation { get; set; }
-        public virtual ICollection<Friendship> FriendshipIdSenderNavigation { get; set; }
-        public virtual ICollection<InterestsUsers> InterestsUsers { get; set; }
-        public virtual ICollection<Post> Post { get; set; }
-        public virtual ICollection<Reaction> Reaction { get; set; }
     }
+
 }

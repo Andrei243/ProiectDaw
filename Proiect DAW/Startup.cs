@@ -1,4 +1,5 @@
 ﻿using DataAccess;
+using Domain;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
@@ -36,7 +37,7 @@ namespace Proiect_DAW
         {
             SocializRContext context = new SocializRContext();
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-            var UserManager = new UserManager<Domain.User>(new UserStore<Domain.User>(context));
+            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             // Se adauga rolurile aplicatiei
             if (!roleManager.RoleExists("admin"))
             {
@@ -45,7 +46,7 @@ namespace Proiect_DAW
                 role.Name = "admin";
                 roleManager.Create(role);
                 // se adauga utilizatorul administrator
-                var user = new Domain.User();
+                var user = new ApplicationUser();
                 user.Name = "admin";
                 user.Surname = "admin admin";
                 user.UserName = "admin";
