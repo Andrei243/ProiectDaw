@@ -1,15 +1,17 @@
-﻿var url = '/Account/GetLocalities';
-$(function () {
+﻿$(function () {
+    let url = '/Account/GetLocalities';
+
     console.log($('#CountyId').val());
 
     $.ajax({
         type: 'GET',
         url: url,
-        data: $('#CountyId').val(),
+        data: { countyId: $('#CountyId').val() },
         success: function (response) {
+            console.log("Am intrat");
             console.log(response);
             var elements = $.map(response, function (item) {
-                return `<option value="${item.value}">${item.text}</option>`
+                return `<option value="${item.Value}">${item.Text}</option>`
             });
             $('#LocalityId').empty();
             $('#LocalityId').append(elements);
@@ -21,15 +23,19 @@ $(function () {
     })
 
     $('#CountyId').on('change', function () {
+        console.log($('#CountyId').val());
+
         $.ajax({
             type: 'GET',
             url: url,
             data: {
-                countyId: $('#CountyId').val()
+                countyId:$('#CountyId').val() 
             },
             success: function (response) {
+                console.log("Am intrat");
+                console.log(response);
                 var elements = $.map(response, function (item) {
-                    return `<option value="${item.value}">${item.text}</option>`
+                    return `<option value="${item.Value}">${item.Text}</option>`
                 });
                 $('#LocalityId').empty();
                 $('#LocalityId').append(elements);

@@ -205,14 +205,15 @@ namespace Proiect_DAW.Controllers
         }
 
         [HttpGet]
-        public List<SelectListItem> GetLocalities(int CountyId)
+        public JsonResult GetLocalities(int countyId)
         {
-            return countyService.GetLocalities(CountyId).Select(e => 
-            new SelectListItem() {
-            Text=e.Name,
-            Value=e.Id.ToString()
-            }
-            ).ToList();
+            return Json(countyService.GetLocalities(countyId).Select(e =>
+           new SelectListItem()
+           {
+               Text = e.Name,
+               Value = e.Id.ToString()
+           }
+            ).ToList(),JsonRequestBehavior.AllowGet);
         }
 
         //
