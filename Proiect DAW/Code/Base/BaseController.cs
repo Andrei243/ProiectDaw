@@ -19,6 +19,7 @@ namespace Proiect_DAW.Code.Base
     {
         protected ApplicationSignInManager _signInManager;
         protected ApplicationUserManager _userManager;
+        protected ApplicationRoleManager _roleManager;
         protected CurrentUser currentUser;
         public ApplicationSignInManager SignInManager
         {
@@ -43,6 +44,20 @@ namespace Proiect_DAW.Code.Base
                 _userManager = value;
             }
         }
+
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
+            }
+            private set
+            {
+                _roleManager = value;
+            }
+        }
+
+
         public BaseController()
         {
             

@@ -9,28 +9,35 @@
 
 <h4>Locality</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" onsubmit="return checkForm(this);">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="CountyId" class="control-label">County</label>
-                <select asp-for="CountyId" class="form-control" asp-items="Model.CountyIds">
-                </select>
-                <span asp-validation-for="CountyId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input name="submit" type="submit" value="Save" class="btn btn-primary needConfirmation" />
-            </div>
-        </form>
+@using (Html.BeginForm("Edit", "Interests", FormMethod.Post, new { onsubmit = "return checkForm(this);" }))
+{
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true);
+
+
+    <div class="row">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.CountyId, new { @class = "col-md-2 control-label" })
+            @Html.DropDownListFor(m => m.CountyId, Model.CountyIds, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.CountyId, "", new { @class = "text-danger" })
+        </div>
+
+
+        <div class="form-group col-md-2">
+            <input name="submit" type="submit" value="Create" class="btn btn-primary needConfirmation" />
+        </div>
+
+
+
+
     </div>
-</div>
+}
 
 <div>
     <a asp-action="Index" class="btn btn-primary btn-sm">Back to List</a>

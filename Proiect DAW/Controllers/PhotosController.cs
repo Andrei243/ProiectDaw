@@ -20,6 +20,7 @@ namespace Proiect_DAW.Controllers
         public ActionResult Download(int? id)
         {
             MakeCurrentUser();
+
             if (id == null) return NotFoundView();
             if (!photoService.CanSeePhoto(id.Value,currentUser)) return ForbidView();
             var photo = photoService.GetPhoto(id.Value);

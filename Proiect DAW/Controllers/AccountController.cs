@@ -48,6 +48,8 @@ namespace Proiect_DAW.Controllers
 
         public ActionResult Logout()
         {
+            MakeCurrentUser();
+            ViewBag.CurrentUser = currentUser;
             AuthenticationManager.SignOut();
             return RedirectToAction("Index", "Feed", null);
         }
@@ -59,8 +61,8 @@ namespace Proiect_DAW.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginModel model, string returnUrl)
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
-
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -91,8 +93,8 @@ namespace Proiect_DAW.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
-
             // Require that the user has already logged in via username/password or external login
             if (!await SignInManager.HasBeenVerifiedAsync())
             {
@@ -108,8 +110,8 @@ namespace Proiect_DAW.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
-
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -139,6 +141,7 @@ namespace Proiect_DAW.Controllers
         public ActionResult Register()
         {
             MakeCurrentUser();
+            ViewBag.CurrentUser = currentUser;
             ViewBag.Counties = GetCounties().OrderBy(e => e.Text).ToList();
             var model = new RegisterModel() { CountyId = int.Parse(ViewBag.Counties[0].Value) };
             ViewBag.CurrentUser = currentUser;
@@ -158,7 +161,7 @@ namespace Proiect_DAW.Controllers
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Register(RegisterModel model)
+        public async Task<ActionResult> Register(RegisterModel model)
         {
             ViewBag.CurrentUser = currentUser;
 
@@ -172,9 +175,15 @@ namespace Proiect_DAW.Controllers
                     LocalityId = model.LocalityId,
                     SexualIdentity = model.SexualIdentity,
                     Email = model.Email,
-                    //Password = model.Password
+                    UserName=model.Email
                 };
-                userAccountService.Register(user);
+                var registeredUser = UserManager.Create(user);
+                if (registeredUser.Succeeded)
+                {
+                    UserManager.AddToRole(user.Id, "public");
+                }
+                var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, true, shouldLockout: false);
+
                 return RedirectToAction("Index", "Feed");
             }
 

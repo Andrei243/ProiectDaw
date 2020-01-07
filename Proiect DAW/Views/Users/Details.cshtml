@@ -334,9 +334,9 @@
 
     <div class="comment clearfix">
         <div class="imageUserComment">
-            <a class="linkProfilComment" href="/Profile/Profile?userId={{userId}}">
-                {{#if profilePhoto}}
-                <img src="/Photos/Download/{{profilePhoto}}" height="50" style="float:left" />
+            <a class="linkProfilComment" href="/Profile/Profile?userId={{UserId}}">
+                {{#if ProfilePhoto}}
+                <img src="/Photos/Download/{{ProfilePhoto}}" height="50" style="float:left" />
                 {{else}}
                 <img src="/images/DefaultProfile.png" height="50" style="float:left" />
                 {{/if}}
@@ -344,13 +344,13 @@
         </div>
         <div class="rightComment">
             <div class="profilComment">
-                <a class="linkProfilComment" href="/Profile/Profile?userId={{userId}}">
-                    <p>{{userName}}</p>
+                <a class="linkProfilComment" href="/Profile/Profile?userId={{UserId}}">
+                    <p>{{UserName}}</p>
                 </a>
             </div>
-            <p class="commentText">{{text}}</p>
+            <p class="commentText">{{Text}}</p>
 
-            <button id="deleteComment{{id}}" class="btn buttonDeleteComment btn-danger btn-sm" data-comment="{{id}}">Delete this comment</button>
+            <button id="deleteComment{{Id}}" class="btn buttonDeleteComment btn-danger btn-sm" data-comment="{{Id}}">Delete this comment</button>
 
         </div>
     </div>
@@ -361,52 +361,52 @@
 <script id="post-template" type="text/x-handlebars-template">
     <div class="post">
         <div class="bodyPostare">
-            <a class="linkProfilPostare clearfix" href="/Profile/Profile?userId={{userId}}">
-                {{#if profilePhoto}}
-                <img class="pozaProfilPostare" src="/Photos/Download/{{profilePhoto}}" height="75" />
+            <a class="linkProfilPostare clearfix" href="/Profile/Profile?userId={{UserId}}">
+                {{#if ProfilePhoto}}
+                <img class="pozaProfilPostare" src="/Photos/Download/{{ProfilePhoto}}" height="75" />
                 {{else}}
                 <img class="pozaProfilPostare" src="/images/DefaultProfile.png" height="75" />
                 {{/if}}
-                <span>{{userName}}</span>
+                <span>{{UserName}}</span>
             </a>
         </div>
         <div class="contentPostare">
-            <p>{{text}}</p>
+            <p>{{Text}}</p>
             <div class="imagePostare">
-                {{#each photoId}}
+                {{#each PhotoId}}
                 <img src="/Photos/Download/{{this}}" class="imgPostare" />
                 {{/each}}
             </div>
 
         </div>
 
-        <div id="commentBody{{id}}" data-toskip="0">
+        <div id="commentBody{{Id}}" data-toskip="0">
 
         </div>
-        <button id="commentGetter{{id}}" class="btn btn-primary btn-sm" data-post="{{id}}">Load more comments</button>
+        <button id="commentGetter{{Id}}" class="btn btn-primary btn-sm" data-post="{{Id}}">Load more comments</button>
 
         <div class="reaction">
 
             @if (currentUser.IsAuthenticated)
             {
-                <a class="like" id="like{{id}}" data-post="{{id}}">
-                    {{#if liked}}
+                <a class="like" id="like{{Id}}" data-post="{{Id}}">
+                    {{#if Liked}}
                     <img src="/images/Liked.png" height="20" />
                     {{else}}
                     <img src="/images/notLiked.png" height="20" />
                     {{/if}}
                 </a>
             }
-            <p class="reactionCounter">{{noReactions}} Likes</p>
+            <p class="reactionCounter">{{NoReactions}} Likes</p>
 
         </div>
         <input type="text" class="addComment form-control" />
         <div class="clearfix">
 
 
-            <button id="commentAdd{{id}}" class="btn  btn-primary btn-sm float-left" data-post="{{id}}">Comment</button>
+            <button id="commentAdd{{Id}}" class="btn  btn-primary btn-sm float-left" data-post="{{Id}}">Comment</button>
 
-            <button id="postRemove{{id}}" class="btn  btn-danger btn-sm float-right" data-post="{{id}}">Remove Post</button>
+            <button id="postRemove{{Id}}" class="btn  btn-danger btn-sm float-right" data-post="{{Id}}">Remove Post</button>
 
         </div>
 

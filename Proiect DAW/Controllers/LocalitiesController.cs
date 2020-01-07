@@ -10,7 +10,7 @@ using DataAccess;
 
 namespace Proiect_DAW.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "admin")]
     public class LocalitiesController : BaseController
     {
         private readonly Services.Locality.LocalityService localityService;

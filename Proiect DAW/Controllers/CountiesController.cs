@@ -12,7 +12,7 @@ using Services.Locality;
 namespace Proiect_DAW.Controllers
 {
 
-    [Authorize(Roles =  "Admin")]
+    [Authorize(Roles =  "admin")]
 
     public class CountiesController : BaseController
     {

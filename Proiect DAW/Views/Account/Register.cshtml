@@ -15,7 +15,6 @@
                 {
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                    @*<form asp-action="Register" method="post" onsubmit="return checkForm(this);">*@
                     <div class="form-group">
                         @Html.LabelFor(m => m.Name, new { @class = "control-label" })
                         @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })

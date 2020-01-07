@@ -14,13 +14,13 @@
 
 <script id="friend-template" type="text/x-handlebars-template">
     <div class="friendDiv">
-        <a href="/Profile/Profile?userId={{id}}">
-            {{#if profilePhoto}}
-            <img src="/Photos/Download/{{profilePhoto}}"  />
+        <a href="/Profile/Profile?userId={{Id}}">
+            {{#if ProfilePhoto}}
+            <img src="/Photos/Download/{{ProfilePhoto}}"  />
             {{else}}
             <img src="/images/DefaultProfile.png"  />
             {{/if}}
-            <p>{{name}}</p>
+            <p>{{Name}}</p>
 
 
         </a>

@@ -19,7 +19,7 @@ using System.Web.Mvc;
 
 namespace Proiect_DAW.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "admin")]
     public class UsersController : BaseController
     {
         private readonly Services.User.UserService userService;
@@ -45,15 +45,17 @@ namespace Proiect_DAW.Controllers
         }
         [AllowAnonymous]
         [HttpGet]
-        public List<UserDropdownModel> GetUsersByName(string name)
+        public JsonResult GetUsersByName(string name)
         {
+            MakeCurrentUser();
+            ViewBag.CurrentUser = currentUser;
             var el = userService
                 .GetUsersByName(name)
                 .Select(e => new UserDropdownModel() { Id = e.Id, ProfilePhotoId = e.PhotoId, Name = e.Name + " " + e.Surname })
                 .OrderBy(e => e.Name)
                 .Take(125)
                 .ToList();
-            return el;
+            return Json(el,JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -74,7 +76,7 @@ namespace Proiect_DAW.Controllers
             Text=e.Name
             }
             ).ToList();
-            return Json(interests);
+            return Json(interests,JsonRequestBehavior.AllowGet);
         }
 
         
@@ -316,7 +318,7 @@ namespace Proiect_DAW.Controllers
             {
                 return NotFoundView();
             }
-            userService.MakeAdmin(userId);
+            UserManager.AddToRoleAsync(userId, "admin");
             return RedirectToAction("Index");
 
         }
@@ -330,7 +332,7 @@ namespace Proiect_DAW.Controllers
             {
                 return NotFoundView();
             }
-            userService.RevokeAdmin(userId);
+            UserManager.RemoveFromRoleAsync(userId, "admin");
             return RedirectToAction("Index");
 
         }

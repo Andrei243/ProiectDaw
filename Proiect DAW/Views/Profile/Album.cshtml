@@ -10,19 +10,33 @@
 
 @if (Model.HasThisAlbum)
 {
-    <form action="/Profile/AlbumChangeName" method="post" onsubmit="return checkForm(this);">
+    @using (Html.BeginForm("AlbumChangeName", "Profile", FormMethod.Post, new { onsubmit = "return checkForm(this);" }))
+    {
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" asp-for="Id" />
-        <div class="form-group">
-            <label asp-for="Name" class="control-label"></label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <input name="submit" type="submit" value="Save" class="btn btn-primary needConfirmation" />
-        </div>
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true);
 
-    </form>
+        <div class="container">
+
+            <div class="row">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                </div>
+
+
+
+                <div class="form-group col-md-2">
+                    <input name="submit" type="submit" value="Create" class="btn btn-primary" />
+                </div>
+
+
+
+
+            </div>
+        </div>
+    }
 }
 else
 {
@@ -33,7 +47,7 @@ else
 </div>
 @if (Model.HasThisAlbum)
 {
-    <partial name="PartialAddPhoto" model="Model.PhotoModel" />
+    @Html.Partial("PartialAddPhoto", Model.PhotoModel)
 }
 
 @if (Model.HasThisAlbum)
@@ -43,14 +57,14 @@ else
         <div class="imagine">
 
             <div class="bodyImagine">
-                <img src="/Photos/Download/{{id}}" />
-                <p>{{description}}</p>
+                <img src="/Photos/Download/{{Id}}" />
+                <p>{{Description}}</p>
             </div>
             <div class="photoActions">
-                <a id="makeProfile{{id}}" class="needConfirmation btn btn-primary btn-sm" href="/Profile/MakeProfilePhoto?photoId={{id}}">Make this your profile picture</a>
-                <a id="removePhoto{{id}}" class="needConfirmation btn btn-danger btn-sm" href="/Profile/RemovePhoto?photoId={{id}}&albumId={{albumId}}">Delete this photo</a>
+                <a id="makeProfile{{Id}}" class="needConfirmation btn btn-primary btn-sm" href="/Profile/MakeProfilePhoto?photoId={{Id}}">Make this your profile picture</a>
+                <a id="removePhoto{{Id}}" class="needConfirmation btn btn-danger btn-sm" href="/Profile/RemovePhoto?photoId={{Id}}&albumId={{AlbumId}}">Delete this photo</a>
                 <input type="text" class="description" />
-                <button class="btn btn-primary btn-sm" id="changeDescription{{id}}" data-photoid="{{id}}">Save</button>
+                <button class="btn btn-primary btn-sm" id="changeDescription{{Id}}" data-photoid="{{Id}}">Save</button>
             </div>
 
         </div>
@@ -63,15 +77,15 @@ else
 
         <div class="imagine">
             <div class="bodyImagine">
-                <img src="/Photos/Download/{{id}}" height="40" />
-                <p>{{description}}</p>
+                <img src="/Photos/Download/{{Id}}" height="40" />
+                <p>{{Description}}</p>
             </div>
             @if (currentUser.IsAdmin)
             {
                 <div class="photoActions">
-                    <a id="removePhoto{{id}}" class="needConfirmation btn btn-danger btn-sm" href="/Profile/RemovePhoto?photoId={{id}}&albumId={{albumId}}">Delete this photo</a>
+                    <a id="removePhoto{{Id}}" class="needConfirmation btn btn-danger btn-sm" href="/Profile/RemovePhoto?photoId={{Id}}&albumId={{AlbumId}}">Delete this photo</a>
                     <input type="text" class="description" />
-                    <button class="btn btn-primary btn-sm" id="changeDescription{{id}}" data-photoid="{{id}}">Save</button>
+                    <button class="btn btn-primary btn-sm" id="changeDescription{{Id}}" data-photoid="{{Id}}">Save</button>
                 </div>
             }
 

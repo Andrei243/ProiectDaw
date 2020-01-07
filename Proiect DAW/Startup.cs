@@ -7,6 +7,8 @@ using Microsoft.Owin.FileSystems;
 using Microsoft.Owin.StaticFiles;
 using Owin;
 using Proiect_DAW.Models;
+using Services.County;
+using Services.Locality;
 using System;
 using System.IO;
 
@@ -38,9 +40,15 @@ namespace Proiect_DAW
             SocializRContext context = new SocializRContext();
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
             var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            
             // Se adauga rolurile aplicatiei
             if (!roleManager.RoleExists("admin"))
             {
+                var countyService = new CountyService(new SocializRUnitOfWork(context));
+                countyService.Add("Bucuersti");
+                var localityService = new LocalityService(new SocializRUnitOfWork(context));
+                localityService.AddLocality("Bucuresti", 1);
+
                 // Se adauga rolul de administrator
                 var role = new IdentityRole();
                 role.Name = "admin";

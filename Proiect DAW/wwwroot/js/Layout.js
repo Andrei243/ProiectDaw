@@ -12,16 +12,17 @@
             success: function (response) {
                 $("#users").empty();
                 html = '';
+                debugger;
                 for (let i = 0; i < response.length; i++) {
 
-                    var redirect = '/Profile/Profile' + "?userId=" + response[i].id;
-                    var photoURL = '/Photos/Download' + "/" + response[i].profilePhotoId;
-                    if (response[i].profilePhotoId !== null) {
-
-                        html = html.concat(`<a href=${redirect}><div class="dropdownItem"><p>${response[i].name}</p><img src=${photoURL} height="100em" />   </div></a>`)
+                    var redirect = '/Profile/Profile' + "?userId=" + response[i].Id;
+                    var photoURL = '/Photos/Download' + "/" + response[i].ProfilePhotoId;
+                    if (!!response[i].profilePhotoId) {
+                        debugger;
+                        html = html.concat(`<a href=${redirect}><div class="dropdownItem"><p>${response[i].Name}</p><img src=${photoURL} height="100em" />   </div></a>`)
                     }
                     else {
-                        html = html.concat(`<a href=${redirect}><div class="dropdownItem"><p>${response[i].name}</p><img src="/images/DefaultProfile.png" height="100em" />   </div></a>`)
+                        html = html.concat(`<a href=${redirect}><div class="dropdownItem"><p>${response[i].Name}</p><img src="/images/DefaultProfile.png" height="100em" />   </div></a>`)
                     }
 
                 }

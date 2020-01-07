@@ -399,8 +399,8 @@
     <Content Include="Views\Profile\FriendList.cshtml" />
     <Content Include="Views\Profile\FriendRequests.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
-    <Content Include="Views\Profile\PartialAddAlbum.cshtml" />
-    <Content Include="Views\Profile\PartialAddPhoto.cshtml" />
+    <Content Include="Views\Shared\PartialAddAlbum.cshtml" />
+    <Content Include="Views\Shared\PartialAddPhoto.cshtml" />
     <Content Include="Views\Profile\Profile.cshtml" />
     <Content Include="Views\Shared\Forbid.cshtml" />
     <Content Include="Views\GeneralLayout.cshtml" />
