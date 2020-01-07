@@ -58,7 +58,6 @@ namespace Proiect_DAW
                 user.LocalityId = 1;
                 
                 var adminCreated = UserManager.Create(user, "administrator");
-              
                 if (adminCreated.Succeeded)
                 {
                     UserManager.AddToRole(user.Id, "admin");

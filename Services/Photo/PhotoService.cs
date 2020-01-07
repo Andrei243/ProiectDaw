@@ -7,14 +7,12 @@ namespace Services.Photo
 {
     public class PhotoService : Base.BaseService
     {
-        private readonly CurrentUser currentUser;
 
-        public PhotoService(SocializRUnitOfWork unitOfWork, CurrentUser currentUser) : base(unitOfWork)
+        public PhotoService(SocializRUnitOfWork unitOfWork) : base(unitOfWork)
         {
-            this.currentUser = currentUser;
         }
 
-        public bool CanSeePhoto(int photoId)
+        public bool CanSeePhoto(int photoId, CurrentUser currentUser)
         {
             if (currentUser.IsAdmin)
             {
@@ -73,7 +71,7 @@ namespace Services.Photo
             return albums.Select(e => e.Id).Contains(photo.AlbumId.Value);
 
         }
-        public void AddPhoto(Domain.Photo photo)
+        public void AddPhoto(Domain.Photo photo, CurrentUser currentUser)
         {
             var isBanned = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == currentUser.Id)?.IsBanned ?? false;
             if (isBanned) return;

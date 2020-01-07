@@ -34,13 +34,13 @@ namespace Proiect_DAW.Controllers
         public UsersController()
             : base()
         {
-            userService = new UserService(currentUser,new SocializRUnitOfWork(new SocializRContext()));
-            friendshipService = new FriendshipService(currentUser, new SocializRUnitOfWork(new SocializRContext()));
+            userService = new UserService(new SocializRUnitOfWork(new SocializRContext()));
+            friendshipService = new FriendshipService( new SocializRUnitOfWork(new SocializRContext()));
             interestsUsersService = new InterestsUsersService(new SocializRUnitOfWork(new SocializRContext()));
             countyService = new CountyService(new SocializRUnitOfWork(new SocializRContext()));
             interestService = new InterestService(new SocializRUnitOfWork(new SocializRContext()));
-            albumService = new AlbumService(currentUser, new SocializRUnitOfWork(new SocializRContext()));
-            photoService = new PhotoService(new SocializRUnitOfWork(new SocializRContext()), currentUser);
+            albumService = new AlbumService( new SocializRUnitOfWork(new SocializRContext()));
+            photoService = new PhotoService(new SocializRUnitOfWork(new SocializRContext()));
             PageSize = 50;
         }
         [AllowAnonymous]
@@ -81,6 +81,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult Index()
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
 
             return View();
@@ -90,6 +91,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult Details(string? userId)
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
 
             if (string.IsNullOrWhiteSpace (userId) || userService.GetUserById(userId) == null)
@@ -120,13 +122,13 @@ namespace Proiect_DAW.Controllers
                 SexualIdentity = domainUser.SexualIdentity,
 
             };
-            user.CanSee = friendshipService.CanSee(userId);
-            user.CanSendRequest = friendshipService.CanSendRequest(userId);
-            user.IsRequested = friendshipService.IsFriendRequested(userId);
+            user.CanSee = friendshipService.CanSee(userId,currentUser);
+            user.CanSendRequest = friendshipService.CanSendRequest(userId, currentUser);
+            user.IsRequested = friendshipService.IsFriendRequested(userId, currentUser);
             user.Interests = interestsUsersService.GetAllInterests(domainUser.Id)
                 .Select(e => e.Name)
                 .ToList();
-            user.Album = albumService.GetAll(userId).Select(e => new AlbumDomainModel()
+            user.Album = albumService.GetAll(userId, currentUser).Select(e => new AlbumDomainModel()
             {
                 Count = e.Photo.Count,
                 CoverPhoto = e.Photo.Count > 0 ? e.Photo.OrderBy(e => e.Position).First().Id : -1,
@@ -143,6 +145,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult Edit(string? userId)
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
 
             if (string.IsNullOrWhiteSpace(userId))
@@ -180,6 +183,7 @@ namespace Proiect_DAW.Controllers
         [HttpPost]
         public ActionResult Edit(EditUserModel user)
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
 
             if (ModelState.IsValid)
@@ -210,13 +214,14 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult DeleteAlbum(int? albumId)
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
 
             if (albumId == null)
             {
                 return NotFoundView();
             }
-            string userId = albumService.RemoveAlbum(albumId.Value);
+            string userId = albumService.RemoveAlbum(albumId.Value, currentUser);
 
 
             return RedirectToAction("Details", new { userId });
@@ -224,6 +229,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult Album(int? albumId)
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
 
             if (albumId == null)
@@ -249,6 +255,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult DeletePhoto(int? photoId, int? albumId)
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
 
             if (photoId == null || albumId == null)
@@ -263,6 +270,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult Delete(string? userId)
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
 
             if (userId == null)
@@ -277,6 +285,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult Ban(string? userId)
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
 
             if (userId == null) { return NotFoundView(); }
@@ -288,6 +297,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult Unban(string? userId)
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
 
             if (string.IsNullOrWhiteSpace(userId)) { return NotFoundView(); }
@@ -299,6 +309,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult MakeAdmin(string? userId)
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
 
             if (userId == null)
@@ -312,6 +323,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult RevokeAdmin(string? userId)
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
 
             if (string.IsNullOrWhiteSpace(userId))
@@ -325,7 +337,8 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public JsonResult GetUsers(int toSkip)
         {
-            var users = userService.GetUsers(toSkip, PageSize).Select(e=>new UserJsonModel() {
+            MakeCurrentUser();
+            var users = userService.GetUsers(toSkip, PageSize, currentUser).Select(e=>new UserJsonModel() {
             
             Id=e.Id,
             IsAdmin=e.RoleId==1,

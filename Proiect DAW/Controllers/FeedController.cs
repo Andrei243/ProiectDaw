@@ -23,19 +23,19 @@ namespace Proiect_DAW.Controllers
         private readonly Services.Reaction.ReactionService reactionService;
         public FeedController() : base()
         {
-            postService = new PostService(currentUser, new SocializRUnitOfWork(new SocializRContext()));
-            commentService = new CommentService(currentUser, new SocializRUnitOfWork(new SocializRContext()));
-            photoService = new PhotoService(new SocializRUnitOfWork(new SocializRContext()), currentUser);
-            reactionService = new ReactionService(currentUser, new SocializRUnitOfWork(new SocializRContext()));
+            postService = new PostService(new SocializRUnitOfWork(new SocializRContext()));
+            commentService = new CommentService(new SocializRUnitOfWork(new SocializRContext()));
+            photoService = new PhotoService(new SocializRUnitOfWork(new SocializRContext()));
+            reactionService = new ReactionService(new SocializRUnitOfWork(new SocializRContext()));
             PageSize = 10;
         }
         [Authorize]
         [HttpDelete]
         public void RemoveComment(int commentId)
         {
-            
+            MakeCurrentUser();
 
-            if (commentService.CanDeleteComment(commentId))
+            if (commentService.CanDeleteComment(commentId, currentUser))
             {
                 commentService.RemoveComment(commentId);
             }
@@ -44,42 +44,45 @@ namespace Proiect_DAW.Controllers
         [HttpDelete]
         public bool RemovePost(int postId)
         {
-            if (postService.CanDetelePost(postId))
-            { 
+            MakeCurrentUser();
+            if (postService.CanDetelePost(postId, currentUser))
+            {
                 postService.RemovePost(postId);
                 return true;
             }
             return false;
         }
-        
+
         [HttpGet]
         public ActionResult Index()
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
             var postModelAdd = new PostAddModel();
             return View(postModelAdd);
         }
 
-       
+
         [AllowAnonymous]
         [HttpGet]
-        public JsonResult GetComments(int postId,int toSkip)
+        public JsonResult GetComments(int postId, int toSkip)
         {
-            if (postService.CanSeePost(postId))
+            MakeCurrentUser();
+            if (postService.CanSeePost(postId, currentUser))
             {
                 var comments = commentService.GetComments(toSkip, PageSize, postId).Select(e =>
-                
+
                    new CommentJsonModel()
-                    {
-                        Id = e.Id,
-                        IsAdmin = currentUser.IsAdmin,
-                        ProfilePhoto = e.User.PhotoId,
-                        Text = e.Content,
-                        UserId = e.UserId,
-                        UserName = e.User.Name + " " + e.User.Surname,
-                        IsMine = currentUser.Id == e.UserId
-                        
-                    }
+                   {
+                       Id = e.Id,
+                       IsAdmin = currentUser.IsAdmin,
+                       ProfilePhoto = e.User.PhotoId,
+                       Text = e.Content,
+                       UserId = e.UserId,
+                       UserName = e.User.Name + " " + e.User.Surname,
+                       IsMine = currentUser.Id == e.UserId
+
+                   }
                 ).ToList();
                 return Json(comments);
             }
@@ -89,33 +92,33 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public JsonResult GetPosts(int toSkip)
         {
-            
+            MakeCurrentUser();
             if (currentUser.IsAuthenticated)
             {
-                var posts = postService.GetNewsfeed(toSkip, PageSize).Select(e =>
-                
-                    
-                    new PostJsonModel()
-                    {
-                        Id = e.Id,
-                        IsAdmin = currentUser.IsAdmin,
-                        IsMine = e.UserId == currentUser.Id,
-                        Liked = e.Reaction.Select(f => f.UserId).Contains(currentUser.Id),
-                        NoReactions = e.Reaction.Count,
-                        PhotoId = new List<int>() { e.Photo.Id },
-                        ProfilePhoto = e.User.PhotoId,
-                        Text = e.Text,
-                        UserId = e.UserId,
-                        UserName = e.User.Name + " " + e.User.Surname
-                    }
+                var posts = postService.GetNewsfeed(toSkip, PageSize, currentUser).Select(e =>
+
+
+                     new PostJsonModel()
+                     {
+                         Id = e.Id,
+                         IsAdmin = currentUser.IsAdmin,
+                         IsMine = e.UserId == currentUser.Id,
+                         Liked = e.Reaction.Select(f => f.UserId).Contains(currentUser.Id),
+                         NoReactions = e.Reaction.Count,
+                         PhotoId = e.Photo != null ? new List<int>() { e.Photo.Id } : new List<int>(),
+                         ProfilePhoto = e.User.PhotoId,
+                         Text = e.Text,
+                         UserId = e.UserId,
+                         UserName = e.User.Name + " " + e.User.Surname
+                     }
 
                 ).ToList();
-                return Json(posts);
+                return Json(posts,JsonRequestBehavior.AllowGet);
             }
             else
             {
                 var posts = postService.GetPublicNewsfeed(toSkip, PageSize).Select(e =>
-                
+
                 new PostJsonModel()
                 {
                     Id = e.Id,
@@ -123,43 +126,44 @@ namespace Proiect_DAW.Controllers
                     IsMine = false,
                     Liked = e.Reaction.Select(f => f.UserId).Contains(currentUser.Id),
                     NoReactions = e.Reaction.Count,
-                    PhotoId = new List<int>() { e.Photo.Id },
+                    PhotoId = e.Photo != null ? new List<int>() { e.Photo.Id } : new List<int>(),
                     ProfilePhoto = e.User.PhotoId,
                     Text = e.Text,
                     UserId = e.UserId,
                     UserName = e.User.Name + " " + e.User.Surname
                 }
                 ).ToList();
-                return Json(posts,JsonRequestBehavior.AllowGet);
+                return Json(posts, JsonRequestBehavior.AllowGet);
             }
         }
         [HttpGet]
-        public JsonResult GetPersonPosts(int toSkip,string userId)
+        public JsonResult GetPersonPosts(int toSkip, string userId)
         {
 
-                var posts = postService.GetPersonPost(toSkip, PageSize,userId).Select(e =>
-                new PostJsonModel()
-                {
-                    Id = e.Id,
-                    IsAdmin = currentUser.IsAdmin,
-                    IsMine = false,
-                    Liked = e.Reaction.Select(f => f.UserId).Contains(currentUser.Id),
-                    NoReactions = e.Reaction.Count,
-                    PhotoId = new List<int>() { e.Photo.Id },
-                    ProfilePhoto = e.User.PhotoId,
-                    Text = e.Text,
-                    UserId = e.UserId,
-                    UserName = e.User.Name + " " + e.User.Surname
-                }
+            var posts = postService.GetPersonPost(toSkip, PageSize, userId).Select(e =>
+             new PostJsonModel()
+             {
+                 Id = e.Id,
+                 IsAdmin = currentUser.IsAdmin,
+                 IsMine = false,
+                 Liked = e.Reaction.Select(f => f.UserId).Contains(currentUser.Id),
+                 NoReactions = e.Reaction.Count,
+                 PhotoId = e.Photo != null ? new List<int>() { e.Photo.Id } : new List<int>(),
+                 ProfilePhoto = e.User.PhotoId,
+                 Text = e.Text,
+                 UserId = e.UserId,
+                 UserName = e.User.Name + " " + e.User.Surname
+             }
 
-                ).ToList();
-                return Json(posts);
-            
+            ).ToList();
+            return Json(posts);
+
         }
 
         [HttpPost]
         public ActionResult AddPost(PostAddModel post)
         {
+            MakeCurrentUser();
             if (ModelState.IsValid)
             {
                 var newPost = new Post()
@@ -168,7 +172,7 @@ namespace Proiect_DAW.Controllers
                     Confidentiality = post.Visibility
 
                 };
-                postService.AddPost(newPost);
+                postService.AddPost(newPost, currentUser);
 
                 if (post.Binar != null)
                 {
@@ -184,27 +188,29 @@ namespace Proiect_DAW.Controllers
                         post.Binar.InputStream.CopyTo(memoryStream);
                         photo.Binary = memoryStream.ToArray();
                     }
-                    photoService.AddPhoto(photo);
+                    photoService.AddPhoto(photo, currentUser);
                 }
                 return RedirectToAction("Index");
             }
-            
+
             return View("Index", post);
         }
 
         [HttpPut]
         public bool Reaction(int postId)
         {
-            if(postService.CanSeePost(postId)) return reactionService.ChangeReaction(postId);
+            MakeCurrentUser();
+            if (postService.CanSeePost(postId, currentUser)) return reactionService.ChangeReaction(postId, currentUser);
             return false;
         }
 
         [HttpPost]
-        public int Comment(int postId,string comentariu)
+        public int Comment(int postId, string comentariu)
         {
-            if (postService.CanSeePost(postId)&& !string.IsNullOrEmpty(comentariu))
+            MakeCurrentUser();
+            if (postService.CanSeePost(postId, currentUser) && !string.IsNullOrEmpty(comentariu))
             {
-                int id = commentService.AddComment(comentariu.Trim(), postId);
+                int id = commentService.AddComment(comentariu.Trim(), postId, currentUser);
                 return id;
 
             }
@@ -213,6 +219,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult Privacy()
         {
+            MakeCurrentUser();
             return View();
         }
 

@@ -15,7 +15,7 @@ namespace Services.User
         public Domain.ApplicationUser Get(string email)
         {
 
-            return unitOfWork.Users.Query.AsNoTracking().Include(e=>e.Role).AsNoTracking()
+            return unitOfWork.Users.Query.AsNoTracking().Include(e=>e.Roles).AsNoTracking()
                 .Include(e=>e.Locality).AsNoTracking()
                 .Include("Locality.County").AsNoTracking()
                 .FirstOrDefault(e => e.Email == email);

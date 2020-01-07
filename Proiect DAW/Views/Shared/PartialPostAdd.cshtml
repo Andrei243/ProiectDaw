@@ -1,0 +1,74 @@
+﻿@model Proiect_DAW.Models.FeedModels.PostAddModel
+@{
+    Services.CurrentUser currentUser = ViewBag.CurrentUser;
+}
+
+@if (currentUser.IsAuthenticated)
+{
+    <div class="postAdd">
+        @using (Html.BeginForm("AddPost", "Feed", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return checkForm(this);" }))
+        {
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true);
+            <div class="form-group">
+                @Html.LabelFor(m => m.Text, new { @class = "col-md-2 control-label" })
+                @Html.TextBoxFor(m => m.Text, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Text, "", new { @class = "text-danger" })
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="divPreviewPhoto">
+                            <img src="#" id="imgPreview" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-2">
+                        <label for="Binar" id="butonAdaugarePoza">Add a photo</label>
+                        <input type="file" id="Binar" class="form-control" hidden />
+
+                        <span asp-validation-for="Binar" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3" id="divButtonDeletePhoto">
+
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Visibility, new { @class = "control-label" })
+                        @Html.DropDownListFor(m => m.Visibility, new List<SelectListItem>() {
+                    new SelectListItem()
+                    {
+                        Selected=true,
+                        Value="friends",
+                        Text="Friends Only"
+                    },new SelectListItem()
+                    {
+                        Selected=false,
+                        Value="public",
+                        Text="Public"
+                    },
+                    new SelectListItem()
+                    {
+                        Selected=false,
+                        Value="private",
+                        Text="Private"
+                    }
+                   }, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Visibility, "", new { @class = "text-danger" })
+                    </div>
+                    
+                    <div class="form-group col-md-2">
+                        <input name="submit" type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        }
+
+    </div>
+}
+

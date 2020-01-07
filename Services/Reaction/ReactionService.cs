@@ -8,32 +8,29 @@ namespace Services.Reaction
 {
     public class ReactionService : Base.BaseService
     {
-        private readonly CurrentUser CurrentUser;
-        //private readonly Domain.Post Post;
 
-        public ReactionService(CurrentUser currentUser,SocializRUnitOfWork unitOfWork) : base(unitOfWork)
+        public ReactionService(SocializRUnitOfWork unitOfWork) : base(unitOfWork)
         {
-            CurrentUser = currentUser;
         }
 
 
-        public bool IsLiked(int postId)
+        public bool IsLiked(int postId, CurrentUser currentUser)
         {
             return unitOfWork.Reactions.Query
-                .Any(e => e.PostId == postId && e.UserId == CurrentUser.Id);
+                .Any(e => e.PostId == postId && e.UserId == currentUser.Id);
         }
 
-        public bool ChangeReaction(int postId)
+        public bool ChangeReaction(int postId, CurrentUser currentUser)
         {
-            var isBanned = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == CurrentUser.Id)?.IsBanned ?? false;
-            if (isBanned) return unitOfWork.Reactions.Query.Any(e=>e.PostId==postId&&e.UserId==CurrentUser.Id);
-            var reaction = unitOfWork.Reactions.Query.FirstOrDefault(e => e.PostId == postId && e.UserId == CurrentUser.Id);
+            var isBanned = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == currentUser.Id)?.IsBanned ?? false;
+            if (isBanned) return unitOfWork.Reactions.Query.Any(e=>e.PostId==postId&&e.UserId==currentUser.Id);
+            var reaction = unitOfWork.Reactions.Query.FirstOrDefault(e => e.PostId == postId && e.UserId == currentUser.Id);
             if (reaction == null)
             {
                 var reaction2 = new Domain.Reaction()
                 {
                     PostId = postId,
-                    UserId = CurrentUser.Id
+                    UserId = currentUser.Id
                 };
                 unitOfWork.Reactions.Add(reaction2);
                 unitOfWork.SaveChanges();

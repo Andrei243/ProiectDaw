@@ -20,8 +20,7 @@ namespace Proiect_DAW.Controllers
     [Authorize]
     public class AccountController : BaseController
     {
-        private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;
+        
         private readonly Services.User.UserAccountService userAccountService;
         private readonly Services.County.CountyService countyService;
 
@@ -32,47 +31,25 @@ namespace Proiect_DAW.Controllers
 
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
-        {
-            UserManager = userManager;
-            SignInManager = signInManager;
-            countyService = new Services.County.CountyService(new DataAccess.SocializRUnitOfWork(new DataAccess.SocializRContext()));
-            userAccountService = new Services.User.UserAccountService(new DataAccess.SocializRUnitOfWork(new DataAccess.SocializRContext()));
-        }
 
-        public ApplicationSignInManager SignInManager
-        {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set 
-            { 
-                _signInManager = value; 
-            }
-        }
-
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
-        }
+       
 
         //
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
 
             var model = new LoginModel();
             return View();
+        }
+
+        public ActionResult Logout()
+        {
+            AuthenticationManager.SignOut();
+            return RedirectToAction("Index", "Feed", null);
         }
 
         //
@@ -93,6 +70,7 @@ namespace Proiect_DAW.Controllers
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             //  verificarea cu email-ul intoarce un user null
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, true, shouldLockout: false);
+            //var user = userAccountService.Login(model.Email,)
             switch (result)
             {
                 case SignInStatus.Success:
@@ -160,6 +138,7 @@ namespace Proiect_DAW.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            MakeCurrentUser();
             ViewBag.Counties = GetCounties().OrderBy(e => e.Text).ToList();
             var model = new RegisterModel() { CountyId = int.Parse(ViewBag.Counties[0].Value) };
             ViewBag.CurrentUser = currentUser;
@@ -179,7 +158,6 @@ namespace Proiect_DAW.Controllers
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public ActionResult Register(RegisterModel model)
         {
             ViewBag.CurrentUser = currentUser;
@@ -205,6 +183,7 @@ namespace Proiect_DAW.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public JsonResult GetLocalities(int countyId)
         {
             return Json(countyService.GetLocalities(countyId).Select(e =>
@@ -236,6 +215,7 @@ namespace Proiect_DAW.Controllers
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
 
             return View();
@@ -245,7 +225,6 @@ namespace Proiect_DAW.Controllers
         // POST: /Account/ForgotPassword
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
             ViewBag.CurrentUser = currentUser;
@@ -276,6 +255,7 @@ namespace Proiect_DAW.Controllers
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
 
             return View();
@@ -286,6 +266,7 @@ namespace Proiect_DAW.Controllers
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
 
             return code == null ? View("Error") : View();
@@ -295,9 +276,9 @@ namespace Proiect_DAW.Controllers
         // POST: /Account/ResetPassword
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
 
             if (!ModelState.IsValid)
@@ -324,6 +305,7 @@ namespace Proiect_DAW.Controllers
         [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
 
             return View();
@@ -333,7 +315,6 @@ namespace Proiect_DAW.Controllers
         // POST: /Account/ExternalLogin
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
             // Request a redirect to the external login provider
@@ -361,9 +342,9 @@ namespace Proiect_DAW.Controllers
         // POST: /Account/SendCode
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> SendCode(SendCodeViewModel model)
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
 
             if (!ModelState.IsValid)
@@ -415,7 +396,6 @@ namespace Proiect_DAW.Controllers
         // POST: /Account/ExternalLoginConfirmation
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
         {
             ViewBag.CurrentUser = currentUser;
@@ -454,7 +434,6 @@ namespace Proiect_DAW.Controllers
         //
         // POST: /Account/LogOff
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
@@ -468,6 +447,7 @@ namespace Proiect_DAW.Controllers
         [AllowAnonymous]
         public ActionResult ExternalLoginFailure()
         {
+            MakeCurrentUser();
             ViewBag.CurrentUser = currentUser;
 
             return View();

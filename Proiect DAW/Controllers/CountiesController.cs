@@ -30,6 +30,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult Index()
         {
+            MakeCurrentUser();
             //var counties = countyService.GetAll().Select(e => mapper.Map<CountyDomainModel>(e));
             var counties = countyService.GetAll().Select(e => new CountyDomainModel() { Id = e.Id, Localities = null, Name = e.Name });
             return View(counties);
@@ -38,6 +39,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult Details(int? id)
         {
+            MakeCurrentUser();
             if (id == null)
             {
                 return NotFoundView();
@@ -62,6 +64,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult Create()
         {
+            MakeCurrentUser();
             return View();
         }
 
@@ -69,6 +72,7 @@ namespace Proiect_DAW.Controllers
         [HttpPost]
         public ActionResult Create(CountyDomainModel model)
         {
+            MakeCurrentUser();
             if (ModelState.IsValid)
             {
                 countyService.Add(model.Name);
@@ -80,7 +84,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public  ActionResult Edit(int? id)
         {
-            
+            MakeCurrentUser();
             if (id == null)
             {
                 return NotFoundView();
@@ -104,7 +108,7 @@ namespace Proiect_DAW.Controllers
         [HttpPost]
         public ActionResult Edit(EditCountyModel model)
         {
-            
+            MakeCurrentUser();
 
             if (ModelState.IsValid)
             {

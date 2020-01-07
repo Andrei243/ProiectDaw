@@ -7,11 +7,9 @@ namespace Services.User
 {
     public class UserService : Base.BaseService
     {
-        private readonly CurrentUser currentUser;
-        public UserService(CurrentUser currentUser, SocializRUnitOfWork unitOfWork) :
+        public UserService( SocializRUnitOfWork unitOfWork) :
             base(unitOfWork)
         {
-            this.currentUser = currentUser;
         }
 
         public bool BanUser(string userId)
@@ -33,10 +31,7 @@ namespace Services.User
         }
 
 
-        public Domain.ApplicationUser GetCurrentUser()
-        {
-            return GetUserById(currentUser.Id);
-        }
+       
         public Domain.ApplicationUser GetUserById(string id)
         {
             return unitOfWork
@@ -78,7 +73,7 @@ namespace Services.User
         }
 
 
-        public void UpdateProfilePhoto(int photoId)
+        public void UpdateProfilePhoto(int photoId, CurrentUser currentUser)
         {
             var user = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == currentUser.Id);
             user.PhotoId = photoId;
@@ -127,7 +122,7 @@ namespace Services.User
             return unitOfWork.SaveChanges() != 0;
         }
 
-        public List<Domain.ApplicationUser> GetUsers(int toSkip, int toTake)
+        public List<Domain.ApplicationUser> GetUsers(int toSkip, int toTake, CurrentUser currentUser)
         {
             return unitOfWork.Users.Query
                 .Where(e => e.Id != currentUser.Id)

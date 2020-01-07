@@ -12,15 +12,16 @@ namespace Proiect_DAW.Controllers
         public PhotosController():
             base()
         {
-            photoService = new PhotoService(new SocializRUnitOfWork(new SocializRContext()), currentUser);
+            photoService = new PhotoService(new SocializRUnitOfWork(new SocializRContext()));
         }
 
         
         [HttpGet]
         public ActionResult Download(int? id)
         {
+            MakeCurrentUser();
             if (id == null) return NotFoundView();
-            if (!photoService.CanSeePhoto(id.Value)) return ForbidView();
+            if (!photoService.CanSeePhoto(id.Value,currentUser)) return ForbidView();
             var photo = photoService.GetPhoto(id.Value);
 
             if (photo == null) return NotFoundView();

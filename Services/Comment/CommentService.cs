@@ -8,23 +8,21 @@ namespace Services.Comment
 {
     public class CommentService : Base.BaseService
     {
-        private readonly CurrentUser CurrentUser;
-        public CommentService(CurrentUser currentUser,SocializRUnitOfWork unitOfWork) : base(unitOfWork)
+        public CommentService(SocializRUnitOfWork unitOfWork) : base(unitOfWork)
         {
-            CurrentUser = currentUser;
         }
 
 
-        public int AddComment(string text,int PostId)
+        public int AddComment(string text,int PostId,CurrentUser currentUser)
         {
-            var user = unitOfWork.Users.Query.First(e => e.Id == CurrentUser.Id);
+            var user = unitOfWork.Users.Query.First(e => e.Id == currentUser.Id);
             if (user.IsBanned) return -1;
 
             var comment = new Domain.Comment()
             {
                 Content = text,
                 PostId = PostId,
-                UserId = CurrentUser.Id,
+                UserId = currentUser.Id,
                 AddingMoment=DateTime.Now
             };
             unitOfWork.Comments.Add(comment);
@@ -42,24 +40,25 @@ namespace Services.Comment
             return unitOfWork.SaveChanges() != 0;
         }
 
-        public bool CanDeleteComment(int commentId)
+        public bool CanDeleteComment(int commentId,CurrentUser currentUser)
         {
-            if (CurrentUser.IsAdmin) return true;
-            var isBanned = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == CurrentUser.Id)?.IsBanned ?? false;
+            if (currentUser.IsAdmin) return true;
+            var isBanned = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == currentUser.Id)?.IsBanned ?? false;
             if (isBanned) return false;
             var comment = unitOfWork.Comments.Query
                 .First(e => e.Id == commentId);
             if (comment == null) return false;
-            var bool1 = comment.UserId == CurrentUser.Id;
+            var bool1 = comment.UserId == currentUser.Id;
             if (bool1) return true;
             var postId = comment.PostId;
-            return unitOfWork.Posts.Query.First(e => e.Id == postId).UserId == CurrentUser.Id;
+            return unitOfWork.Posts.Query.First(e => e.Id == postId).UserId == currentUser.Id;
         }
 
         public List<Domain.Comment> GetComments(int toSkip,int howMany,int postId)
         {
             return unitOfWork.Comments.Query.OrderByDescending(e => e.AddingMoment)
                 .Where(e=>e.PostId==postId&&!e.User.IsBanned)
+                .OrderByDescending(e=>e.AddingMoment)
                 .Skip(toSkip)
                 .Take(howMany)
                 .Include(e => e.User)

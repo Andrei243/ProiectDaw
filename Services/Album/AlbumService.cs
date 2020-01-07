@@ -10,32 +10,30 @@ namespace Services.Album
 {
     public class AlbumService : Base.BaseService
     {
-        public readonly CurrentUser CurrentUser;
 
-        public AlbumService(CurrentUser currentUser, SocializRUnitOfWork unitOfWork) : base(unitOfWork)
+        public AlbumService( SocializRUnitOfWork unitOfWork) : base(unitOfWork)
         {
-            this.CurrentUser = currentUser;
         }
 
-        public bool CanSeeAlbum(int albumId)
+        public bool CanSeeAlbum(int albumId,CurrentUser currentUser)
         {
-            if (CurrentUser.IsAdmin) return true;
-            var isBanned = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == CurrentUser.Id)?.IsBanned ?? false;
+            if (currentUser.IsAdmin) return true;
+            var isBanned = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == currentUser.Id)?.IsBanned ?? false;
             if (isBanned) return false;
             var album = unitOfWork.Albums.Query.Include(e=>e.User)
                 .AsNoTracking().First(e => e.Id == albumId);
             if (album.User.IsBanned) return false;
-            if (album.UserId == CurrentUser.Id) return true;
+            if (album.UserId == currentUser.Id) return true;
             if (album.User.Confidentiality == Confidentiality.Public) return true;
             if (album.User.Confidentiality == Confidentiality.Private) return false;
             return unitOfWork.Friendships.Query
-                .Any(e => e.IdReceiver == CurrentUser.Id && e.IdSender == album.UserId);
+                .Any(e => e.IdReceiver == currentUser.Id && e.IdSender == album.UserId);
         }
 
-        public List<Domain.Album> GetAll(string idUser)
+        public List<Domain.Album> GetAll(string idUser,CurrentUser currentUser)
         {
             var user = unitOfWork.Users.Query.First(e => e.Id == idUser);
-            if (user.IsBanned && !CurrentUser.IsAdmin) return new List<Domain.Album>();
+            if (user.IsBanned && !currentUser.IsAdmin) return new List<Domain.Album>();
             
             return unitOfWork.Albums.Query
                 .Where(e => e.UserId == idUser).AsNoTracking()
@@ -44,35 +42,35 @@ namespace Services.Album
                 .ToList();
         }
 
-        public List<Domain.Photo> GetPhotos(int albumId)
+        public List<Domain.Photo> GetPhotos(int albumId,CurrentUser currentUser)
         {
             var album = unitOfWork.Albums.Query.Include(e=>e.User).First(e => e.Id == albumId);
-            if (album.User.IsBanned && !CurrentUser.IsAdmin) return new List<Domain.Photo>();
+            if (album.User.IsBanned && !currentUser.IsAdmin) return new List<Domain.Photo>();
             return unitOfWork.Photos.Query
                 .Where(e => e.AlbumId == albumId)
                 .ToList();
         }
 
-        public int AddAlbum(string denumire)
+        public int AddAlbum(string denumire,CurrentUser currentUser)
         {
-            if (CurrentUser.IsBanned) return -1;
+            if (currentUser.IsBanned) return -1;
 
-            Domain.Album album = new Domain.Album { Name = denumire, UserId = CurrentUser.Id };
+            Domain.Album album = new Domain.Album { Name = denumire, UserId = currentUser.Id };
             unitOfWork.Albums.Add(album);
             unitOfWork.SaveChanges();
             return album.Id;
         }
-        public bool CanDeleteAlbum(int albumId)
+        public bool CanDeleteAlbum(int albumId,CurrentUser currentUser)
         {
-            if (CurrentUser.IsAdmin) return true;
-            if (CurrentUser.IsBanned) return false;
+            if (currentUser.IsAdmin) return true;
+            if (currentUser.IsBanned) return false;
             return unitOfWork.Albums.Query
-                .Any(e => e.Id == albumId && e.UserId == CurrentUser.Id);
+                .Any(e => e.Id == albumId && e.UserId == currentUser.Id);
         }
 
-        public string RemoveAlbum(int albumId)
+        public string RemoveAlbum(int albumId,CurrentUser currentUser)
         {
-            if (CurrentUser.IsBanned) return "-1";
+            if (currentUser.IsBanned) return "-1";
             var album = unitOfWork.Albums.Query.FirstOrDefault(e => e.Id == albumId);
             if (album == null) return "-1";
 
@@ -94,10 +92,10 @@ namespace Services.Album
 
         }
 
-        public bool HasThisAlbum(int albumId)
+        public bool HasThisAlbum(int albumId,CurrentUser currentUser)
         {
             return unitOfWork.Albums.Query
-                .Any(e => e.Id == albumId && e.UserId == CurrentUser.Id);
+                .Any(e => e.Id == albumId && e.UserId == currentUser.Id);
         }
 
         public Domain.Album GetAlbum(int albumId)

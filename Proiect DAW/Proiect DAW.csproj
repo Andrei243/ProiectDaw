@@ -384,7 +384,7 @@
     <Content Include="Views\Counties\Edit.cshtml" />
     <Content Include="Views\Counties\Index.cshtml" />
     <Content Include="Views\Feed\Index.cshtml" />
-    <Content Include="Views\Feed\PartialPostAdd.cshtml" />
+    <Content Include="Views\Shared\PartialPostAdd.cshtml" />
     <Content Include="Views\Feed\Privacy.cshtml" />
     <Content Include="Views\Shared\Shared.cshtml" />
     <Content Include="Views\Interests\Create.cshtml" />

@@ -8,7 +8,7 @@ using DataAccess;
 
 namespace Proiect_DAW.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "admin")]
     public class InterestsController : BaseController
     {
 
@@ -22,7 +22,8 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-
+            MakeCurrentUser();
+            ViewBag.CurrentUser = currentUser;
             var interese = interestService.GetAll().Select(e =>new InterestDomainModel() { 
             Id=e.Id,
             Name=e.Name
@@ -35,6 +36,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult Create()
         {
+            MakeCurrentUser();
             return View();
         }
 
@@ -42,6 +44,7 @@ namespace Proiect_DAW.Controllers
         [HttpPost]
         public ActionResult Create( InterestDomainModel interest)
         {
+            MakeCurrentUser();
             if (ModelState.IsValid)
             {
                 interestService.AddInterest(interest.Name);
@@ -53,6 +56,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult Edit(int? id)
         {
+            MakeCurrentUser();
             if (id == null)
             {
                 return NotFoundView();
@@ -76,6 +80,7 @@ namespace Proiect_DAW.Controllers
         [HttpPost]
         public ActionResult Edit( InterestDomainModel interest)
         {
+            MakeCurrentUser();
             if (ModelState.IsValid)
             {
 
@@ -88,6 +93,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult Delete(int? id)
         {
+            MakeCurrentUser();
             if (id == null)
             {
                 return NotFoundView();

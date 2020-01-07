@@ -37,14 +37,10 @@ namespace Proiect_DAW.Models.GeneralModels
         public IEnumerable<ValidationResult>Validate(ValidationContext validationContext)
         {
             var result = new List<ValidationResult>();
-            var service = validationContext.GetService(typeof(UserAccountService)) as UserAccountService;
             if (SexualIdentity != "masculin" && SexualIdentity != "feminin" && SexualIdentity != "nespecificat")
             {
                 result.Add(new ValidationResult("Poti alege doar una dintre cele posibilitati", new List<string> { nameof(SexualIdentity) }));
             }
-            var emailExists = service.EmailExists(Email);
-            if (emailExists)
-                result.Add(new ValidationResult("Email-ul exisa deja", new List<string> { nameof(Email) }));
             return result;
 
         }

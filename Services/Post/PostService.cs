@@ -9,22 +9,20 @@ namespace Services.Post
    
     public class PostService : Base.BaseService
     {
-        private readonly CurrentUser CurrentUser;
         
 
-        public PostService(CurrentUser currentUser,SocializRUnitOfWork unitOfWork) : base(unitOfWork)
+        public PostService(SocializRUnitOfWork unitOfWork) : base(unitOfWork)
         {
-            CurrentUser = currentUser;
         }
 
         
-        public bool AddPost(Domain.Post post)
+        public bool AddPost(Domain.Post post, CurrentUser currentUser)
         {
-            var isBanned = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == CurrentUser.Id)?.IsBanned ?? false;
+            var isBanned = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == currentUser.Id)?.IsBanned ?? false;
             if (isBanned) return false;
 
             post.AddingMoment = DateTime.Now;
-            post.UserId = CurrentUser.Id;
+            post.UserId = currentUser.Id;
             post.Confidentiality = post.Confidentiality ?? Confidentiality.FriendsOnly;
             unitOfWork.Posts.Add(post);
             return unitOfWork.SaveChanges()!=0;
@@ -43,14 +41,14 @@ namespace Services.Post
                 .ToList();
         }
 
-        public bool CanDetelePost(int postId)
+        public bool CanDetelePost(int postId, CurrentUser currentUser)
         {
-            var isBanned = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == CurrentUser.Id)?.IsBanned ?? false;
+            var isBanned = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == currentUser.Id)?.IsBanned ?? false;
             if (isBanned) return false;
 
             var post = unitOfWork.Posts.Query.FirstOrDefault(e => e.Id == postId);
             if (post == null) return false;
-            return post.UserId == CurrentUser.Id || CurrentUser.IsAdmin;
+            return post.UserId == currentUser.Id || currentUser.IsAdmin;
         }
 
         private IQueryable<Domain.Post> GetFeed()
@@ -75,13 +73,13 @@ namespace Services.Post
                 .ToList();
         }
 
-        public List<Domain.Post> GetNewsfeed(int toSkip,int howMany)
+        public List<Domain.Post> GetNewsfeed(int toSkip,int howMany, CurrentUser currentUser)
         {
 
-            var isBanned = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == CurrentUser.Id)?.IsBanned ?? false;
+            var isBanned = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == currentUser.Id)?.IsBanned ?? false;
             if (isBanned) return GetPublicNewsfeed(toSkip,howMany);
             var friends = unitOfWork.Friendships.Query
-                .Where(e => e.IdReceiver == CurrentUser.Id && (e.Accepted??false))
+                .Where(e => e.IdReceiver == currentUser.Id && (e.Accepted??false))
                 .Select(e=>e.IdSender)
                 .ToList();
 
@@ -89,7 +87,7 @@ namespace Services.Post
             var posts = GetFeed()
                 .Where(e =>
                 (e.Confidentiality == Confidentiality.Public) ||
-                (e.UserId == CurrentUser.Id) ||
+                (e.UserId == currentUser.Id) ||
                 (friends.Contains(e.UserId) && e.Confidentiality == Confidentiality.FriendsOnly)
                 )
                 .OrderByDescending(e => e.AddingMoment)
@@ -116,17 +114,17 @@ namespace Services.Post
             return unitOfWork.SaveChanges() != 0;
         }
 
-        public bool CanSeePost(int postId)
+        public bool CanSeePost(int postId, CurrentUser currentUser)
         {
-            if (CurrentUser.IsAdmin) return true;
-            var isBanned = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == CurrentUser.Id)?.IsBanned ?? false;
+            if (currentUser.IsAdmin) return true;
+            var isBanned = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == currentUser.Id)?.IsBanned ?? false;
             if (isBanned) return false;
 
             var post = unitOfWork.Posts.Query.Include(e=>e.User).FirstOrDefault(e => e.Id == postId);
             if (post == null || post.User.IsBanned) return false;
-            if (post.UserId == CurrentUser.Id || post.Confidentiality == Confidentiality.Public) return true;
+            if (post.UserId == currentUser.Id || post.Confidentiality == Confidentiality.Public) return true;
             var suntPrieteni = unitOfWork.Friendships.Query
-                .Any(e => e.IdReceiver == post.UserId && e.IdSender == CurrentUser.Id && (e.Accepted ?? false));
+                .Any(e => e.IdReceiver == post.UserId && e.IdSender == currentUser.Id && (e.Accepted ?? false));
             if (suntPrieteni) return post.Confidentiality == Confidentiality.FriendsOnly;
             else return false;
         }

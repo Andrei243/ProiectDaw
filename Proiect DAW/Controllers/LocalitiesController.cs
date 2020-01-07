@@ -26,6 +26,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult Index()
         {
+            MakeCurrentUser();
             var localities = localityService.GetAll().Select(e => new LocalityDomainModel()
             {
                 County = new CountyDomainModel() { Id = e.County.Id, Name = e.County.Name },
@@ -39,6 +40,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult Create()
         {
+            MakeCurrentUser();
             var model = new AddLocalityModel()
             {
                 CountyIds = countyService.GetAll().Select(e =>
@@ -78,6 +80,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public ActionResult Edit(int? id)
         {
+            MakeCurrentUser();
             if (id == null)
             {
                 return NotFoundView();
@@ -112,7 +115,7 @@ namespace Proiect_DAW.Controllers
         [HttpPost]
         public ActionResult Edit(EditLocalityModel model)
         {
-
+            MakeCurrentUser();
             if (ModelState.IsValid)
             {
                 localityService.EditLocality(model.Id, model.Name, model.CountyId);

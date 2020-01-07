@@ -3,7 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
+using DataAccess;
+using Domain;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 using Services;
 using Services.User;
 
@@ -11,25 +17,65 @@ namespace Proiect_DAW.Code.Base
 {
     public class BaseController : Controller
     {
-        protected readonly CurrentUser currentUser;
+        protected ApplicationSignInManager _signInManager;
+        protected ApplicationUserManager _userManager;
+        protected CurrentUser currentUser;
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
         public BaseController()
         {
-            var context = this.HttpContext;
-            if(context == null)
+            
+        }
+
+        public void MakeCurrentUser()
+        {
+            //var context = this.HttpContext;
+            //if(context == null)
+            //{
+            //    currentUser= currentUser = new CurrentUser(isAuthenticated: false);
+            //    return;
+            //}
+            var mail = ((ClaimsIdentity)SignInManager.AuthenticationManager.User?.Identity)?.Claims.FirstOrDefault(C => C.Type == ClaimTypes.Email)?.Value ?? string.Empty;
+            var userService = new UserAccountService(new DataAccess.SocializRUnitOfWork(new DataAccess.SocializRContext()));
+            //var id = await SignInManager.GetVerifiedUserIdAsync();
+            if (string.IsNullOrEmpty(mail))
             {
-                currentUser= currentUser = new CurrentUser(isAuthenticated: false);
+                currentUser = new CurrentUser(isAuthenticated: false);
                 return;
             }
-            var mail = ((ClaimsIdentity)context.User).Claims.FirstOrDefault(C => C.Type == ClaimTypes.Email)?.Value ?? string.Empty;
-            var userService = new UserAccountService(new DataAccess.SocializRUnitOfWork(new DataAccess.SocializRContext())); 
+            SocializRContext context = new SocializRContext();
+
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             var user = userService.Get(mail);
             if (user != null)
-                currentUser= new CurrentUser(isAuthenticated: true)
+            {
+                currentUser = new CurrentUser(isAuthenticated: true)
                 {
                     Id = user.Id,
                     Email = user.Email,
                     Name = user.Name,
-                    IsAdmin = user.Role.Name == "admin",
+                    //IsAdmin = user.Role.Name == "admin",
                     IsBanned = user.IsBanned,
                     BirthDay = user.BirthDay,
                     LocalityId = user.LocalityId,
@@ -38,28 +84,30 @@ namespace Proiect_DAW.Code.Base
                     Surname = user.Surname,
                     Vizibility = user.Confidentiality,
                     Locality = user.Locality,
-                    //Password = user.Password
-
-
                 };
+                currentUser.IsAdmin = userManager.GetRoles(user.Id).Contains("admin");
+                    }
             else
             {
-                currentUser= new CurrentUser(isAuthenticated: false);
+                currentUser = new CurrentUser(isAuthenticated: false);
             }
         }
 
         public ActionResult InternalServerErrorView()
         {
+            MakeCurrentUser();
             return View("InternalServerError");
         }
 
         public ActionResult NotFoundView()
         {
+            MakeCurrentUser();
             return View("NotFound");
         }
 
         public ActionResult ForbidView()
         {
+            MakeCurrentUser();
             return View("Forbid");
         }
 
