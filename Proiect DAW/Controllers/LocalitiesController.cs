@@ -162,7 +162,7 @@ namespace Proiect_DAW.Controllers
 
                 )
                 .ToList();
-            return Json(result);
+            return Json(result,JsonRequestBehavior.AllowGet);
         }
 
     }

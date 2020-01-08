@@ -10,7 +10,7 @@
                 postId: e.currentTarget.dataset.post
             },
             success: function (response) {
-                if (response) {
+                if (response!="False") {
                     e.currentTarget.querySelector("img").src = "/images/Liked.png";
                     e.currentTarget.parentNode.querySelector(".reactionCounter").innerText = (parseInt(e.currentTarget.parentNode.querySelector(".reactionCounter").innerText) + 1)+" Likes";
                 }
@@ -30,6 +30,7 @@
 
     let eventDeleteComment = function (e) {
         let com = $(this).parent().parent();
+        
         $.ajax({
             type: "DELETE",
             url: '/Feed/RemoveComment',
@@ -38,7 +39,6 @@
 
             },
             success: function (response) {
-
                 com.parent().data("toskip", parseInt(com.parent().data("toskip")) - 1);
                 com.remove();
             },
@@ -63,12 +63,12 @@
             success: function (response) {
                 if (response!==-1) {
                     let obj = {
-                        text: e.currentTarget.parentNode.querySelector("input").value,
-                        id: response,
-                        isMine: true,
-                        userId: $("#currentUserInfo").data("userid"),
-                        profilePhoto: $("#currentUserInfo").data("profile"),
-                        userName: $("#currentUserInfo").data("name")
+                        Text: e.currentTarget.parentNode.querySelector("input").value,
+                        Id: response,
+                        IsMine: true,
+                        UserId: $("#currentUserInfo").data("userid"),
+                        ProfilePhoto: $("#currentUserInfo").data("profile"),
+                        UserName: $("#currentUserInfo").data("name")
                     }
                     let html = templateComment(obj);
                     $("#commentBody" + postId).prepend(html);
@@ -135,8 +135,8 @@
                             let comment = result[i];
                             let html = templateComment(comment);
                             $("#commentBody" + idPost).append(html);
-                            $("#deleteComment" + comment.id).click(prevent);
-                            $("#deleteComment" + comment.id).click(eventDeleteComment);
+                            $("#deleteComment" + comment.Id).click(prevent);
+                            $("#deleteComment" + comment.Id).click(eventDeleteComment);
                         }
                         canGet = true;
 
@@ -173,13 +173,13 @@
                             let post = result[i];
                             let html = templatePost(post);
                             $("#postBody").append(html);
-                            let eventComentariu = eventComment(post.id);
+                            let eventComentariu = eventComment(post.Id);
                             eventComentariu();
-                            $("#commentGetter" + post.id).click(eventComentariu);
-                            $("#like" + post.id).click(eventLike);
-                            $("#commentAdd" + post.id).click(eventAddComment);
-                            $("#postRemove" + post.id).click(prevent);
-                            $("#postRemove" + post.id).click(eventDeletePost);
+                            $("#commentGetter" + post.Id).click(eventComentariu);
+                            $("#like" + post.Id).click(eventLike);
+                            $("#commentAdd" + post.Id).click(eventAddComment);
+                            $("#postRemove" + post.Id).click(prevent);
+                            $("#postRemove" + post.Id).click(eventDeletePost);
                            
                         }
                         if (result.length !== 0) { canGet = true; }

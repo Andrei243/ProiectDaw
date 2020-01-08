@@ -63,7 +63,7 @@ namespace Proiect_DAW.Controllers
         {
             if (string.IsNullOrWhiteSpace(userId))
             {
-                return Json(new List<InterestSelectJsonModel>());
+                return Json(new List<InterestSelectJsonModel>(), JsonRequestBehavior.AllowGet);
             }
             var indexes = interestsUsersService.GetAllInterests(userId)
                 .Select(e => e.Id)
@@ -352,7 +352,7 @@ namespace Proiect_DAW.Controllers
             Name=e.Name+" "+e.Surname,
             ProfilePhoto=e.PhotoId
             }).ToList();
-            return Json(users);
+            return Json(users, JsonRequestBehavior.AllowGet);
 
         }
 

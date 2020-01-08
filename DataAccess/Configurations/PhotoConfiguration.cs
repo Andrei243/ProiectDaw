@@ -25,6 +25,11 @@ namespace DataAccess.Configurations
                     .IsRequired()
                     .HasMaxLength(100);
 
+            builder.HasOptional(d => d.Group)
+                .WithOptionalPrincipal(e => e.Photo)
+                .WillCascadeOnDelete()
+                ;
+
         }
     }
 }

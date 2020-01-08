@@ -142,7 +142,7 @@ namespace Proiect_DAW.Controllers
             new CountyJsonModel() { Id=e.Id,Name=e.Name}
                 ).ToList();
 
-            return Json(counties);
+            return Json(counties,JsonRequestBehavior.AllowGet);
 
         }
 

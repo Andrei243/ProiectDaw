@@ -41,7 +41,7 @@ namespace Services.Message
             return unitOfWork.SaveChanges() != 0;
         }
 
-        public bool CanDeleteComment (int MessageId, CurrentUser currentUser)
+        public bool CanDeleteMessage (int MessageId, CurrentUser currentUser)
         {
             if (currentUser.IsAdmin) return true;
             var isBanned = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == currentUser.Id)?.IsBanned?? false;
@@ -55,26 +55,40 @@ namespace Services.Message
 
         }
 
-        public List<Domain.Message> GetSentMessagesTo(int toSkip, int howMany, string currentUserId, string ReceiverId)
+        public List<Domain.Message> GetSentMessagesTo( string currentUserId, string ReceiverId)
         {
             return unitOfWork.Messages.Query.OrderByDescending(e => e.SendingMoment)
                 .Where(e => e.SenderId == currentUserId && !e.Sender.IsBanned)
                 .Where(e => e.ReceiverId == ReceiverId && !e.Receiver.IsBanned)
                 .OrderByDescending(e => e.SendingMoment)
-                .Skip(toSkip)
-                .Take(howMany)
                 .ToList();
         }
 
-        public List<Domain.Message> GetReceivedMessagesFrom(int toSkip, int howMany, string currentUserId, string SenderId)
+        public List<Domain.Message> GetReceivedMessagesFrom( string currentUserId, string SenderId)
         {
             return unitOfWork.Messages.Query.OrderByDescending(e => e.SendingMoment)
                 .Where(e => e.ReceiverId == currentUserId && !e.Receiver.IsBanned)
                 .Where(e => e.SenderId == SenderId && !e.Sender.IsBanned)
                 .OrderByDescending(e => e.SendingMoment)
-                .Skip(toSkip)
-                .Take(howMany)
                 .ToList();
+        }
+
+        public List<MessageBoxViewer> GetMessageBoxes(CurrentUser currentUser)
+        {
+            var userId = currentUser.Id;
+            var groups = unitOfWork.ApplicationUserGroups.Query.Where(e => e.UserId == userId).Select(e => e.GroupId);
+            var messages = unitOfWork.Messages.Query.Where(e => e.ReceiverId == userId || e.SenderId == userId || groups.Any(f => f == e.GroupId))
+                .Select(e =>
+                new MessageBoxViewer()
+                {
+                    DateLastMessage = e.SendingMoment,
+                    LastMessage = e.Content,
+                    ProfilePhoto = e.GroupId != null ? null : e.ReceiverId == userId ? e.Sender.PhotoId : e.Receiver.PhotoId,
+                    Call = e.GroupId != null ? "/Messages/MessageGroup?id=" + e.GroupId.ToString() : "/Messages/MessageUser?id=" + (e.ReceiverId == userId ? e.Sender.Id : e.Receiver.Id),
+                    UserName = e.GroupId != null ? e.Group.Name : e.ReceiverId == userId ? e.Sender.Name + " " + e.Sender.Surname : e.Receiver.Name + " " + e.Receiver.Surname
+                });
+            messages = messages.GroupBy(e => e.Call).Select(e => e.OrderByDescending(f => f.DateLastMessage).First());
+            return messages.ToList();
         }
 
     }

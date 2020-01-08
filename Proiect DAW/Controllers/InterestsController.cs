@@ -110,7 +110,7 @@ namespace Proiect_DAW.Controllers
             var interests = interestService.GetInterests(toSkip, PageSize).Select(e => 
             new InterestJsonModel() { Id=e.Id,Name=e.Name}
             ).ToList();
-            return Json(interests);
+            return Json(interests,JsonRequestBehavior.AllowGet);
         }
 
     }

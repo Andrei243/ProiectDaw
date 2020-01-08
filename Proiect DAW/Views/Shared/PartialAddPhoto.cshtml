@@ -1,6 +1,6 @@
 ﻿@model Proiect_DAW.Models.ProfileModels.PhotoModel
 
-@using (Html.BeginForm("AddPost", "Feed", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return checkForm(this);" }))
+@using (Html.BeginForm("AddPhoto", "Profile", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return checkForm(this);" }))
 {
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     @Html.AntiForgeryToken()
@@ -17,7 +17,7 @@
         <div class="row">
             <div class="form-group col-md-2">
                 <label for="Binar" id="butonAdaugarePoza">Add a photo</label>
-                <input type="file" id="Binar" class="form-control" hidden />
+                <input type="file" name="Binar" id="Binar" class="form-control" hidden />
 
                 <span asp-validation-for="Binar" class="text-danger"></span>
             </div>

@@ -84,9 +84,9 @@ namespace Proiect_DAW.Controllers
 
                    }
                 ).ToList();
-                return Json(comments);
+                return Json(comments,JsonRequestBehavior.AllowGet);
             }
-            return Json(new List<int>());
+            return Json(new List<int>(),JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -156,7 +156,7 @@ namespace Proiect_DAW.Controllers
              }
 
             ).ToList();
-            return Json(posts);
+            return Json(posts,JsonRequestBehavior.AllowGet);
 
         }
 

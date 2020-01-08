@@ -82,7 +82,7 @@ namespace Proiect_DAW.Controllers
              Text=e.Name,
              Selected=indexes.Contains(e.Id)}
              ).ToList();
-            return Json(interests);
+            return Json(interests,JsonRequestBehavior.AllowGet);
         }
 
         [HttpPut]
@@ -102,7 +102,7 @@ namespace Proiect_DAW.Controllers
             MakeCurrentUser();
             if (toSkip == null || albumId == null)
             {
-                return Json(new List<int>());
+                return Json(new List<int>(),JsonRequestBehavior.AllowGet);
             }
             if (albumService.CanSeeAlbum(albumId.Value,currentUser))
             {
@@ -114,9 +114,9 @@ namespace Proiect_DAW.Controllers
                 Description=e.Description,
                 Id=e.Id}
                 ).ToList();
-                return Json(photos);
+                return Json(photos, JsonRequestBehavior.AllowGet);
             }
-            else return Json(new List<int>());
+            else return Json(new List<int>(), JsonRequestBehavior.AllowGet);
 
         }
 
@@ -556,7 +556,7 @@ namespace Proiect_DAW.Controllers
             var friends = friendService.GetFriends(toSkip, PageSize,currentUser).Select(e => 
             new FriendJsonModel() { Id=e.Id,Name=e.Name,ProfilePhoto=e.PhotoId}
             ).ToList();
-            return Json(friends);
+            return Json(friends, JsonRequestBehavior.AllowGet);
 
         }
         [Authorize]
@@ -565,7 +565,7 @@ namespace Proiect_DAW.Controllers
         {
             MakeCurrentUser();
             var friends = friendService.GetRequesters(toSkip, PageSize,currentUser).Select(e => new FriendJsonModel() { Id = e.Id, Name = e.Name, ProfilePhoto = e.PhotoId }).ToList();
-            return Json(friends);
+            return Json(friends, JsonRequestBehavior.AllowGet);
 
         }
 

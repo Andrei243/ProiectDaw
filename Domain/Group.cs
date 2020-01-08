@@ -16,6 +16,7 @@ namespace Domain
         public virtual ICollection<Message> Messages { get; set; }
         public virtual ICollection<ApplicationUserGroup> Users { get; set; }
         public virtual ApplicationUser Admin { get; set; }
+        public virtual Photo Photo { get; set; }
 
     }
 }

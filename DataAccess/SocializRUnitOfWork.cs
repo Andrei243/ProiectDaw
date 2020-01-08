@@ -43,6 +43,10 @@ namespace DataAccess
 
         private IRepository<Message> messages;
         public IRepository<Message> Messages => messages ?? (messages = new BaseRepository<Message>(DbContext));
+        private IRepository<Group> groups;
+        public IRepository<Group> Groups => groups ?? (groups = new BaseRepository<Group>(DbContext));
+        public IRepository<ApplicationUserGroup> applicationUserGroups;
+        public IRepository<ApplicationUserGroup> ApplicationUserGroups => applicationUserGroups ?? (applicationUserGroups = new BaseRepository<ApplicationUserGroup>(DbContext));
 
         private IRepository<Photo> photos;
         public IRepository<Photo> Photos => photos ?? (photos = new BaseRepository<Photo>(DbContext));
