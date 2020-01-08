@@ -55,10 +55,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Album.cs" />
+    <Compile Include="ApplicationUserGroup.cs" />
     <Compile Include="Comment.cs" />
     <Compile Include="County.cs" />
     <Compile Include="ErrorLogCustom.cs" />
     <Compile Include="Friendship.cs" />
+    <Compile Include="Group.cs" />
     <Compile Include="IdentityModels.cs" />
     <Compile Include="Interest.cs" />
     <Compile Include="InterestsUsers.cs" />

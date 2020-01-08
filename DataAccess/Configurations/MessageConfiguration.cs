@@ -12,14 +12,21 @@ namespace DataAccess.Configurations
 
             builder.Property(e => e.Content)
                 .IsRequired();
+            
+            
 
             builder.HasRequired(d => d.Sender)
                 .WithMany(p => p.SentMessages)
-                .HasForeignKey(d => d.SentByUserId);
+                .HasForeignKey(d => d.SenderId);
 
-            builder.HasRequired(d => d.Receiver)
+            builder.HasOptional(d => d.Receiver)
                 .WithMany(p => p.ReceivedMessages)
-                .HasForeignKey(d => d.Receiver);
+                .HasForeignKey(d => d.ReceiverId);
+
+            builder.HasOptional(d => d.Group)
+                .WithMany(d => d.Messages)
+                .HasForeignKey(d => d.GroupId);
+
         }
     }
 }

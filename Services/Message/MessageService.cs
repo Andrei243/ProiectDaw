@@ -21,8 +21,8 @@ namespace Services.Message
             var message = new Domain.Message()
             {
                 Content = text,
-                SentToId = ReceiverId,
-                SentByUserId = currentUser.Id,
+                ReceiverId = ReceiverId,
+                SenderId = currentUser.Id,
                 SendingMoment = DateTime.Now
             };
 
@@ -49,7 +49,7 @@ namespace Services.Message
             var message = unitOfWork.Messages.Query
                 .First(e => e.Id == MessageId);
             if (message == null) return false;
-            var bool1 = message.SentByUserId == currentUser.Id;
+            var bool1 = message.SenderId == currentUser.Id;
             if (bool1) return true;
             return false;
 
@@ -58,8 +58,8 @@ namespace Services.Message
         public List<Domain.Message> GetSentMessagesTo(int toSkip, int howMany, string currentUserId, string ReceiverId)
         {
             return unitOfWork.Messages.Query.OrderByDescending(e => e.SendingMoment)
-                .Where(e => e.SentByUserId == currentUserId && !e.Sender.IsBanned)
-                .Where(e => e.SentToId == ReceiverId && !e.Receiver.IsBanned)
+                .Where(e => e.SenderId == currentUserId && !e.Sender.IsBanned)
+                .Where(e => e.ReceiverId == ReceiverId && !e.Receiver.IsBanned)
                 .OrderByDescending(e => e.SendingMoment)
                 .Skip(toSkip)
                 .Take(howMany)
@@ -69,8 +69,8 @@ namespace Services.Message
         public List<Domain.Message> GetReceivedMessagesFrom(int toSkip, int howMany, string currentUserId, string SenderId)
         {
             return unitOfWork.Messages.Query.OrderByDescending(e => e.SendingMoment)
-                .Where(e => e.SentToId == currentUserId && !e.Receiver.IsBanned)
-                .Where(e => e.SentByUserId == SenderId && !e.Sender.IsBanned)
+                .Where(e => e.ReceiverId == currentUserId && !e.Receiver.IsBanned)
+                .Where(e => e.SenderId == SenderId && !e.Sender.IsBanned)
                 .OrderByDescending(e => e.SendingMoment)
                 .Skip(toSkip)
                 .Take(howMany)

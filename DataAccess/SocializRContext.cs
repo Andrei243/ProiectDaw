@@ -26,6 +26,9 @@ namespace DataAccess
         public virtual DbSet<Post> Post { get; set; }
         public virtual DbSet<Reaction> Reaction { get; set; }
         public virtual DbSet<Role> Role { get; set; }
+        public virtual DbSet<Message> Messages { get; set; }
+        public virtual DbSet<Group> Groups { get; set; }
+        public virtual DbSet<ApplicationUserGroup> ApplicationUserGroups { get; set; }
 
         public static SocializRContext Create()
         {
@@ -53,6 +56,9 @@ namespace DataAccess
             UserConfiguration.Configure(modelBuilder.Entity<ApplicationUser>());
             IdentityUserLoginConfiguration.Configure(modelBuilder.Entity<IdentityUserLogin>());
             IdentityUserRoleConfiguration.Configure(modelBuilder.Entity<IdentityUserRole>());
+            MessageConfiguration.Configure(modelBuilder.Entity<Message>());
+            GroupConfiguration.Configure(modelBuilder.Entity<Group>());
+            ApplicationUserGroupsConfiguration.Configure(modelBuilder.Entity<ApplicationUserGroup>());
         }
     }
 }

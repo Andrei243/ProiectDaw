@@ -57,10 +57,12 @@
     <Compile Include="Base\BaseRepository.cs" />
     <Compile Include="Base\BaseUnitOfWork.cs" />
     <Compile Include="Configurations\AlbumConfiguration.cs" />
+    <Compile Include="Configurations\ApplicationUserConfiguration.cs" />
     <Compile Include="Configurations\CommentConfiguration.cs" />
     <Compile Include="Configurations\CountyConfiguration.cs" />
     <Compile Include="Configurations\ErrorLogCustomConfiguration.cs" />
     <Compile Include="Configurations\FriendshipConfiguration.cs" />
+    <Compile Include="Configurations\GroupConfiguration.cs" />
     <Compile Include="Configurations\IdentityUserLoginConfiguration.cs" />
     <Compile Include="Configurations\IdentityUserRoleConfiguration.cs" />
     <Compile Include="Configurations\InterestConfiguration.cs" />
@@ -83,6 +85,10 @@
     <Compile Include="Migrations\201912161607199_ApplicationUser.cs" />
     <Compile Include="Migrations\201912161607199_ApplicationUser.Designer.cs">
       <DependentUpon>201912161607199_ApplicationUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001081456317_Added messages and groups.cs" />
+    <Compile Include="Migrations\202001081456317_Added messages and groups.Designer.cs">
+      <DependentUpon>202001081456317_Added messages and groups.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -112,6 +118,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201912161607199_ApplicationUser.resx">
       <DependentUpon>201912161607199_ApplicationUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001081456317_Added messages and groups.resx">
+      <DependentUpon>202001081456317_Added messages and groups.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
