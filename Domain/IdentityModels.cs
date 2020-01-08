@@ -54,6 +54,7 @@ namespace Domain
         public virtual ICollection<Message> SentMessages { get; set; }
         public virtual ICollection<Message> ReceivedMessages { get; set; }
         public virtual ICollection<ApplicationUserGroup> Groups { get; set; }
+        public virtual ICollection<Group> AdministeredGroups { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

@@ -15,6 +15,10 @@ namespace DataAccess.Configurations
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(200);
+
+            builder.HasRequired(e => e.Admin)
+                .WithMany(e => e.AdministeredGroups)
+                .HasForeignKey(e => e.AdminId);
         }
 
     }
