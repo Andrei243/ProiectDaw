@@ -14,7 +14,6 @@
 <hr />
 @using (Html.BeginForm("Edit", "Counties", FormMethod.Post, new {  onsubmit = "return checkForm(this);" }))
 {
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true);
 
@@ -39,5 +38,5 @@
 }
 
 <div>
-    <a asp-action="Index" class="btn btn-primary btn-sm">Back to List</a>
+    <a href="/Counties/Index" class="btn btn-primary btn-sm">Back to List</a>
 </div>

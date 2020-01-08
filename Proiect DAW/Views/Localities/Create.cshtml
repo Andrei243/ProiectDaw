@@ -11,7 +11,6 @@
 <hr />
 @using (Html.BeginForm("Create", "Localities", FormMethod.Post, new {  onsubmit = "return checkForm(this);" }))
 {
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true);
 
@@ -40,5 +39,5 @@
 }
 
 <div>
-    <a asp-action="Index" class="btn btn-primary btn-sm" >Back to List</a>
+    <a href="/Localities/Index" class="btn btn-primary btn-sm" >Back to List</a>
 </div>

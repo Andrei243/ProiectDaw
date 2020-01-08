@@ -74,6 +74,7 @@ namespace Proiect_DAW.Code.Base
             {
                 currentUser = new CurrentUser(isAuthenticated: false);
                 messageBoxes = new List<MessageBoxViewer>();
+                ViewBag.CurrentUser = currentUser;
                 return;
             }
             SocializRContext context = new SocializRContext();
@@ -87,7 +88,6 @@ namespace Proiect_DAW.Code.Base
                     Id = user.Id,
                     Email = user.Email,
                     Name = user.Name,
-                    //IsAdmin = user.Role.Name == "admin",
                     IsBanned = user.IsBanned,
                     BirthDay = user.BirthDay,
                     LocalityId = user.LocalityId,
@@ -98,11 +98,12 @@ namespace Proiect_DAW.Code.Base
                     Locality = user.Locality,
                 };
                 currentUser.IsAdmin = userManager.GetRoles(user.Id).Contains("admin");
-                
+                ViewBag.CurrentUser = currentUser;
             }
             else
             {
                 currentUser = new CurrentUser(isAuthenticated: false);
+                ViewBag.CurrentUser = currentUser;
             }
         }
 

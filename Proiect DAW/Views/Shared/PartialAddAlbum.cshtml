@@ -8,7 +8,6 @@
 
     using (Html.BeginForm("AddAlbum", "Profile", FormMethod.Post, new {  onsubmit = "return checkForm(this);" }))
     {
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true);
 

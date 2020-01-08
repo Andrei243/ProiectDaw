@@ -8,7 +8,6 @@
     <div class="postAdd">
         @using (Html.BeginForm("AddPost", "Feed", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return checkForm(this);" }))
         {
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true);
             <div class="form-group">
@@ -29,7 +28,6 @@
                         <label for="Binar" id="butonAdaugarePoza">Add a photo</label>
                         <input type="file" id="Binar" name="Binar" class="form-control" hidden />
 
-                        <span asp-validation-for="Binar" class="text-danger"></span>
                     </div>
                     <div class="col-md-3" id="divButtonDeletePhoto">
 
