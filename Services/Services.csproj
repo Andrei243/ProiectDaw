@@ -64,6 +64,7 @@
     <Compile Include="InterestsUsers\InterestsUsersService.cs" />
     <Compile Include="Interest\InterestService.cs" />
     <Compile Include="Locality\LocalityService.cs" />
+    <Compile Include="Message\MessageService.cs" />
     <Compile Include="Photo\PhotoService.cs" />
     <Compile Include="Post\PostService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -89,5 +90,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

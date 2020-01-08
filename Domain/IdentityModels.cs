@@ -51,6 +51,8 @@ namespace Domain
         public virtual ICollection<InterestsUsers> InterestsUsers { get; set; }
         public virtual ICollection<Post> Post { get; set; }
         public virtual ICollection<Reaction> Reaction { get; set; }
+        public virtual ICollection<Message> SentMessages { get; set; }
+        public virtual ICollection<Message> ReceivedMessages { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

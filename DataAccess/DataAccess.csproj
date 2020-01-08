@@ -66,6 +66,7 @@
     <Compile Include="Configurations\InterestConfiguration.cs" />
     <Compile Include="Configurations\InterestsUsersConfiguration.cs" />
     <Compile Include="Configurations\LocalityConfiguration.cs" />
+    <Compile Include="Configurations\MessageConfiguration.cs" />
     <Compile Include="Configurations\PhotoConfiguration.cs" />
     <Compile Include="Configurations\PostConfiguration.cs" />
     <Compile Include="Configurations\ReactionConfiguration.cs" />

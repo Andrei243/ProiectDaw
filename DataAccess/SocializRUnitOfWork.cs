@@ -40,6 +40,10 @@ namespace DataAccess
         public IRepository<InterestsUsers> InterestsUserss => interestsUserss ?? (interestsUserss = new BaseRepository<InterestsUsers>(DbContext));
         private IRepository<Locality> localities;
         public IRepository<Locality> Localities => localities ?? (localities = new BaseRepository<Locality>(DbContext));
+
+        private IRepository<Message> messages;
+        public IRepository<Message> Messages => messages ?? (messages = new BaseRepository<Message>(DbContext));
+
         private IRepository<Photo> photos;
         public IRepository<Photo> Photos => photos ?? (photos = new BaseRepository<Photo>(DbContext));
         private IRepository<Reaction> reactions;
