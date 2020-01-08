@@ -192,7 +192,11 @@ namespace Proiect_DAW.Controllers
             {
                 //Request.Form.TryGetValue("Interests",
                 //    out var raspunsuri);
-                var raspunsuri = Request.Form.Get("Interests").Split(',');
+                var raspunsuri = Request.Form.Get("Interests")?.Split(',').ToList();
+                if (raspunsuri == null)
+                {
+                    raspunsuri = new List<string>();
+                }
                 interestsUsersService.ChangeInterests(user.Id, raspunsuri.Select(e => int.Parse(e)).ToList());
 
 

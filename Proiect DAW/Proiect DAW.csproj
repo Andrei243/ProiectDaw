@@ -229,6 +229,7 @@
     <Compile Include="Models\FeedModels\PostModel.cs" />
     <Compile Include="Models\FeedModels\PostUserModel.cs" />
     <Compile Include="Models\GeneralModels\LoginModel.cs" />
+    <Compile Include="Models\GeneralModels\MessageBoxViewer.cs" />
     <Compile Include="Models\GeneralModels\RegisterModel.cs" />
     <Compile Include="Models\GeneralModels\UserDropdownModel.cs" />
     <Compile Include="Models\JsonModels\Comment.cs" />

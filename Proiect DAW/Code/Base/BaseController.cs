@@ -10,6 +10,7 @@ using Domain;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
+using Proiect_DAW.Models.GeneralModels;
 using Services;
 using Services.User;
 
@@ -21,6 +22,7 @@ namespace Proiect_DAW.Code.Base
         protected ApplicationUserManager _userManager;
         protected ApplicationRoleManager _roleManager;
         protected CurrentUser currentUser;
+        protected List<MessageBoxViewer> messageBoxes;
         public ApplicationSignInManager SignInManager
         {
             get
@@ -60,23 +62,18 @@ namespace Proiect_DAW.Code.Base
 
         public BaseController()
         {
-            
+
         }
 
         public void MakeCurrentUser()
         {
-            //var context = this.HttpContext;
-            //if(context == null)
-            //{
-            //    currentUser= currentUser = new CurrentUser(isAuthenticated: false);
-            //    return;
-            //}
+
             var mail = ((ClaimsIdentity)SignInManager.AuthenticationManager.User?.Identity)?.Claims.FirstOrDefault(C => C.Type == ClaimTypes.Email)?.Value ?? string.Empty;
             var userService = new UserAccountService(new DataAccess.SocializRUnitOfWork(new DataAccess.SocializRContext()));
-            //var id = await SignInManager.GetVerifiedUserIdAsync();
             if (string.IsNullOrEmpty(mail))
             {
                 currentUser = new CurrentUser(isAuthenticated: false);
+                messageBoxes = new List<MessageBoxViewer>();
                 return;
             }
             SocializRContext context = new SocializRContext();
@@ -101,7 +98,8 @@ namespace Proiect_DAW.Code.Base
                     Locality = user.Locality,
                 };
                 currentUser.IsAdmin = userManager.GetRoles(user.Id).Contains("admin");
-                    }
+                
+            }
             else
             {
                 currentUser = new CurrentUser(isAuthenticated: false);

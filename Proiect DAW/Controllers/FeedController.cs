@@ -139,7 +139,7 @@ namespace Proiect_DAW.Controllers
         [HttpGet]
         public JsonResult GetPersonPosts(int toSkip, string userId)
         {
-
+            MakeCurrentUser();
             var posts = postService.GetPersonPost(toSkip, PageSize, userId).Select(e =>
              new PostJsonModel()
              {
