@@ -1,0 +1,45 @@
+﻿@model Proiect_DAW.Models.ProfileModels.MessageListModel
+
+@{
+    ViewBag.Title = "MessageUser";
+    Layout = "~/Views/GeneralLayout.cshtml";
+}
+
+<h2>MessageUser</h2>
+
+<div id="sentUserId" data-userId="@Model.Id" hidden></div>
+
+<input type="text" id="sendMessageToUser" placeholder="Send a message" />
+<button class="btn btn-lg" id="sendMessageToUserButton">Send the message</button>
+<div id="allMessages">
+    @foreach (var message in Model.Messages)
+    {
+        <div class="clearfix">
+            @{
+                var className = message.IsMine ? "float-left" : "float-right";
+                var messageClassName = message.IsMine ? "speech-bubble-right" : "speech-bubble-left";
+            }
+            <div class="@className">
+                <p>
+                    @message.Name
+                </p>
+                @if (message.ProfilePhoto.HasValue)
+                {
+                    <img src="/Photo/Download/@message.ProfilePhoto" />
+                }
+                else
+                {
+                    <img src="~/images/DefaultProfile.png" />
+                }
+            </div>
+            <div class="@messageClassName">
+                @message.Content
+            </div>
+        </div>
+
+    }
+
+</div>
+<script src="~/js/sendMessageToUser.js"></script>
+
+

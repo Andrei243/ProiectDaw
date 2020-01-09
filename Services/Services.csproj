@@ -65,6 +65,7 @@
     <Compile Include="Interest\InterestService.cs" />
     <Compile Include="Locality\LocalityService.cs" />
     <Compile Include="MessageBoxViewer.cs" />
+    <Compile Include="MessageViewer.cs" />
     <Compile Include="Message\MessageService.cs" />
     <Compile Include="Photo\PhotoService.cs" />
     <Compile Include="Post\PostService.cs" />

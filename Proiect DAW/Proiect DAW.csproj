@@ -245,10 +245,10 @@
     <Compile Include="Models\ProfileModels\AddAlbumModel.cs" />
     <Compile Include="Models\ProfileModels\AlbumsViewModel.cs" />
     <Compile Include="Models\ProfileModels\AlbumViewerModel.cs" />
-    <Compile Include="Models\ProfileModels\ChatBoxModel.cs" />
     <Compile Include="Models\ProfileModels\EditUserModel.cs" />
     <Compile Include="Models\ProfileModels\FriendListModel.cs" />
     <Compile Include="Models\ProfileModels\GroupModel.cs" />
+    <Compile Include="Models\ProfileModels\MessageListModel.cs" />
     <Compile Include="Models\ProfileModels\MessageModel.cs" />
     <Compile Include="Models\ProfileModels\PhotoModel.cs" />
     <Compile Include="Models\ProfileModels\ProfileViewerModel.cs" />
@@ -302,6 +302,7 @@
     <Content Include="wwwroot\js\onlyOnce.js" />
     <Content Include="wwwroot\js\Profile.js" />
     <Content Include="wwwroot\js\RedirectToFeed.js" />
+    <Content Include="wwwroot\js\sendMessageToUser.js" />
     <Content Include="wwwroot\js\site.js" />
     <Content Include="wwwroot\js\User.js" />
     <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css" />
@@ -432,13 +433,14 @@
     <Content Include="wwwroot\lib\jquery\dist\jquery.min.map" />
     <Content Include="wwwroot\lib\lightbox2\js\lightbox-plus-jquery.min.map" />
     <Content Include="wwwroot\lib\lightbox2\js\lightbox.min.map" />
+    <Content Include="Views\Message\ChatBox.cshtml" />
+    <Content Include="Views\Message\MessageUser.cshtml" />
     <Content Include="Views\Profile\ChatBox.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Authorization\" />
     <Folder Include="Code\Extensions\" />
-    <Folder Include="Views\Message\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

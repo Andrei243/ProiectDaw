@@ -103,7 +103,7 @@
 @if (Model.CanSee)
 {
     <div id="currentUserInfo" hidden data-profile="@currentUser.ProfilePhoto" data-name="@currentUser.Name @currentUser.Surname" data-userid="@currentUser.Id"></div>
-
+    <a class="btn btn-sm" href="/Message/MessageUser/@Model.Id">Send a message</a>
 
     <div class="container profileInfo">
         <ul class="nav nav-tabs nav-justified infoTabs" role="tablist">

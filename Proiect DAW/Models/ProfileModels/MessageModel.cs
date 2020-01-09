@@ -11,7 +11,7 @@ namespace Proiect_DAW.Models.ProfileModels
         public int Id { get; set; }
         public PostUserModel Sender { get; set; }
         public PostUserModel Receiver { get; set; }
-        public GroupModel? Group { get; set; }
+        public GroupModel Group { get; set; }
         public string Content { get; set; }
     }
 }

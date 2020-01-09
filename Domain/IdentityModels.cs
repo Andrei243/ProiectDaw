@@ -64,8 +64,10 @@ namespace Domain
             var claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.Name, Name));
             claims.Add(new Claim(ClaimTypes.Email, Email));
-            claims.Add(new Claim(ClaimTypes.Role, Role.Name));
-
+            if (Role != null)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, Role.Name));
+            }
             userIdentity.AddClaims(claims);
             return userIdentity;
         }

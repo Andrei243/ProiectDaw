@@ -175,9 +175,11 @@ namespace Proiect_DAW.Controllers
                     LocalityId = model.LocalityId,
                     SexualIdentity = model.SexualIdentity,
                     Email = model.Email,
-                    UserName=model.Email
+                    UserName=model.Email,
+                    Confidentiality = "friends",
+                    RoleId=2
                 };
-                var registeredUser = UserManager.Create(user);
+                var registeredUser = UserManager.Create(user,model.Password);
                 if (registeredUser.Succeeded)
                 {
                     UserManager.AddToRole(user.Id, "public");

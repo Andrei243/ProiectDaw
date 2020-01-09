@@ -707,7 +707,52 @@ div.albumProfilPreview.albumEdit {
 a {
     color: #48c6ff;
 }
+
     a:hover, a:focus {
-        color:#22b5f7;
-        text-decoration:none;
+        color: #22b5f7;
+        text-decoration: none;
     }
+
+.speech-bubble-right {
+    position: relative;
+    background: #00aabb;
+    border-radius: .4em;
+}
+
+    .speech-bubble-right:after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        width: 0;
+        height: 0;
+        border: 0.969em solid transparent;
+        border-left-color: #00aabb;
+        border-right: 0;
+        border-bottom: 0;
+        margin-top: -0.484em;
+        margin-right: -0.969em;
+    }
+
+.speech-bubble-left {
+    position: relative;
+    background: #00aabb;
+    border-radius: .4em;
+}
+
+    .speech-bubble-left:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 0;
+        height: 0;
+        border: 0.969em solid transparent;
+        border-right-color: #00aabb;
+        border-left: 0;
+        border-bottom: 0;
+        margin-top: -0.484em;
+        margin-left: -0.969em;
+    }
+
+  

@@ -323,6 +323,7 @@ namespace Proiect_DAW.Controllers
                 return NotFoundView();
             }
             UserManager.AddToRoleAsync(userId, "admin");
+            userService.MakeAdmin(userId);
             return RedirectToAction("Index");
 
         }
@@ -336,6 +337,7 @@ namespace Proiect_DAW.Controllers
             {
                 return NotFoundView();
             }
+            userService.RevokeAdmin(userId);
             UserManager.RemoveFromRoleAsync(userId, "admin");
             return RedirectToAction("Index");
 

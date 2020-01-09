@@ -30,6 +30,41 @@ namespace Services.Message
             unitOfWork.SaveChanges();
             return message.Id;
         }
+        public int SendMessageToPerson(string text,string userId,CurrentUser currentUser)
+        {
+            var user = unitOfWork.Users.Query.First(e => e.Id == currentUser.Id);
+            if (user.IsBanned) return -1;
+            var message = new Domain.Message()
+            {
+                Content = text,
+                ReceiverId = userId,
+                SenderId = currentUser.Id,
+                SendingMoment = DateTime.Now
+            };
+
+            unitOfWork.Messages.Add(message);
+            unitOfWork.SaveChanges();
+            return message.Id;
+
+        }
+
+        public int SendMessageToGroup(string text,int groupId,CurrentUser currentUser)
+        {
+            var user = unitOfWork.Users.Query.First(e => e.Id == currentUser.Id);
+            if (user.IsBanned) return -1;
+            var message = new Domain.Message()
+            {
+                Content = text,
+                GroupId = groupId,
+                SenderId = currentUser.Id,
+                SendingMoment = DateTime.Now
+            };
+
+            unitOfWork.Messages.Add(message);
+            unitOfWork.SaveChanges();
+            return message.Id;
+        }
+
 
         public bool RemoveMessage (int MessageId)
         {
@@ -52,6 +87,28 @@ namespace Services.Message
             var bool1 = message.SenderId == currentUser.Id;
             if (bool1) return true;
             return false;
+
+        }
+
+        public List<MessageViewer> GetMessagesGroup(int groupId,CurrentUser currentUser)
+        {
+            if (unitOfWork.ApplicationUserGroups.Query.FirstOrDefault(e => e.GroupId == groupId && e.UserId == currentUser.Id) == null)
+            {
+                throw new Exception("You can't see the messages from a group in which you are not");
+            }
+
+            var messages = unitOfWork.Messages.Query
+                .Where(e => e.GroupId == groupId)
+                .Select(e => new MessageViewer()
+                {
+                    Content = e.Content,
+                    DateTime = e.SendingMoment,
+                    Id = e.Id,
+                    IsMine = e.SenderId == currentUser.Id,
+                    Name = e.Sender.Name + " " + e.Sender.Surname,
+                    ProfilePhoto = e.Sender.PhotoId
+                });
+            return messages.ToList();
 
         }
 
@@ -84,7 +141,7 @@ namespace Services.Message
                     DateLastMessage = e.SendingMoment,
                     LastMessage = e.Content,
                     ProfilePhoto = e.GroupId != null ? null : e.ReceiverId == userId ? e.Sender.PhotoId : e.Receiver.PhotoId,
-                    Call = e.GroupId != null ? "/Messages/MessageGroup?id=" + e.GroupId.ToString() : "/Messages/MessageUser?id=" + (e.ReceiverId == userId ? e.Sender.Id : e.Receiver.Id),
+                    Call = e.GroupId != null ? "/Message/MessageGroup/id=" + e.GroupId.ToString() : "/Message/MessageUser/id=" + (e.ReceiverId == userId ? e.Sender.Id : e.Receiver.Id),
                     UserName = e.GroupId != null ? e.Group.Name : e.ReceiverId == userId ? e.Sender.Name + " " + e.Sender.Surname : e.Receiver.Name + " " + e.Receiver.Surname
                 });
             messages = messages.GroupBy(e => e.Call).Select(e => e.OrderByDescending(f => f.DateLastMessage).FirstOrDefault());
