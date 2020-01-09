@@ -21,7 +21,7 @@ namespace Services.Photo
 
             var photo = unitOfWork.Photos.Query
                 .Include(e=>e.Post)
-                .Include("Album.Users")
+                .Include("Album.User")
                 .FirstOrDefault(e => e.Id == photoId);
             if (photo == null)
             {

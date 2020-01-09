@@ -12,13 +12,11 @@
             success: function (response) {
                 $("#users").empty();
                 html = '';
-                debugger;
                 for (let i = 0; i < response.length; i++) {
 
                     var redirect = '/Profile/Profile' + "?userId=" + response[i].Id;
                     var photoURL = '/Photos/Download' + "/" + response[i].ProfilePhotoId;
                     if (!!response[i].profilePhotoId) {
-                        debugger;
                         html = html.concat(`<a href=${redirect}><div class="dropdownItem"><p>${response[i].Name}</p><img src=${photoURL} height="100em" />   </div></a>`)
                     }
                     else {

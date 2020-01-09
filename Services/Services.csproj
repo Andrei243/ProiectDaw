@@ -61,6 +61,7 @@
     <Compile Include="County\CountyService.cs" />
     <Compile Include="CurrentUser.cs" />
     <Compile Include="Friendship\FriendshipService.cs" />
+    <Compile Include="Group\GroupService.cs" />
     <Compile Include="InterestsUsers\InterestsUsersService.cs" />
     <Compile Include="Interest\InterestService.cs" />
     <Compile Include="Locality\LocalityService.cs" />

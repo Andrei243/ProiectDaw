@@ -1,0 +1,33 @@
+﻿@model Domain.Group
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/GeneralLayout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>@Model.Name</h4>
+    <hr />
+    @foreach(var user in Model.Users)
+    {
+        <div class="friendDiv">
+            <a href="/Profile/Profile?userId=@user.UserId">
+                @if (user.User.PhotoId.HasValue)
+                {
+                    <img src="/Photos/Download/@user.User.PhotoId.Value" />
+                }
+                else
+                {
+                    <img src="/images/DefaultProfile.png" />
+                }
+                <p>@user.User.Name</p>
+
+            </a>
+        </div>
+    }
+</div>
+<p>
+    <a href="/Group/UserGroups/@ViewBag.CurrentUser.Id">Bak to your Groups</a>
+</p>

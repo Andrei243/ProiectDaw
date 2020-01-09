@@ -201,6 +201,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CountiesController.cs" />
     <Compile Include="Controllers\FeedController.cs" />
+    <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\InterestsController.cs" />
     <Compile Include="Controllers\LocalitiesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -302,7 +303,7 @@
     <Content Include="wwwroot\js\onlyOnce.js" />
     <Content Include="wwwroot\js\Profile.js" />
     <Content Include="wwwroot\js\RedirectToFeed.js" />
-    <Content Include="wwwroot\js\sendMessageToUser.js" />
+    <Content Include="wwwroot\js\sendMessage.js" />
     <Content Include="wwwroot\js\site.js" />
     <Content Include="wwwroot\js\User.js" />
     <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css" />
@@ -436,6 +437,13 @@
     <Content Include="Views\Message\ChatBox.cshtml" />
     <Content Include="Views\Message\MessageUser.cshtml" />
     <Content Include="Views\Profile\ChatBox.cshtml" />
+    <Content Include="Views\Message\MessageGroup.cshtml" />
+    <Content Include="Views\Group\Create.cshtml" />
+    <Content Include="Views\Group\Delete.cshtml" />
+    <Content Include="Views\Group\Edit.cshtml" />
+    <Content Include="Views\Group\Details.cshtml" />
+    <Content Include="Views\Group\UserGroups.cshtml" />
+    <Content Include="Views\Group\FindGroups.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,29 @@
+﻿@model List<Domain.Group>
+@{
+    ViewData["Title"] = "My groups";
+    Layout = "~/Views/GeneralLayout.cshtml";
+}
+
+<h1>My Groups</h1>
+
+<a href="/Group/Create">Create a group</a>
+
+
+<div id="friendRequestBody">
+
+    @foreach (var group in Model)
+    {
+        <div class="friend clearfix">
+            <a href="/Group/Details/@group.Id">
+               
+                <p>@group.Name</p>
+            </a>
+
+            <div class="friendshipButtons float-right ">
+                <a class="btn btn-primary" href="/Group/ExitGroup/@group.Id">Exit group</a>
+            </div>
+
+        </div>
+    }
+
+</div>

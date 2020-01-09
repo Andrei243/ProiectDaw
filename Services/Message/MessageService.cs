@@ -141,7 +141,7 @@ namespace Services.Message
                     DateLastMessage = e.SendingMoment,
                     LastMessage = e.Content,
                     ProfilePhoto = e.GroupId != null ? null : e.ReceiverId == userId ? e.Sender.PhotoId : e.Receiver.PhotoId,
-                    Call = e.GroupId != null ? "/Message/MessageGroup/id=" + e.GroupId.ToString() : "/Message/MessageUser/id=" + (e.ReceiverId == userId ? e.Sender.Id : e.Receiver.Id),
+                    Call = e.GroupId != null ? "/Message/MessageGroup/" + e.GroupId.ToString() : "/Message/MessageUser/" + (e.ReceiverId == userId ? e.Sender.Id : e.Receiver.Id),
                     UserName = e.GroupId != null ? e.Group.Name : e.ReceiverId == userId ? e.Sender.Name + " " + e.Sender.Surname : e.Receiver.Name + " " + e.Receiver.Surname
                 });
             messages = messages.GroupBy(e => e.Call).Select(e => e.OrderByDescending(f => f.DateLastMessage).FirstOrDefault());

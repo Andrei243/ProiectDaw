@@ -61,8 +61,8 @@ namespace Proiect_DAW.Controllers
             return View(new MessageListModel()
             {
                 Id = id,
-                Messages=allMessages.ToList()
-            }) ;
+                Messages = allMessages.ToList()
+            });
         }
         [HttpGet]
         public ActionResult MessageGroup(int id)
@@ -71,7 +71,11 @@ namespace Proiect_DAW.Controllers
 
             var messages = messageService.GetMessagesGroup(id, currentUser);
 
-            return View(messages);
+            return View(new MessageListModel()
+            {
+                Id = id.ToString(),
+                Messages = messages
+            });
         }
 
 
@@ -103,7 +107,7 @@ namespace Proiect_DAW.Controllers
         }
 
         [HttpPost]
-        public JsonResult SendMessageToGroup(string message,int? groupId)
+        public JsonResult SendMessageToGroup(string message, int? groupId)
         {
             MakeCurrentUser();
             if (groupId == 0)
