@@ -5,6 +5,8 @@
 @{
     Services.CurrentUser currentUser = ViewBag.CurrentUser;
 }
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="container">
     <div class="sidebar">
         <div class="myProfile">
@@ -30,6 +32,7 @@
                         <a href="@Url.Action("Albums","Profile")" class="list-group-item list-group-item-action">Edit albums</a>
                         <a href="@Url.Action("FriendList","Profile")" class="list-group-item list-group-item-action">View Friends</a>
                         <a href="@Url.Action("FriendRequests","Profile")" class="list-group-item list-group-item-action">View Friend Requests</a>
+                        <a href="@Url.Action("ChatBox", "Profile")" class="list-group-item list-group-item-action"> Chat Box <i class="fa fa-comments-o" style="font-size:24px"></i></a>
                     </div>
                     @if (currentUser.IsAdmin)
                     {

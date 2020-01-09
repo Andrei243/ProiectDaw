@@ -15,6 +15,7 @@ using Services.County;
 using Services.FriendShip;
 using Services.Album;
 using Services.Photo;
+using Services.Message;
 
 namespace Proiect_DAW.Controllers
 {
@@ -27,6 +28,7 @@ namespace Proiect_DAW.Controllers
         private readonly Services.InterestsUsers.InterestsUsersService interestsUsersService;
         private readonly Services.Album.AlbumService albumService;
         private readonly Services.Photo.PhotoService photoService;
+        private readonly Services.Message.MessageService messageService;
 
 
         public ProfileController()
@@ -39,6 +41,7 @@ namespace Proiect_DAW.Controllers
             friendService = new FriendshipService( new SocializRUnitOfWork(new SocializRContext()));
             albumService = new AlbumService( new SocializRUnitOfWork(new SocializRContext()));
             photoService = new PhotoService(new SocializRUnitOfWork(new SocializRContext()));
+            messageService = new MessageService(new SocializRUnitOfWork(new SocializRContext()));
         }
 
         [HttpGet]
@@ -569,5 +572,16 @@ namespace Proiect_DAW.Controllers
 
         }
 
+        [HttpGet]
+        public ActionResult ChatBox()
+        {
+
+            MakeCurrentUser();
+            ViewBag.currentUser = currentUser;
+            var chats = messageService.GetMessageBoxes(currentUser);
+
+            if (chats == null) return RedirectToAction("Index");
+            return View(chats);
+        }
     }
 }

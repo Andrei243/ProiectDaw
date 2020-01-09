@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Services.MessageBoxViewer>
+
+@{
+    ViewBag.Title = "ChatBox";
+    Layout = "~/Views/GeneralLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table">
+    @foreach (var item in Model)
+    {
+        <tr>
+            <th>Users</th>
+            <th>Last Message</th>
+            <th>
+
+            </th>
+        </tr>
+
+        <tr>
+            <td>
+                <a href="/Message/OpenChatBox/@item.UserName">@Html.DisplayFor(modelItem => item.UserName)</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastMessage)<br />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateLastMessage)
+            </td>
+        </tr>
+    }
+
+</table>

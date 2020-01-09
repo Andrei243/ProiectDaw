@@ -87,7 +87,7 @@ namespace Services.Message
                     Call = e.GroupId != null ? "/Messages/MessageGroup?id=" + e.GroupId.ToString() : "/Messages/MessageUser?id=" + (e.ReceiverId == userId ? e.Sender.Id : e.Receiver.Id),
                     UserName = e.GroupId != null ? e.Group.Name : e.ReceiverId == userId ? e.Sender.Name + " " + e.Sender.Surname : e.Receiver.Name + " " + e.Receiver.Surname
                 });
-            messages = messages.GroupBy(e => e.Call).Select(e => e.OrderByDescending(f => f.DateLastMessage).First());
+            messages = messages.GroupBy(e => e.Call).Select(e => e.OrderByDescending(f => f.DateLastMessage).FirstOrDefault());
             return messages.ToList();
         }
 
