@@ -14,27 +14,54 @@
 <div id="allMessages">
     @foreach (var message in Model.Messages)
     {
-        <div class="clearfix">
+        <div class="message">
             @{
-                var className = message.IsMine ? "float-right" : "float-left";
+                var className = message.IsMine ? "profile-right" : "profile-left";
                 var messageClassName = message.IsMine ? "speech-bubble-right" : "speech-bubble-left";
             }
-            <div class="@className">
-                <p>
-                    @message.Name
-                </p>
-                @if (message.ProfilePhoto.HasValue)
-                {
-                    <img src="/Photos/Download/@message.ProfilePhoto" />
-                }
-                else
-                {
-                    <img src="~/images/DefaultProfile.png" />
-                }
-            </div>
-            <div class="@messageClassName">
-                @message.Content
-            </div>
+            @if (message.IsMine)
+            {
+                <div class="@messageClassName">
+                    @message.Content
+                </div>
+                <div class="@className">
+
+                    @if (message.ProfilePhoto.HasValue)
+                    {
+                        <img src="/Photos/Download/@message.ProfilePhoto" />
+                    }
+                    else
+                    {
+                        <img src="~/images/DefaultProfile.png" />
+                    }
+                    <p>
+                        @message.Name
+                    </p>
+                </div>
+
+            }
+            else
+            {
+                <div class="@className">
+
+                    @if (message.ProfilePhoto.HasValue)
+                    {
+                        <img src="/Photos/Download/@message.ProfilePhoto" />
+                    }
+                    else
+                    {
+                        <img src="~/images/DefaultProfile.png" />
+                    }
+                    <p>
+                        @message.Name
+                    </p>
+                </div>
+                <div class="@messageClassName">
+                    @message.Content
+                </div>
+            }
+
+
         </div>
 
     }

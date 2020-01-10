@@ -43,8 +43,9 @@
                             let image = result[i];
                             var html = template(image);
                             $("#imageBody").append(html);
-                            $("#changeDescription" + image.id).click(changeDescription);
                             $("#changeDescription" + image.id).click(prevent);
+
+                            $("#changeDescription" + image.id).click(changeDescription);
                             $("#makeProfile" + image.id).click(prevent);
                             $("#removePhoto" + image.id).click(prevent);
                         }

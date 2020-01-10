@@ -13,7 +13,7 @@ namespace Services.Message
         {
         }
 
-        public int AddMessage (string text, string ReceiverId, CurrentUser currentUser )
+        public int AddMessage(string text, string ReceiverId, CurrentUser currentUser)
         {
             var user = unitOfWork.Users.Query.First(e => e.Id == currentUser.Id);
             if (user.IsBanned) return -1;
@@ -30,7 +30,7 @@ namespace Services.Message
             unitOfWork.SaveChanges();
             return message.Id;
         }
-        public int SendMessageToPerson(string text,string userId,CurrentUser currentUser)
+        public int SendMessageToPerson(string text, string userId, CurrentUser currentUser)
         {
             var user = unitOfWork.Users.Query.First(e => e.Id == currentUser.Id);
             if (user.IsBanned) return -1;
@@ -48,7 +48,7 @@ namespace Services.Message
 
         }
 
-        public int SendMessageToGroup(string text,int groupId,CurrentUser currentUser)
+        public int SendMessageToGroup(string text, int groupId, CurrentUser currentUser)
         {
             var user = unitOfWork.Users.Query.First(e => e.Id == currentUser.Id);
             if (user.IsBanned) return -1;
@@ -66,7 +66,7 @@ namespace Services.Message
         }
 
 
-        public bool RemoveMessage (int MessageId)
+        public bool RemoveMessage(int MessageId)
         {
             var message = unitOfWork.Messages.Query
                 .FirstOrDefault(e => e.Id == MessageId);
@@ -76,10 +76,10 @@ namespace Services.Message
             return unitOfWork.SaveChanges() != 0;
         }
 
-        public bool CanDeleteMessage (int MessageId, CurrentUser currentUser)
+        public bool CanDeleteMessage(int MessageId, CurrentUser currentUser)
         {
             if (currentUser.IsAdmin) return true;
-            var isBanned = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == currentUser.Id)?.IsBanned?? false;
+            var isBanned = unitOfWork.Users.Query.FirstOrDefault(e => e.Id == currentUser.Id)?.IsBanned ?? false;
             if (isBanned) return false;
             var message = unitOfWork.Messages.Query
                 .First(e => e.Id == MessageId);
@@ -90,7 +90,7 @@ namespace Services.Message
 
         }
 
-        public List<MessageViewer> GetMessagesGroup(int groupId,CurrentUser currentUser)
+        public List<MessageViewer> GetMessagesGroup(int groupId, CurrentUser currentUser)
         {
             if (unitOfWork.ApplicationUserGroups.Query.FirstOrDefault(e => e.GroupId == groupId && e.UserId == currentUser.Id) == null)
             {
@@ -99,6 +99,7 @@ namespace Services.Message
 
             var messages = unitOfWork.Messages.Query
                 .Where(e => e.GroupId == groupId)
+                .OrderByDescending(e => e.SendingMoment)
                 .Select(e => new MessageViewer()
                 {
                     Content = e.Content,
@@ -112,7 +113,7 @@ namespace Services.Message
 
         }
 
-        public List<Domain.Message> GetSentMessagesTo( string currentUserId, string ReceiverId)
+        public List<Domain.Message> GetSentMessagesTo(string currentUserId, string ReceiverId)
         {
             return unitOfWork.Messages.Query.OrderByDescending(e => e.SendingMoment)
                 .Where(e => e.SenderId == currentUserId && !e.Sender.IsBanned)
@@ -121,7 +122,7 @@ namespace Services.Message
                 .ToList();
         }
 
-        public List<Domain.Message> GetReceivedMessagesFrom( string currentUserId, string SenderId)
+        public List<Domain.Message> GetReceivedMessagesFrom(string currentUserId, string SenderId)
         {
             return unitOfWork.Messages.Query.OrderByDescending(e => e.SendingMoment)
                 .Where(e => e.ReceiverId == currentUserId && !e.Receiver.IsBanned)

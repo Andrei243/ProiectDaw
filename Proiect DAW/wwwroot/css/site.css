@@ -715,8 +715,11 @@ a {
 
 .speech-bubble-right {
     position: relative;
-    background: #00aabb;
+    background: #48c6ff;
     border-radius: .4em;
+    padding-left: 5px;
+    width: 500px;
+    display:inline-block;
 }
 
     .speech-bubble-right:after {
@@ -727,7 +730,7 @@ a {
         width: 0;
         height: 0;
         border: 0.969em solid transparent;
-        border-left-color: #00aabb;
+        border-left-color: #48c6ff;
         border-right: 0;
         border-bottom: 0;
         margin-top: -0.484em;
@@ -736,8 +739,11 @@ a {
 
 .speech-bubble-left {
     position: relative;
-    background: #00aabb;
+    background: #48c6ff;
     border-radius: .4em;
+    padding-left: 5px;
+    width: 500px;
+    display:inline-block;
 }
 
     .speech-bubble-left:after {
@@ -748,11 +754,35 @@ a {
         width: 0;
         height: 0;
         border: 0.969em solid transparent;
-        border-right-color: #00aabb;
+        border-right-color: #48c6ff;
         border-left: 0;
         border-bottom: 0;
         margin-top: -0.484em;
         margin-left: -0.969em;
     }
 
-  
+#allMessages div.message div img {
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+}
+div.profile-right,div.profile-left{
+      width:200px;
+      display:inline-block;
+  }
+
+
+
+#allMessages {
+    width: 900px;
+}
+
+.message {
+    display: block;
+    width: 900px;
+}
+
+/*#allMessages div.clearfix div.float-left,#allMessages div.clearfix div.float-right{
+    margin-top:50px;
+}*/
