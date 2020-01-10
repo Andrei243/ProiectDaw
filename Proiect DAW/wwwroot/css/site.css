@@ -770,6 +770,7 @@ a {
 div.profile-right,div.profile-left{
       width:200px;
       display:inline-block;
+      padding-left:10px;
   }
 
 
@@ -783,6 +784,6 @@ div.profile-right,div.profile-left{
     width: 900px;
 }
 
-/*#allMessages div.clearfix div.float-left,#allMessages div.clearfix div.float-right{
-    margin-top:50px;
-}*/
+#sendMessageToUserButton {
+    background-color: #48c6ff;
+}

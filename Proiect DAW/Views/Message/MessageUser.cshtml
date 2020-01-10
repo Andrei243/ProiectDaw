@@ -5,12 +5,12 @@
     Layout = "~/Views/GeneralLayout.cshtml";
 }
 
-<h2>MessageUser</h2>
+<h2>Messages</h2>
 
 <div id="sentUserId" data-userId="@Model.Id" hidden></div>
 
-<input type="text" id="sendMessageToUser" placeholder="Send a message" />
-<button class="btn btn-lg" id="sendMessageToUserButton">Send the message</button>
+<input type="text" id="sendMessageToUser" placeholder="Type a message" />
+<button class="btn btn-lg" id="sendMessageToUserButton">Send</button>
 <div id="allMessages">
     @foreach (var message in Model.Messages)
     {
