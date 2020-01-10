@@ -28,20 +28,19 @@
 
                     </div>
                     <div id="linkuriProfil" class="list-group">
-                        <a href="@Url.Action("Edit","Profile")" class="list-group-item list-group-item-action">Edit Profile</a>
-                        <a href="@Url.Action("Albums","Profile")" class="list-group-item list-group-item-action">Edit albums</a>
-                        <a href="@Url.Action("FriendList","Profile")" class="list-group-item list-group-item-action">View Friends</a>
-                        <a href="@Url.Action("FriendRequests","Profile")" class="list-group-item list-group-item-action">View Friend Requests</a>
-                        <a href="@Url.Action("ChatBox", "Profile")" class="list-group-item list-group-item-action"> Chat Box <i class="fa fa-comments-o" style="font-size:24px"></i></a>
+                        <a href="@Url.Action("Edit","Profile")" class="list-group-item list-group-item-action"> Edit Profile <i class="fa fa-user"></i></a>
+                        <a href="@Url.Action("Albums","Profile")" class="list-group-item list-group-item-action"> Edit albums <i class="fa fa-photo"></i></a>
+                        <a href="@Url.Action("FriendList","Profile")" class="list-group-item list-group-item-action">View Friends <i class="fa fa-handshake-o"></i></a>
+                        <a href="@Url.Action("FriendRequests","Profile")" class="list-group-item list-group-item-action"> View Friend Requests <i class="fa fa-child"></i></a>
+                        <a href="@Url.Action("ChatBox", "Profile")" class="list-group-item list-group-item-action"> Chat Box <i class="fa fa-comments-o" ></i></a>
+                        <a href="@Url.Action("UserGroups", "Group")" class="list-group-item list-group-item-action"> Groups <i class="fa fa-group" ></i></a>
+                        <a href="@Url.Action("FindGroups", "Group")" class="list-group-item list-group-item-action"> Find Other Groups <i class="fa fa-group" ></i></a>
                     </div>
                     @if (currentUser.IsAdmin)
                     {
                         <div class="dropdown" style="display:inline-block">
-                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                                Admin
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
+                            Admin
+                            <ul class="list-group-item list-group-item-action">
                                 <li> @Html.ActionLink("Interests", "Index", "Interests")</li>
                                 <li> @Html.ActionLink("Counties", "Index", "Counties")</li>
                                 <li> @Html.ActionLink("Localities", "Index", "Localities")</li>

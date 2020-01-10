@@ -8,16 +8,14 @@
 <h2>@ViewBag.Title</h2>
 
 <table class="table">
+    <tr>
+    <th>User / Group</th>
+    <th>Last Message</th>
+    <th>
+    </th>
+    </tr>
     @foreach (var item in Model)
     {
-        <tr>
-            <th>Users</th>
-            <th>Last Message</th>
-            <th>
-
-            </th>
-        </tr>
-
         <tr>
             <td>
                 <a href="@item.Call">@Html.DisplayFor(modelItem => item.UserName)</a>
