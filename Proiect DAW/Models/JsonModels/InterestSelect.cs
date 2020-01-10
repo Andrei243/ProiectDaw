@@ -11,6 +11,12 @@ namespace Proiect_DAW.Models.JsonModels
         public string Text { get; set; }
         public bool Selected { get; set; }
         
+        public static implicit operator InterestSelectJsonModel(string x)
+        {
+            var interest = new InterestSelectJsonModel();
+            interest.Id = int.Parse(x);
+            return interest;
+        }
 
     }
 }

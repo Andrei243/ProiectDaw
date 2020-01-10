@@ -219,13 +219,13 @@
                                     <div class="albumProfilPreview">
 
                                         <div class="poze" data-id="@album.Id">
-                                            @if (album.CoverPhoto == -1)
+                                            @if (album.CoverPhoto == -1||!album.CoverPhoto.HasValue)
                                             {
                                                 <a><img src="~/images/genericAlbumCoverPhoto.jpg" class="albumPreview" /></a>
                                             }
                                             else
                                             {
-                                                <img src="@Url.Action("Download", "Photos", new { id = album.CoverPhoto })" class="albumPreview" />
+                                                <img src="/Photos/Download/@album.CoverPhoto.ToString()" class="albumPreview" />
                                             }
                                         </div>
                                         <h5 class="albumName">@album.Name</h5>
@@ -254,13 +254,13 @@
                                     <div class="albumProfilPreview">
 
                                         <div class="poze" data-id="@album.Id">
-                                            @if (album.CoverPhoto == -1)
+                                            @if (album.CoverPhoto == -1||!album.CoverPhoto.HasValue)
                                             {
                                                 <a><img src="~/images/genericAlbumCoverPhoto.jpg" class="albumPreview" /></a>
                                             }
                                             else
                                             {
-                                                <img src="@Url.Action("Download", "Photos", new { id = album.CoverPhoto })" class="albumPreview" />
+                                                <img src="/Photos/Download/@album.CoverPhoto" class="albumPreview" />
                                             }
                                         </div>
                                         <h5 class="albumName">@album.Name</h5>
@@ -289,13 +289,13 @@
                                     <div class="albumProfilPreview">
 
                                         <div class="poze" data-id="@album.Id">
-                                            @if (album.CoverPhoto == -1)
+                                            @if (album.CoverPhoto == -1||!album.CoverPhoto.HasValue)
                                             {
                                                 <a><img src="~/images/genericAlbumCoverPhoto.jpg" class="albumPreview" /></a>
                                             }
                                             else
                                             {
-                                                <img src="@Url.Action("Download", "Photos", new { id = album.CoverPhoto })" class="albumPreview" />
+                                                <img src="/Photos/Download/@album.CoverPhoto" class="albumPreview" />
                                             }
                                         </div>
                                         <h5 class="albumName">@album.Name</h5>

@@ -12,7 +12,7 @@ namespace Proiect_DAW.Models.ProfileModels
         public EditUserModel()
         {
             Counties = new List<SelectListItem>();
-            Interests = new List<InterestSelectJsonModel>();
+            Interests = new List<int>();
             Albume = new List<AlbumDomainModel>();
         }
 
@@ -29,7 +29,7 @@ namespace Proiect_DAW.Models.ProfileModels
         public string Visibility { get; set; }
         public int? PhotoId { get; set; }
         public List<SelectListItem> Counties { get; set; }
-        public List<InterestSelectJsonModel> Interests { get; set; }
+        public List<int> Interests { get; set; }
         public List<AlbumDomainModel> Albume { get; set; }
         public AddAlbumModel AddAlbumModel { get; set; }
     }

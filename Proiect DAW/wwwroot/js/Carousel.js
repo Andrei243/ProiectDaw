@@ -12,14 +12,14 @@ window.addEventListener("load", () => {
             if(response.length>0){
                 let photosHtml = "";
                 for (let i = 0; i < response.length; i++) {
-                    let beginAnchor = `<a href="/Photos/Download/${response[i].id}" data-lightbox="album${div.dataset.id}" data-title="${response[i].description ? response[i].description : ""}" data-alt="${response[i].description ? response[i].description : ""}" `;
+                    let beginAnchor = `<a href="/Photos/Download/${response[i].Id}" data-lightbox="album${div.dataset.id}" data-title="${response[i].Description ? response[i].Description : ""}" data-alt="${response[i].Description ? response[i].Description : ""}" `;
                     if (i === 0) {
                         beginAnchor = beginAnchor + ">";
                     }
                     else {
                         beginAnchor = beginAnchor + " hidden>";
                     }
-                    let photo = `<img class="albumPreview" src="/Photos/Download/${response[i].id}"/>`
+                    let photo = `<img class="albumPreview" src="/Photos/Download/${response[i].Id}"/>`
                     let finishAnchor = "</a>";
                     photosHtml = photosHtml + '\n' + beginAnchor + '\n' + photo + '\n' + finishAnchor;
                 }

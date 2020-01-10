@@ -167,27 +167,28 @@ namespace Proiect_DAW.Controllers
             return View(user);
         }
         [HttpGet]
-        public List<PhotoDomainModel> GetPhotos(int? albumId)
+        public JsonResult GetPhotos(int? albumId)
         {
             MakeCurrentUser();
             if (albumId == null)
             {
-                return new List<PhotoDomainModel>();
+                return Json( new List<PhotoDomainModel>(),JsonRequestBehavior.AllowGet);
             }
             if (albumService.CanSeeAlbum(albumId.Value,currentUser))
             {
-                return albumService
-                    .GetPhotos(albumId.Value,currentUser)
-                    .Select(e => 
+                return Json(albumService
+                    .GetPhotos(albumId.Value, currentUser)
+                    .Select(e =>
                     //mapper.Map<PhotoDomainModel>(e)
-                    new PhotoDomainModel() {
-                    Description=e.Description,
-                    Id=e.Id
+                    new PhotoDomainModel()
+                    {
+                        Description = e.Description,
+                        Id = e.Id
                     }
                     )
-                    .ToList();
+                    .ToList(), JsonRequestBehavior.AllowGet);
             }
-            return new List<PhotoDomainModel>();
+            return Json(new List<PhotoDomainModel>(),JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
         public ActionResult MakeProfilePhoto(int? photoId)
@@ -394,6 +395,19 @@ namespace Proiect_DAW.Controllers
 
                 return RedirectToAction("Index");
             }
+            var counties = countyService.GetAll();
+
+            var interests = interestService.GetAll();
+
+            user.Counties = counties
+                .Select(c =>
+                new SelectListItem()
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString()
+                }
+                )
+                .ToList();
             user.Albume = albumService
                 .GetAll(user.Id,currentUser)
                 .Select(e => new AlbumDomainModel()
@@ -480,7 +494,7 @@ namespace Proiect_DAW.Controllers
                 user.Album = albumService.GetAll(userId,currentUser).Select(e => new AlbumDomainModel()
                 {
                     Count = e.Photo.Count,
-                    CoverPhoto = e.Photo.Count > 0 ? e.Photo.OrderBy(e => e.Position).First().Id : -1,
+                    CoverPhoto = e.Photo.Count > 0 ? e.Photo.First().Id : -1,
                     Id = e.Id,
                     Name = e.Name
                 }).ToList();
